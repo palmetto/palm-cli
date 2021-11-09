@@ -1,0 +1,2 @@
+files:
+    - new_cmd.tpl.py: 'cmd_{{command}}.py'

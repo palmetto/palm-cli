@@ -1,0 +1,16 @@
+name: No Merge
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
+
+jobs:
+  do-not-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check labels
+        uses: mheap/github-action-required-labels@v1
+        with:
+          mode: exactly
+          count: 0
+          labels: "no merge"

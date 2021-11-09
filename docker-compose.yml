@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+    palm:
+        image: palm_development
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./:/app
+    palm_docs:
+        image: sphinxdoc/sphinx
+        volumes:
+        - ./docs:/docs
+        entrypoint: ./entrypoint.sh
+        ports:
+        - "8989:8000"

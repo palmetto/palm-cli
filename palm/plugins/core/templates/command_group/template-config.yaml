@@ -1,0 +1,2 @@
+files:
+    - new_cmd_group.tpl.py: 'cmd_{{group}}.py'

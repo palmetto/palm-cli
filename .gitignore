@@ -1,0 +1,13 @@
+__pycache__
+.pyc
+.pytest_cache
+.idea
+.vscode
+.mypy_cache
+.coverage
+.tox
+.env
+.venv
+DS_Store
+
+docs/_build
