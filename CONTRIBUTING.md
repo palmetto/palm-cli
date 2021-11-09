@@ -25,7 +25,7 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the
-[Palm CLI Code of Conduct](https://github.com/palmetto/palm-cliblob/master/CODE_OF_CONDUCT.md).
+[Palm CLI Code of Conduct](https://github.com/palmetto/palm-cli/blob/master/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
 to <data-analytics-team@palmetto.com>.
 
