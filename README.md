@@ -45,11 +45,3 @@ you can do that with this command:
 ```
 echo "\nexport PATH=$PATH:/Users/yourname/Library/Python/3.8/bin\n" >> ~/.zprofile
 ```
-
-
-### Setting up Palm
-Now that it is installed, create an `.env` file in the root of your dbt project(s) by copying the existing `.env.template` file.
-
-You can either set the specified environment variables in the `.env` file or hardcode values directly in there (`.env` is not in source control for that reason).
-
-You are now all set to use palm!
