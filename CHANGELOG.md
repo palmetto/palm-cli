@@ -1,8 +1,15 @@
 # Palm CLI Changelog
 
+## 2.0.1
+
+> 11/10/2021
+
+Updates to configuration and package name due to an unexpected naming conflict in
+pypi
+
 ## 2.0.0
 
-> Unreleased
+> 11/10/2021
 
 This major version marks our first open-source release, and thus the first version
 with a changelog entry!
