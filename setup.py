@@ -31,13 +31,13 @@ setup(
     url='https://github.com/palmetto/palm-cli',
     # Packages to include into the distribution
     packages=find_namespace_packages(include=['palm', 'palm*']),
-    package_data={'': ['*.yaml']},
+    package_data={'': ['*.yaml', '*.txt']},
     entry_points='''
     [console_scripts]
     palm=palm.cli:cli
   ''',
     license='Apache License 2.0',
-    install_requires=Path("requirements.txt").read_text().splitlines(),
+    install_requires=Path("palm/requirements.txt").read_text().splitlines(),
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
