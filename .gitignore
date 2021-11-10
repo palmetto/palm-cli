@@ -11,3 +11,7 @@ __pycache__
 DS_Store
 
 docs/_build
+
+palm.egg-info
+dist
+build
