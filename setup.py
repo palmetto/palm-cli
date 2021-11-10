@@ -28,10 +28,9 @@ setup(
     long_description_content_type='text/markdown',
     author='Palmetto - Data & Analytics team',
     author_email='data-analytics-team@palmetto.com',
-    url='',
+    url='https://github.com/palmetto/palm-cli',
     # Packages to include into the distribution
     packages=find_namespace_packages(include=['palm', 'palm*']),
-    include_package_data=True,
     package_data={'': ['*.yaml']},
     entry_points='''
     [console_scripts]
