@@ -2,7 +2,7 @@
 
 _Palm_ is a universal CLI developed to improve the life and work of data professionals. 
 
-[What is Palm?](https://www.loom.com/share/88903b106e724221b5d45b8dc27270de)
+[Palm CLI documentation](https://palm-cli.readthedocs.io/en/latest/)
 
 ### Installing Palm
 
