@@ -40,7 +40,7 @@ class Containerizer(ABC):
 
     def has_env(self) -> bool:
         return psu.has_env()
-    
+
     @abstractmethod
     def package_manager(self) -> str:
         pass
@@ -53,7 +53,7 @@ class PythonContainerizer(Containerizer):
         except AbortPalm as e:
             click.secho(str(e), fg="red")
             return
-        
+
         package_manager = super().package_manager()
 
         if package_manager == "unknown":
@@ -79,7 +79,7 @@ class PythonContainerizer(Containerizer):
             return "poetry"
 
         return "unknown"
-    
+
     def has_requirements_txt(self) -> bool:
         """Check for a requirements.txt file in the project root"""
         return Path("requirements.txt").exists()
@@ -89,7 +89,9 @@ class PythonContainerizer(Containerizer):
         return Path("poetry.lock").exists()
 
     def optionally_add_requirements_txt(self):
-        use_pip = click.confirm("Unable to detect python package manger, requirements.txt will be used by default. Continue?")
+        use_pip = click.confirm(
+            "Unable to detect python package manger, requirements.txt will be used by default. Continue?"
+        )
         if use_pip:
             Path("requirements.txt").touch()
         else:
