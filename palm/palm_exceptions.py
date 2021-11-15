@@ -1,0 +1,3 @@
+
+class AbortPalm(Exception):
+    pass
