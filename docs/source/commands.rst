@@ -55,9 +55,9 @@ Palm ships with some scaffolding commands. These commands will generate boilerpl
 code for you, allowing you to focus on writing your command's functionality.
 
 - To scaffold a single command you can run 
-  ``palm scaffold new command --name <command-name>``
+  ``palm scaffold command --name <command-name>``
 - To scaffold a command group you can run 
-  ``palm scaffold new group --name <group-name> --cmd_name <command-name>``
+  ``palm scaffold group --group <group-name> --command <command-name>``
 
 Once you have scaffolded your command or command group. You can edit the generated
 file in your .palm directory, add the functionality you need and then run the command
