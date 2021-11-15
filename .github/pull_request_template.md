@@ -1,3 +1,5 @@
+[Contribution Guidelines](https://github.com/palmetto/palm-cli/blob/main/CONTRIBUTING.md)
+
 <!-- Thanks for sending a pull request! Please make sure you click the link above to view the contribution guidelines, then fill out the blanks below. -->
 ## Pull request checklist
 
