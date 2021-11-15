@@ -20,7 +20,7 @@ class BasePlugin:
             name (str): Name of the plugin
             command_dir (Path): Path to the directory containing commands
             version (Optional[str], optional): Plugin version. Defaults to "unknown".
-            package_location (Optional[str], optional): Either pypi package name 
+            package_location (Optional[str], optional): Either pypi package name
                 or github https URL. Used for installation Defaults to None.
         """
         self.name = name
