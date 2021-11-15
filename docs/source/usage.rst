@@ -69,6 +69,8 @@ shell of choice):
 Configuration
 =============
 
+**note: palm requires a Git repo, run ``git init`` from the root directory of your project if not already done so.
+
 To configure your project to use Palm, run ``palm init`` from the root
 directory of your project.
 

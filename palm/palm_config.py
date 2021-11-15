@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Optional, List
 from pygit2 import Repository
 from click import secho
+import sys
 import yaml
 
 
@@ -18,11 +19,22 @@ class PalmConfig:
 
     def __init__(self, project_path: Optional["Path"] = Path.cwd()):
         self.project_root = project_path
-        self.config = self._get_config()
         self.branch = self._get_current_branch()
+        self.config = self._get_config()
 
     def _get_current_branch(self) -> str:
-        return Repository(str(self.project_root)).head.shorthand
+        try:
+            return Repository(str(self.project_root)).head.shorthand
+        except Exception:
+            secho(
+                f'No Git repo found in {Path.cwd()}, please run \'git init\'',
+                fg='yellow',
+            )
+            secho(
+                'Git repo is required for Palm',
+                fg='yellow',
+            )
+            sys.exit(1)
 
     def _get_config(self) -> object:
         config_path = self.project_root / '.palm' / 'config.yaml'
