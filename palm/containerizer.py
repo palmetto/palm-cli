@@ -6,9 +6,9 @@ import palm.project_setup_utils as psu
 
 
 class Containerizer(ABC):
-    def __init__(self, ctx, project_name: str, template_dir: Path) -> None:
+    def __init__(self, ctx, template_dir: Path) -> None:
         self.ctx = ctx
-        self.project_name = project_name
+        self.project_name = ctx.obj.palm.image_name
         self.template_dir = template_dir
 
     @abstractmethod
