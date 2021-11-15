@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 from typing import Optional, Any, Callable, List
 
+from .palm_exceptions import NoRepositoryError
 from .environment import Environment
 from .palm_config import PalmConfig
 from .plugin_manager import PluginManager
@@ -31,6 +32,8 @@ class PalmCLI(click.MultiCommand):
     ) -> None:
         try:
             palm_config.validate_branch()
+        except NoRepositoryError:
+            palm_config.use_setup_plugins()
         except SystemExit as e:
             sys.exit(1)
         self.palm = palm_config
