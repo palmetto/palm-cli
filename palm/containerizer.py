@@ -12,14 +12,15 @@ class Containerizer(ABC):
 
     Containerizer.run() is the main entry point for a containerizer.
     Implementations of run() should call check_setup() and generate()
-    """    
+    """
+
     def __init__(self, ctx, template_dir: Path) -> None:
         """Containerizer constructor
 
         Args:
             ctx (click.context): The click context object from the calling command
             template_dir (Path): Path to the templates directory
-        """        
+        """
         self.ctx = ctx
         # By default, image name is read from .palm/config.yaml since this is used
         # to execute commands in the container. This may be overridden in a containerizer
@@ -46,7 +47,7 @@ class Containerizer(ABC):
 
         Raises:
             AbortPalm: If the project is already containerized, or has no .env file
-        """        
+        """
         if self.has_containerization():
             raise AbortPalm("Containerization already exists")
 
@@ -61,7 +62,7 @@ class Containerizer(ABC):
 
         Returns:
             bool: true if Dockerfile or docker-compose.yaml exists
-        """        
+        """
         containerization_files = ['docker-compose.yaml', 'Dockerfile']
 
         for file in containerization_files:
@@ -75,7 +76,7 @@ class Containerizer(ABC):
 
         Returns:
             bool: true if .env file exists
-        """        
+        """
         return psu.has_env()
 
     @abstractmethod
@@ -85,19 +86,22 @@ class Containerizer(ABC):
 
         Returns:
             str: Name of package manager
-        """        
+        """
         pass
 
 
 class PythonContainerizer(Containerizer):
     """Containerizer for Python projects"""
-    def __init__(self, ctx, template_dir: Path, python_version: Optional[str] = '3.8') -> None:
+
+    def __init__(
+        self, ctx, template_dir: Path, python_version: Optional[str] = '3.8'
+    ) -> None:
         """PythonContainerizer constructor
 
         Args:
             ctx (click.context): The click context object from the calling command
             template_dir (Path): Path to the templates directory
-        """        
+        """
         self.ctx = ctx
         self.project_name = ctx.obj.palm.image_name
         self.template_dir = template_dir
@@ -130,7 +134,7 @@ class PythonContainerizer(Containerizer):
         replacements = {
             "project_name": self.project_name,
             "package_manager": package_manager,
-            "python_version": self.python_version
+            "python_version": self.python_version,
         }
 
         super().generate(target_dir, replacements)
@@ -141,7 +145,7 @@ class PythonContainerizer(Containerizer):
 
         Returns:
             str: pip3 | poetry | unknown
-        """        
+        """
         if self.has_requirements_txt():
             return "pip3"
         if self.has_poetry():
@@ -162,7 +166,7 @@ class PythonContainerizer(Containerizer):
 
         Raises:
             AbortPalm: Abort if user does not want to add requirements.txt
-        """        
+        """
         use_pip = click.confirm(
             "Unable to detect python package manger, requirements.txt will be used by default. Continue?"
         )
