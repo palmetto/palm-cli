@@ -54,7 +54,7 @@ class PythonContainerizer(Containerizer):
             click.secho(str(e), fg="red")
             return
 
-        package_manager = super().package_manager()
+        package_manager = self.package_manager()
 
         if package_manager == "unknown":
             try:
@@ -70,7 +70,7 @@ class PythonContainerizer(Containerizer):
             "package_manager": package_manager,
         }
 
-        super.generate(target_dir, replacements)
+        super().generate(target_dir, replacements)
 
     def package_manager(self) -> str:
         if self.has_requirements_txt():
