@@ -32,6 +32,7 @@ Use ``palm containerize`` to set up your project with Docker.
 
 See ``palm containerize --help`` for more information.
 
+
 How containerization works
 ===========================
 
@@ -47,3 +48,28 @@ Palm containerization generates the following files in your project root directo
   the entrypoint as this limits the flexibility of your container, instead use 
   palm commands to run your project, this allows you to determine what each instance
   of the container is doing (run, test, etc.).
+
+
+Implement your own containerization solution
+============================================
+
+Palm containerization is intended to provide a basic baseline for containerization
+for Python projects. For projects using a specific framework, or a different language,
+we recommend that you implement your own containerization solution. To do this,
+you will need to:
+
+- Create a new containerizer command in your project 
+  (``palm scaffold command --name containerize``).
+- Duplicate the templates from ``palm/plugins/core/templates/containerize`` and 
+  add them to your project. Make the necessary changes to support your 
+  containerization needs.
+- Subclass the ``Containerizer`` class and override the ``run()`` and 
+  ``package_manager()`` methods.
+- Open up cmd_containerize.py and implement any logic + Call YourSubclass.run() 
+  in your command.
+
+To see an example of custom containerization, see ``cmd_containerize.py`` in the
+``palm-dbt`` plugin!
+
+Once you have implemented your containerization solution, consider releasing it
+to the community as a palm plugin!
