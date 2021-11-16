@@ -10,6 +10,11 @@ def has_env() -> bool:
 
 
 def optionally_create_env():
+    """Optionally, create a .env file if it doesn't exist
+
+    Raises:
+        AbortPalm: abort if the user doesn't want to create a .env file
+    """    
     create_env = click.confirm("Would you like palm to create an empty .env file?")
     if create_env:
         Path(".env").touch()
@@ -20,7 +25,12 @@ def optionally_create_env():
         raise AbortPalm("Aborting")
 
 
-def make_executable(path):
+def make_executable(path: Path) -> None:
+    """Make a file executable
+
+    Args:
+        path (Path): Path to file
+    """    
     mode = os.stat(path).st_mode
     mode |= (mode & 0o444) >> 2  # copy R bits to X
     os.chmod(path, mode)
