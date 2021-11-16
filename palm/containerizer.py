@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Dict, Optional
 from pathlib import Path
 import re
 import click
@@ -30,7 +31,7 @@ class Containerizer(ABC):
     def run(self) -> None:
         pass
 
-    def generate(self, target_dir: Path, replacements: dict) -> None:
+    def generate(self, target_dir: Path, replacements: Dict) -> None:
         """Generate files for containerization
 
         Args:
@@ -90,7 +91,7 @@ class Containerizer(ABC):
 
 class PythonContainerizer(Containerizer):
     """Containerizer for Python projects"""
-    def __init__(self, ctx, template_dir: Path, python_version: str) -> None:
+    def __init__(self, ctx, template_dir: Path, python_version: Optional[str] = '3.8') -> None:
         """PythonContainerizer constructor
 
         Args:
@@ -104,6 +105,10 @@ class PythonContainerizer(Containerizer):
 
     def run(self) -> None:
         """Run the containerizer"""
+        if not self.validate_python_version():
+            click.secho(f"Invalid python version: {self.python_version}", fg="red")
+            return
+
         try:
             self.validate_python_version()
             super().check_setup()
@@ -166,16 +171,14 @@ class PythonContainerizer(Containerizer):
         else:
             raise AbortPalm("Aborting")
 
-    def validate_python_version(self) -> str:
+    def validate_python_version(self) -> bool:
         """Validate the python version provided by the user
 
         Args:
             python_version (str): The python version to validate
 
         Returns:
-            str: The validated python version
+            bool: True if the python version is valid
         """
-        if re.match(r"^3\.[0-9]{1,2}$", self.python_version):
-            return self.python_version
-        else:
-            raise AbortPalm("Invalid python version: " + self.python_version)
+        match = re.match(r"^3\.[0-9]{1,2}$", self.python_version)
+        return bool(match)
