@@ -25,16 +25,22 @@ def test_package_manager(tmp_path, environment):
 
 
 def test_has_requirements_txt(tmp_path, environment):
-    pass
+    os.chdir(tmp_path)
+    ctx = MockContext(obj=environment)
+    c = PythonContainerizer(ctx, tmp_path)
 
+    assert not c.has_requirements_txt()
+    Path('requirements.txt').touch()
+    assert c.has_requirements_txt()
 
 def test_has_poetry(tmp_path, environment):
-    pass
+    os.chdir(tmp_path)
+    ctx = MockContext(obj=environment)
+    c = PythonContainerizer(ctx, tmp_path)
 
-
-def test_optionally_add_requirements(tmp_path, environment):
-    pass
-
+    assert not c.has_poetry()
+    Path('poetry.lock').touch()
+    assert c.has_poetry()
 
 def test_run(tmp_path, environment):
     templates_dir = Path(__file__).parents[2] / 'palm/plugins/core/templates/containerize'
