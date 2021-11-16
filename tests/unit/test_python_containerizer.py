@@ -61,7 +61,6 @@ def test_run(tmp_path, environment):
     assert Path(tmp_path, 'scripts/entrypoint.sh').exists()
 
 def test_validate_python_version(tmp_path, environment):
-    os.chdir(tmp_path)
     ctx = MockContext(obj=environment)
     default_version_pc = PythonContainerizer(ctx, tmp_path)
     assert default_version_pc.validate_python_version()
