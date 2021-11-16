@@ -1,7 +1,5 @@
 from typing import Optional, List
 import click
-import shutil
-import fileinput
 from pathlib import Path
 from palm.plugins.core.create_files import *
 

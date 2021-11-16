@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+  {{project_name}}:
+    image: {{project_name}}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
