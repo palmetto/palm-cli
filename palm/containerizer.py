@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
+import re
 import click
 from palm.palm_exceptions import AbortPalm
 import palm.project_setup_utils as psu
@@ -89,10 +90,22 @@ class Containerizer(ABC):
 
 class PythonContainerizer(Containerizer):
     """Containerizer for Python projects"""
+    def __init__(self, ctx, template_dir: Path, python_version: str) -> None:
+        """PythonContainerizer constructor
+
+        Args:
+            ctx (click.context): The click context object from the calling command
+            template_dir (Path): Path to the templates directory
+        """        
+        self.ctx = ctx
+        self.project_name = ctx.obj.palm.image_name
+        self.template_dir = template_dir
+        self.python_version = python_version
 
     def run(self) -> None:
         """Run the containerizer"""
         try:
+            self.validate_python_version()
             super().check_setup()
         except AbortPalm as e:
             click.secho(str(e), fg="red")
@@ -112,6 +125,7 @@ class PythonContainerizer(Containerizer):
         replacements = {
             "project_name": self.project_name,
             "package_manager": package_manager,
+            "python_version": self.python_version
         }
 
         super().generate(target_dir, replacements)
@@ -151,3 +165,17 @@ class PythonContainerizer(Containerizer):
             Path("requirements.txt").touch()
         else:
             raise AbortPalm("Aborting")
+
+    def validate_python_version(self) -> str:
+        """Validate the python version provided by the user
+
+        Args:
+            python_version (str): The python version to validate
+
+        Returns:
+            str: The validated python version
+        """
+        if re.match(r"^3\.[0-9]{1,2}$", self.python_version):
+            return self.python_version
+        else:
+            raise AbortPalm("Invalid python version: " + self.python_version)
