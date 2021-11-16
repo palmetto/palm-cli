@@ -25,6 +25,7 @@ Contents
    commands
    code-generation
    plugins
+   containerization
 
 Usage
 -----
