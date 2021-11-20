@@ -9,7 +9,10 @@ def test_run_in_docker(environment, monkeypatch):
         returncode = 0
         stdout = b'tested'
         stderr = b''
-    monkeypatch.setattr(subprocess, 'run', lambda *args, **kwargs: MockCompletedProcess())
+
+    monkeypatch.setattr(
+        subprocess, 'run', lambda *args, **kwargs: MockCompletedProcess()
+    )
     success, msg = environment.run_in_docker('test')
     assert success is True
     assert msg == 'Success! Palm completed with exit code 0'

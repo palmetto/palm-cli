@@ -11,6 +11,7 @@ def test_cmd_name_from_file():
     assert cmd_name_from_file('cmd_foo.py') == 'foo'
     assert cmd_name_from_file('cmd_foo_bar.py') == 'foo_bar'
 
+
 def test_run_on_the_metal_happy_path():
     cmd = "echo 'hello world!'"
     success, out, err = run_on_the_metal(cmd)

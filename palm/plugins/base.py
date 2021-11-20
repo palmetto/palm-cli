@@ -1,9 +1,7 @@
 import importlib
 from typing import List, Optional, Tuple
 from pathlib import Path
-from palm.utils import is_cmd_file, \
-    cmd_name_from_file, \
-    run_on_the_metal
+from palm.utils import is_cmd_file, cmd_name_from_file, run_on_the_metal
 
 
 class BasePlugin:

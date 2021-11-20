@@ -9,9 +9,7 @@ from typing import Optional, Any, Callable, List
 from .environment import Environment
 from .palm_config import PalmConfig
 from .plugin_manager import PluginManager
-from .utils import is_cmd_file, \
-    cmd_name_from_file, \
-    run_on_the_metal
+from .utils import is_cmd_file, cmd_name_from_file, run_on_the_metal
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="PALM")
 
@@ -91,14 +89,18 @@ def required_dependencies_ready():
 
     docker_checks = (
         ("docker --version", "Docker is not installed, please install it first",),
-        ("docker-compose --version", "Docker Compose is not installed, please install it first",),
+        (
+            "docker-compose --version",
+            "Docker Compose is not installed, please install it first",
+        ),
         ("docker ps", "Docker is not running, please start it first",),
-    )    
+    )
     for cmd, msg in docker_checks:
         if run_on_the_metal(cmd)[0] > 0:
             click.secho(msg, fg="red")
             return False
     return True
+
 
 @click.group(cls=PalmCLI, context_settings=CONTEXT_SETTINGS)
 @click.version_option(get_version())

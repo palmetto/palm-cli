@@ -1,10 +1,11 @@
-from typing import Optional, \
-    Tuple
+from typing import Optional, Tuple
 import subprocess
 from sys import version_info
 
+
 class UnsupportedVersion(Exception):
     pass
+
 
 def is_cmd_file(filename: str) -> bool:
     return filename.endswith(".py") and filename.startswith("cmd")
@@ -13,8 +14,10 @@ def is_cmd_file(filename: str) -> bool:
 def cmd_name_from_file(filename: str) -> str:
     return filename[4:-3]
 
-def run_on_the_metal(cmd:str, 
-                     bubble_error:Optional[bool]=False) -> Tuple[int, str, str]:
+
+def run_on_the_metal(
+    cmd: str, bubble_error: Optional[bool] = False
+) -> Tuple[int, str, str]:
     """A simplifed, platform-and-version agnostic interface
         for subprocess.
         By default run_on_the_metal makes some strong
@@ -30,15 +33,17 @@ def run_on_the_metal(cmd:str,
     """
     major, minor, patch, _, _ = version_info
     kwargs = dict(shell=True, check=bubble_error)
-    if major < 3 or minor < 5: 
+    if major < 3 or minor < 5:
         raise UnsupportedVersion(f"Python version {major}.{minor} is not supported.")
     if minor < 7:
         from subprocess import PIPE
-        kwargs.update(dict(stdout=PIPE, 
-                           stderr=PIPE))
+
+        kwargs.update(dict(stdout=PIPE, stderr=PIPE))
     else:
         kwargs.update(dict(capture_output=True))
     completed = subprocess.run(cmd, **kwargs)
-    return completed.returncode, \
-           completed.stdout.decode("utf-8"), \
-           completed.stderr.decode("utf-8")
+    return (
+        completed.returncode,
+        completed.stdout.decode("utf-8"),
+        completed.stderr.decode("utf-8"),
+    )
