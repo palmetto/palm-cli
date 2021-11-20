@@ -37,7 +37,7 @@ def run_on_the_metal(cmd:str,
         kwargs.update(dict(stdout=PIPE, 
                            stderr=PIPE))
     else:
-        kwargs.update(dict(check_output=True))
+        kwargs.update(dict(capture_output=True))
     completed = subprocess.run(cmd, **kwargs)
     return completed.returncode, \
            completed.stdout.decode("utf-8"), \
