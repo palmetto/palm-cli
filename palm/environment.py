@@ -1,3 +1,5 @@
+from typing import Optional, \
+    Tuple
 import importlib
 from pathlib import Path
 from typing import Optional, List, Tuple
@@ -44,6 +46,12 @@ class Environment:
         click.secho(deprecation_msg, fg="yellow")
         success, msg = self.run_in_docker(cmd, env_vars)
         click.secho(msg, fg="green" if success else "red")
+
+    def run_on_the_metal(self, 
+                         cmd:str, 
+                         bubble_error:Optional[bool]=False) -> Tuple[int, str, str]:
+        """context wrapper for :obj:`palm.utils.run_on_the_metal`"""
+        return run_on_the_metal(cmd, bubble_error)
 
     def import_module(self, module_name: str, module_path: Path):
         """Imports a module from a path
