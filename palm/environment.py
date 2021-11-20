@@ -38,9 +38,9 @@ class Environment:
     def run_in_shell(self, cmd: str, env_vars: Optional[dict] = {}):
         """deprecated - use run_in_docker"""
 
-        deprecation_msg = 'DEPRECATION: run_in_shell has been renamed to \
-run_in_docker and will be removed in a future version. Please update your \
-commands to use ctx.obj.run_in_docker'
+        deprecation_msg = ("DEPRECATION: run_in_shell has been renamed to "
+                           "`run_in_docker` and will be removed in a future version. "
+                           "Please update your commands to use ctx.obj.run_in_docker")
         click.secho(deprecation_msg, fg="yellow")
         success, msg = self.run_in_docker(cmd, env_vars)
         click.secho(msg, fg="green" if success else "red")
