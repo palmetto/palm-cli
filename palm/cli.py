@@ -89,25 +89,16 @@ def get_version():
 
 def required_dependencies_ready():
 
-    docker_installed = run_on_the_metal('docker --version')
-    docker_compose_installed = run_on_the_metal('docker-compose --version')
-    docker_running = run_on_the_metal('docker ps')
-
-    if docker_installed[0] != 0:
-        click.secho('Docker is not installed, please install it first', fg="red")
-    if docker_compose_installed[0] != 0:
-        click.secho(
-            'Docker Compose is not installed, please install it first', fg="red"
-        )
-    if docker_running[0] != 0:
-        click.secho('Docker is not running, please start it first', fg="red")
-
-    return (
-        docker_installed[0] == 0
-        and docker_compose_installed[0] == 0
-        and docker_running[0] == 0
-    )
-
+    docker_checks = (
+        ("docker --version", "Docker is not installed, please install it first",),
+        ("docker-compose --version", "Docker Compose is not installed, please install it first",),
+        ("docker ps", "Docker is not running, please start it first",),
+    )    
+    for cmd, msg in docker_checks:
+        if run_on_the_metal(cmd)[0] > 0:
+            click.secho(msg, fg="red")
+            return False
+    return True
 
 @click.group(cls=PalmCLI, context_settings=CONTEXT_SETTINGS)
 @click.version_option(get_version())
