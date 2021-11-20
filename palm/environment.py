@@ -1,8 +1,8 @@
 import importlib
 from pathlib import Path
-import subprocess
 from typing import Optional, List, Tuple
 import click
+from palm.utils import run_on_the_metal
 from palm.plugin_manager import PluginManager
 from .palm_config import PalmConfig
 from .code_generator import CodeGenerator
@@ -30,8 +30,10 @@ class Environment:
         docker_cmd.append(self.palm.image_name)
         docker_cmd.append(f'/bin/bash -c "{cmd}" ')
 
-        subprocess.run(' '.join(docker_cmd), shell=True, check=True)
-        return (True, 'Success! Palm completed with exit code 0')
+        ex_code, _, _ = run_on_the_metal(' '.join(docker_cmd))
+        if ex_code == 0:
+            return (True, 'Success! Palm completed with exit code 0')
+        return (False, f"Fail! Palm exited with code {ex_code}")
 
     def run_in_shell(self, cmd: str, env_vars: Optional[dict] = {}):
         """deprecated - use run_in_docker"""
