@@ -1,8 +1,9 @@
 import importlib
-import subprocess
 from typing import List, Optional, Tuple
 from pathlib import Path
-from palm.utils import is_cmd_file, cmd_name_from_file
+from palm.utils import is_cmd_file, \
+    cmd_name_from_file, \
+    run_on_the_metal
 
 
 class BasePlugin:
@@ -82,6 +83,5 @@ class BasePlugin:
         upgrade_cmd = f"python3 -m pip install {install_url}"
 
         for cmd in (uninstall_cmd, upgrade_cmd):
-            subprocess.run(cmd, check=True, shell=True)
-
+            _, _, _ = run_on_the_metal(cmd, bubble_error=True)
         return (True, 'Plugin upgraded successfully')
