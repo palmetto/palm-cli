@@ -95,7 +95,7 @@ is provided via the palm context. If you want to use ``run_in_docker`` in your
 own command, ensure you use the ``@click.pass_context`` decorator for your command, 
 then use ``ctx.obj.run_in_docker(command)``.
 
-**Run on the metal**:
+**Run on Host**:
 
 Palm provides a simple interface for running shell commands directly on your machine via
 the context (similarly to how ``run_in_docker`` is accessed, via ``ctx.obj``). We highly
