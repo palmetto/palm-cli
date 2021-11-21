@@ -1,7 +1,9 @@
 import importlib
 from typing import List, Optional, Tuple
 from pathlib import Path
-from palm.utils import is_cmd_file, cmd_name_from_file, run_on_the_metal
+from palm.utils import is_cmd_file, \
+    cmd_name_from_file, \
+    run_on_host
 
 
 class BasePlugin:
@@ -81,5 +83,5 @@ class BasePlugin:
         upgrade_cmd = f"python3 -m pip install {install_url}"
 
         for cmd in (uninstall_cmd, upgrade_cmd):
-            _, _, _ = run_on_the_metal(cmd, bubble_error=True)
+            _, _, _ = run_on_host(cmd, bubble_error=True)
         return (True, 'Plugin upgraded successfully')

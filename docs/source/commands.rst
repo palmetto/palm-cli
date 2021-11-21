@@ -99,7 +99,7 @@ then use ``ctx.obj.run_in_docker(command)``.
 
 Palm provides a simple interface for running shell commands directly on your machine via
 the context (similarly to how ``run_in_docker`` is accessed, via ``ctx.obj``). We highly
-recommend using ``run_on_the_metal`` over rolling your own subprocess commands.
+recommend using ``run_on_host`` over rolling your own subprocess commands.
 
 .. warning:: 
 
@@ -108,7 +108,7 @@ recommend using ``run_on_the_metal`` over rolling your own subprocess commands.
   The prime directive of palm is to give all your developers an identical interface and 
   experience, regardless of environment. Different versions of python running on different
   operating systems can behave differently when calling ``subprocess``; palm normalizes this
-  behavior in ```ctx.obj.run_on_the_metal``. 
+  behavior in ```ctx.obj.run_on_host``. 
 
 **Importing code**:
 
@@ -133,14 +133,14 @@ That could look something like this:
   @click.pass_context
   def cli(ctx):
       """Starts the container as daemon, watches the logs, then exits"""
-      ctx.run_on_the_metal("docker-compose run -d super_slow_starting_django_app",
+      ctx.run_on_host("docker-compose run -d super_slow_starting_django_app",
                            bubble_error=True)
         
       ## this is where we watch, pseudo-blocking
       building_logs = str()
       while "Starting local webserver via runserver on port 8080..." \
         not in building_logs:
-          logs, _, _ = ctx.run_on_the_metal("docker-compose logs static_app")
+          logs, _, _ = ctx.run_on_host("docker-compose logs static_app")
             if logs != building_logs:
                 building_logs = logs
                 click.echo(logs)

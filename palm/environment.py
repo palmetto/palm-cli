@@ -3,7 +3,7 @@ import importlib
 from pathlib import Path
 from typing import Optional, List, Tuple
 import click
-from palm.utils import run_on_the_metal
+from palm.utils import run_on_host
 from palm.plugin_manager import PluginManager
 from .palm_config import PalmConfig
 from .code_generator import CodeGenerator
@@ -31,7 +31,7 @@ class Environment:
         docker_cmd.append(self.palm.image_name)
         docker_cmd.append(f'/bin/bash -c "{cmd}" ')
 
-        ex_code, _, _ = run_on_the_metal(' '.join(docker_cmd))
+        ex_code, _, _ = run_on_host(' '.join(docker_cmd))
         if ex_code == 0:
             return (True, 'Success! Palm completed with exit code 0')
         return (False, f"Fail! Palm exited with code {ex_code}")
@@ -48,11 +48,11 @@ class Environment:
         success, msg = self.run_in_docker(cmd, env_vars)
         click.secho(msg, fg="green" if success else "red")
 
-    def run_on_the_metal(
+    def run_on_host(
         self, cmd: str, bubble_error: Optional[bool] = False
     ) -> Tuple[int, str, str]:
-        """context wrapper for :obj:`palm.utils.run_on_the_metal`"""
-        return run_on_the_metal(cmd, bubble_error)
+        """context wrapper for :obj:`palm.utils.run_on_host`"""
+        return run_on_host(cmd, bubble_error)
 
     def import_module(self, module_name: str, module_path: Path):
         """Imports a module from a path

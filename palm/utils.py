@@ -15,12 +15,12 @@ def cmd_name_from_file(filename: str) -> str:
     return filename[4:-3]
 
 
-def run_on_the_metal(
+def run_on_host(
     cmd: str, bubble_error: Optional[bool] = False
 ) -> Tuple[int, str, str]:
     """A simplifed, platform-and-version agnostic interface
         for subprocess.
-        By default run_on_the_metal makes some strong
+        By default run_on_host makes some strong
         conventional choices: 
          - calls are run as a shell
          - calls are blocking

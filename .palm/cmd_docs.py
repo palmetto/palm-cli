@@ -11,7 +11,7 @@ def cli(ctx):
     """Generates internal readthedocs for palm and serves them"""
 
     click.echo(f"Launching palm-cli readthedocs at {CODE_DOCS_URI}...")
-    exit_code, out, err = ctx.obj.run_on_the_metal(
+    exit_code, out, err = ctx.obj.run_on_host(
         'docker-compose run -d --rm --service-ports palm_docs'
     )
     if exit_code > 0:
