@@ -1,4 +1,5 @@
 import os
+import pytest
 from pathlib import Path
 from palm.containerizer import PythonContainerizer
 
@@ -12,16 +13,18 @@ class MockContext:
 PythonContainerizer.__abstractmethods__ = set()
 
 
-def test_package_manager(tmp_path, environment):
+def test_detect_package_manager(tmp_path, environment):
     os.chdir(tmp_path)
     ctx = MockContext(obj=environment)
     pc = PythonContainerizer(ctx, tmp_path)
 
-    assert pc.package_manager() == 'unknown'
+    with pytest.raises(Exception):
+        pc.detect_package_manager()
+
     Path('poetry.lock').touch()
-    assert pc.package_manager() == 'poetry'
+    assert pc.detect_package_manager() == 'poetry'
     Path('requirements.txt').touch()
-    assert pc.package_manager() == 'pip3'
+    assert pc.detect_package_manager() == 'pip3'
 
 
 def test_has_requirements_txt(tmp_path, environment):
