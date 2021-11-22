@@ -7,7 +7,7 @@ _Palm_ is a universal CLI developed to improve the life and work of data profess
 ### Installing Palm
 
 ```
-pip install palmcli
+pip install palm
 ```
 
 *note for mac users*: if you get this warning:
