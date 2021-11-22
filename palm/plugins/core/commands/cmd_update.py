@@ -15,8 +15,10 @@ def cli(local: bool):
         return
 
     uninstall_cmd = "python3 -m pip uninstall -y palm"
-    source = " . " if local else " git+https://github.com/palmetto/palm-cli.git "
-    upgrade_cmd = f"python3 -m pip install {source}"
+    if local:
+        upgrade_cmd = f"python3 -m pip install ."
+    else:
+        upgrade_cmd = f"pip install palm"
 
     for cmd in (
         uninstall_cmd,
