@@ -26,7 +26,8 @@ Contents
    code-generation
    plugins
    containerization
-
+   branding/index
+   
 Usage
 -----
 
