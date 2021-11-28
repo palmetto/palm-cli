@@ -51,11 +51,56 @@ automated cleanup, and idempotency testing.
 
 There was near-zero learning curve for you, no tribal knowledge transfer needed, and you were able to start adding value hours into your first day on the team.
 
-
-
-
 Context Switching
 =================
+
+Possibly the most powerful long-term impact of palm is the way it removes internal barriers between software workflows. 
+Let’s say you are a developer at a modern e-commerce platform. The ecom site is powered by Ruby on Rails. The highly-trafficked content site uses WordPress. Your virtual dressing room software is built on Rocket, and the whole of the infrastructure is managed by Terraform. 
+A new feature is rolling out that uses the virtual dressing room. First, you update the Rocket application to enable the feature. You start by reviewing your options (it’s been a minute since you have worked in this repo): 
+
+.. code:: bash 
+
+   $ cd ~/Repos/virtual_dressing_room && palm 
+   Commands:
+   launch     launches the vdr as a request server (daemon)
+   request    starts an interactive request terminal to to the local server
+   test          runs all the non-destructive tests locally
+   launch-test    runs tests that will destroy the UAT environment, should only be run before a deployment
+
+Once the Rocket code is updated and merged, you launch the feature on the ecom site. 
+
+.. code:: bash 
+
+   $ cd ~/Repos/ecommerce_site && palm up
+
+You make your changes, testing with ``palm test``. The same happens with the WordPress and your infra work.
+ 
+**Here is where it gets interesting!** 
+
+You get a panicked call from the finance team.
+
+It appears the only Data Engineer is on vacation and they forgot a CCPA request due today! 
+You quickly clone the data team’s ``ccpa_privacy`` repo, and do this:
+
+.. code:: bash
+
+   $ cd ~/Repos/ccpa_privacy && palm
+   Commands:
+   delete       deletes (or obfuscates) a user by email address. Enforces financial retention per our privacy policy.
+   report       generates a right-of-portability report of the data we have on a user by email address. non-destructive. 
+
+   $ palm report --help 
+     Generates a json report of all the found data relating to a given email address. 
+
+     Args: email-address: the email to look up
+   
+   $ palm report dave@requestedprivacy.com
+   Generating report… 
+   Report done. Saved to ~/Documents/privacy_report_123.json 
+
+When an organization adopts palm, moving from one codebase to another becomes fluid, and without hard context switches. 
+Developers can confidently pick up and start working with any code, anywhere in the organization - including code they have never seen before. 
+
 
 Consulting
 ==========
@@ -64,10 +109,10 @@ Palm & The Modern Work Dynamic
 ==============================
 
 Offshoring & Nearshoring
-========================
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Gig Work - As An Organization
+Gig Work - For the Organization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Gig Work - For the Gig Worker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Gig Work - As a Gig Worker
-^^^^^^^^^^^^^^^^^^^^^^^^^^
