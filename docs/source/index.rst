@@ -15,6 +15,8 @@ What is Palm?
 - A tool for building and managing your own CLI commands.
 - Built with python and click
 
+**Understanding the palm viewpoint:** :doc:`Why do my CLIs need a CLI?<introduction/viewpoint>`
+
 Contents
 --------
 
