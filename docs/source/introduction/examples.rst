@@ -51,6 +51,15 @@ automated cleanup, and idempotency testing.
 
 There was near-zero learning curve for you, no tribal knowledge transfer needed, and you were able to start adding value hours into your first day on the team.
 
+
+Cross Platform
+==============
+Palm is written in Python, giving you the interoperability of a higher level programming language, 
+and relies heavily on the ``docker`` and ``docker-compose`` APIs to create OS-agnostic 
+development environments. Leveraging palm's native `run_in_docker` commands, you can run the same code
+on any system and get the same results. 
+
+
 Context Switching
 =================
 
