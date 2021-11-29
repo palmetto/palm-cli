@@ -3,14 +3,15 @@ import click
 import importlib
 import os
 import pkg_resources
-import subprocess
 from pathlib import Path
 from typing import Optional, Any, Callable, List
 
 from .environment import Environment
 from .palm_config import PalmConfig
 from .plugin_manager import PluginManager
-from .utils import is_cmd_file, cmd_name_from_file
+from .utils import is_cmd_file, \
+    cmd_name_from_file, \
+    run_on_host
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="PALM")
 
@@ -87,28 +88,20 @@ def get_version():
 
 
 def required_dependencies_ready():
-    docker_installed = subprocess.run(
-        'docker --version', shell=True, capture_output=True
-    )
-    docker_compose_installed = subprocess.run(
-        'docker-compose --version', shell=True, capture_output=True
-    )
-    docker_running = subprocess.run('docker ps', shell=True, capture_output=True)
 
-    if docker_installed.returncode != 0:
-        click.secho('Docker is not installed, please install it first', fg="red")
-    if docker_compose_installed.returncode != 0:
-        click.secho(
-            'Docker Compose is not installed, please install it first', fg="red"
-        )
-    if docker_running.returncode != 0:
-        click.secho('Docker is not running, please start it first', fg="red")
-
-    return (
-        docker_installed.returncode == 0
-        and docker_compose_installed.returncode == 0
-        and docker_running.returncode == 0
+    docker_checks = (
+        ("docker --version", "Docker is not installed, please install it first",),
+        (
+            "docker-compose --version",
+            "Docker Compose is not installed, please install it first",
+        ),
+        ("docker ps", "Docker is not running, please start it first",),
     )
+    for cmd, msg in docker_checks:
+        if run_on_host(cmd)[0] > 0:
+            click.secho(msg, fg="red")
+            return False
+    return True
 
 
 @click.group(cls=PalmCLI, context_settings=CONTEXT_SETTINGS)
