@@ -114,13 +114,11 @@ Developers can confidently pick up and start working with any code, anywhere in 
 Palm & The Modern Work Dynamic
 ==============================
 
-Depending on which sources you reference, tenure for a Software Developer is only 12-20 months (on average) at a given organization. 
-Regardless of why this is, the migratory nature of Software Development was one of the intial motivators for creating palm. 
-We simply became tired of doing one-off dev toolkits, every time we started a new role.
+Depending on which sources you reference, tenure for a Software Developer is only 12-20 months (on average) at any given organization. 
+Regardless of the reason for this, the migratory nature of Software Development was one of the intial motivators for creating palm. 
+We simply became tired of building one-off dev toolkits every time we started a new role.
 
-
-In a world where the cast of characters engaged with your codebase is likely 
-
+With a rapidly changing 
 Consulting
 ^^^^^^^^^^
 
