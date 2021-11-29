@@ -81,7 +81,7 @@ class PalmCLI(click.MultiCommand):
 
 def get_version():
     try:
-        version = pkg_resources.require("palmcli")[0].version
+        version = pkg_resources.require("palm")[0].version
     except pkg_resources.DistributionNotFound:
         version = 'unknown'
     return version

@@ -21,9 +21,8 @@ this_directory = Path(__file__).parent
 long_description = Path(this_directory, 'README.md').read_text()
 
 setup(
-    python_requires='>=3.6.9',
-    name='palmcli',
-    version='2.0.1',  # Don't forget to bump the version in docs/source/conf.py too!
+    name='palm',
+    version='2.1.0',  # Don't forget to bump the version in docs/source/conf.py too!
     description='Palm CLI',
     long_description=long_description,
     long_description_content_type='text/markdown',

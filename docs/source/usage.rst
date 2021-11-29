@@ -45,7 +45,7 @@ Installation
 
 Install Palm CLI via pip:
 
-``pip install palmcli``
+``pip install palm``
 
 For development installations, you may also install palm from source by cloning
 the codebase and running ``python3 -m pip install .``

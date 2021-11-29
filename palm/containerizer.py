@@ -3,6 +3,7 @@ from typing import Dict, Optional
 from pathlib import Path
 import re
 import click
+import sys
 from palm.palm_exceptions import AbortPalm
 import palm.project_setup_utils as psu
 
@@ -30,6 +31,10 @@ class Containerizer(ABC):
 
     @abstractmethod
     def run(self) -> None:
+        """Entrypoint for containerization
+
+        Must call check_setup() and generate()
+        """
         pass
 
     def generate(self, target_dir: Path, replacements: Dict) -> None:
@@ -79,16 +84,6 @@ class Containerizer(ABC):
         """
         return psu.has_env()
 
-    @abstractmethod
-    def package_manager(self) -> str:
-        """Check for the package manager used by the project
-        this will be used to determine the correct logic in entrypoint.sh
-
-        Returns:
-            str: Name of package manager
-        """
-        pass
-
 
 class PythonContainerizer(Containerizer):
     """Containerizer for Python projects"""
@@ -106,40 +101,45 @@ class PythonContainerizer(Containerizer):
         self.project_name = ctx.obj.palm.image_name
         self.template_dir = template_dir
         self.python_version = python_version
+        self.package_manager = ''
 
     def run(self) -> None:
         """Run the containerizer"""
+        self.check_setup()
+        self.package_manager = self.detect_package_manager()
+
+        super().generate(self.target_dir, self.replacements)
+
+    @property
+    def replacements(self) -> Dict:
+        """Dict of replacements to be made in template files"""
+        return {
+            "project_name": self.project_name,
+            "package_manager": self.package_manager,
+            "python_version": self.python_version,
+        }
+
+    @property
+    def target_dir(self) -> Path:
+        """Get the target directory for containerization
+
+        Returns:
+            Path: Path to the target directory
+        """
+        return Path.cwd()
+
+    def check_setup(self) -> None:
         if not self.validate_python_version():
             click.secho(f"Invalid python version: {self.python_version}", fg="red")
             return
 
         try:
-            self.validate_python_version()
             super().check_setup()
         except AbortPalm as e:
             click.secho(str(e), fg="red")
             return
 
-        package_manager = self.package_manager()
-
-        if package_manager == "unknown":
-            try:
-                self.optionally_add_requirements_txt()
-            except AbortPalm:
-                click.secho("Aborting containerization", fg="red")
-                return
-            package_manager = "pip3"
-
-        target_dir = Path.cwd()
-        replacements = {
-            "project_name": self.project_name,
-            "package_manager": package_manager,
-            "python_version": self.python_version,
-        }
-
-        super().generate(target_dir, replacements)
-
-    def package_manager(self) -> str:
+    def detect_package_manager(self) -> str:
         """Determine which package manager is in use,
         supports pip3 and poetry, returns "unknown" if neither are found
 
@@ -150,8 +150,13 @@ class PythonContainerizer(Containerizer):
             return "pip3"
         if self.has_poetry():
             return "poetry"
-
-        return "unknown"
+        # Unknown package manager, prompt to setup requirements.txt
+        try:
+            self.optionally_add_requirements_txt()
+        except AbortPalm:
+            click.secho("Aborting containerization", fg="red")
+            sys.exit(1)
+        return "pip3"
 
     def has_requirements_txt(self) -> bool:
         """Check for a requirements.txt file in the project root"""

@@ -1,5 +1,12 @@
 # Palm CLI Changelog
 
+## 2.0.2
+
+> 11/22/2021
+
+We acquired the name `palm` in pypi! This patch version is just renaming the library
+and updating installation instructions.
+
 ## 2.0.1
 
 > 11/10/2021
