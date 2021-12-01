@@ -16,9 +16,7 @@ def cmd_name_from_file(filename: str) -> str:
 
 
 def run_on_host(
-    cmd: str,
-    check: Optional[bool] = False,
-    capture_output: Optional[bool] = False,
+    cmd: str, check: Optional[bool] = False, capture_output: Optional[bool] = False,
 ) -> Tuple[int, str, str]:
     """A simplifed, platform-and-version agnostic interface
         for subprocess.

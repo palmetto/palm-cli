@@ -5,6 +5,5 @@ from palm.plugins.base import BasePlugin
 # It is not intended to be used in production.
 
 TestInternalPlugin = BasePlugin(
-    name='test_internal',
-    command_dir=Path(__file__).parent / 'commands',
+    name='test_internal', command_dir=Path(__file__).parent / 'commands',
 )

@@ -19,6 +19,7 @@ def test_run_on_host_happy_path():
     assert out == "hello world!\n"
     assert err == ''
 
+
 def test_run_on_host_without_capture():
     cmd = "echo 'hello world!'"
     success, out, err = run_on_host(cmd, capture_output=False)
