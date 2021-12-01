@@ -1,10 +1,38 @@
 from typing import Optional
+from pathlib import Path
 import click
 
 
 @click.group(help="Palm plugin utilities")
 def cli():
     pass
+
+@cli.command()
+@click.option("--name", multiple=False, required=True, help="Name of the plugin")
+@click.pass_context
+def new(ctx, name: str):
+    """
+    Generate a new plugin
+    """
+    default_target_dir = Path(Path.cwd().parent, name)
+    target_dir = click.prompt("Where do you want to create the plugin?", default=default_target_dir)
+    if not target_dir.exists():
+        click.secho("Target directory does not exist", fg="yellow")
+        create_target_dir = click.confirm("Do you want to create the target directory?", default=True)
+        if not create_target_dir:
+            click.secho("Aborting", fg="red")
+            return
+        target_dir.mkdir(parents=True)
+
+    template_path = Path(Path(__file__).parents[1], "templates") / 'plugin'
+    replacements = {
+        'plugin_name': name,
+        'plugin_class_name': f"{name.title().replace('_', '')}Plugin",
+    }
+
+    ctx.obj.generate(template_path, target_dir, replacements)
+    click.secho(f'{name} plugin created in {target_dir}', fg='green')
+    
 
 
 @cli.command()
