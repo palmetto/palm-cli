@@ -14,6 +14,9 @@ def new(ctx, name: str):
     """
     Generate a new plugin
     """
+    # TODO: Currently, this generator has to be run from withing an existing project
+    # This isn't ideal, but it works. In the future I'd like to move this command 
+    # out of the core plugin and into a separate system-wide plugin.
     default_target_dir = Path(Path.cwd().parent, name)
     target_dir = click.prompt("Where do you want to create the plugin?", default=default_target_dir)
     if not target_dir.exists():
