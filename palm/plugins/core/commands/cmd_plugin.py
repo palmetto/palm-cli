@@ -7,6 +7,7 @@ import click
 def cli():
     pass
 
+
 @cli.command()
 @click.option("--name", multiple=False, required=True, help="Name of the plugin")
 @click.pass_context
@@ -15,13 +16,17 @@ def new(ctx, name: str):
     Generate a new plugin
     """
     # TODO: Currently, this generator has to be run from withing an existing project
-    # This isn't ideal, but it works. In the future I'd like to move this command 
+    # This isn't ideal, but it works. In the future I'd like to move this command
     # out of the core plugin and into a separate system-wide plugin.
     default_target_dir = Path(Path.cwd().parent, name)
-    target_dir = click.prompt("Where do you want to create the plugin?", default=default_target_dir)
+    target_dir = click.prompt(
+        "Where do you want to create the plugin?", default=default_target_dir
+    )
     if not target_dir.exists():
         click.secho("Target directory does not exist", fg="yellow")
-        create_target_dir = click.confirm("Do you want to create the target directory?", default=True)
+        create_target_dir = click.confirm(
+            "Do you want to create the target directory?", default=True
+        )
         if not create_target_dir:
             click.secho("Aborting", fg="red")
             return
@@ -35,7 +40,6 @@ def new(ctx, name: str):
 
     ctx.obj.generate(template_path, target_dir, replacements)
     click.secho(f'{name} plugin created in {target_dir}', fg='green')
-    
 
 
 @cli.command()
