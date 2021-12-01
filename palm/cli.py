@@ -90,21 +90,15 @@ def get_version():
 def required_dependencies_ready():
 
     docker_checks = (
-        (
-            "docker --version",
-            "Docker is not installed, please install it first",
-        ),
+        ("docker --version", "Docker is not installed, please install it first",),
         (
             "docker-compose --version",
             "Docker Compose is not installed, please install it first",
         ),
-        (
-            "docker ps",
-            "Docker is not running, please start it first",
-        ),
+        ("docker ps", "Docker is not running, please start it first",),
     )
     for cmd, msg in docker_checks:
-        if run_on_host(cmd)[0] > 0:
+        if run_on_host(cmd, capture_output=True)[0] > 0:
             click.secho(msg, fg="red")
             return False
     return True

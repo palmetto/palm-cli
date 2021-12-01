@@ -8,7 +8,7 @@ __pycache__
 .tox
 .env
 .venv
-DS_Store
+.DS_Store
 
 docs/_build
 
