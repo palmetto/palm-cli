@@ -1,10 +1,10 @@
-name: "PULL REQUEST"
+name: "Pull Request"
 
 on:
   pull_request:
     branches:
       - main
-      - feature/v2.0
+      - develop
 
 jobs:
   test:
@@ -21,3 +21,11 @@ jobs:
           pip install -r dev-requirements.txt
       - name: Run tests with pytest
         run: pytest
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: psf/black@stable
+        with:
+          options: '--check --diff --skip-string-normalization --exclude="\.tpl\.py"'
