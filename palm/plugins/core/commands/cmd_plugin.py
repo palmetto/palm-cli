@@ -10,11 +10,19 @@ def cli():
 
 @cli.command()
 @click.option("--name", multiple=False, required=True, help="Name of the plugin")
+@click.option("--author", multiple=False, help="Name of the plugin author")
+@click.option("--author-email", multiple=False, help="Email address of the plugin author")
 @click.pass_context
-def new(ctx, name: str):
+def new(ctx, name: str, author: Optional[str], author_email: Optional[str]):
     """
     Generate a new plugin
     """
+    if not author:
+        author = click.prompt("What is the author name")
+
+    if not author_email:
+        author_email = click.prompt("What is the email address for the author?")
+
     # TODO: Currently, this generator has to be run from withing an existing project
     # This isn't ideal, but it works. In the future I'd like to move this command
     # out of the core plugin and into a separate system-wide plugin.
@@ -36,6 +44,8 @@ def new(ctx, name: str):
     replacements = {
         'plugin_name': name,
         'plugin_class_name': f"{name.title().replace('_', '')}Plugin",
+        'author': author,
+        'author_email': author_email,
     }
 
     ctx.obj.generate(template_path, target_dir, replacements)
