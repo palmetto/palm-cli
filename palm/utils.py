@@ -31,6 +31,7 @@ def run_on_host(
         Args:
             cmd: the command to run.
             bubble_error: if True raise a `CalledProcessError<https://docs.python.org/3.6/library/subprocess.html#subprocess.CalledProcessError>`_
+            capture_output: if True, stdout and stderr will be suppressed
         Returns:
             Tuple: status code, stdout, stderr
     """
