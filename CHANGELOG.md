@@ -1,5 +1,24 @@
 # Palm CLI Changelog
 
+## 2.1.0
+
+> 12/01/2021
+
+Our first minor release on v2 includes containerization, support for older Python versions, 
+and added logo and brand assets!
+
+Features:
+- **Containerize**: NEW command added for containerization of Python projects with `palm containerize`
+- **Shell**: NEW command to shell into the project container and execute arbitrary commands
+- **Lint**: Added `lint` command to the `palm` core plugin
+- **Test**: Added `test` command to the `palm` core plugin
+- **Exclude commands**: Added the ability to exclude/disable `palm` commands from a project's config
+- **Logo/Branding**: We have a logo!! It is 90's retro and it is cool. Also added branding guidelines
+
+Improvements:
+- **Workflow**: New Github Actions workflow to lint contributions to the project on new Pull Request
+- **Backwards compatibility**: Added backwards compatibility support for older Python versions through v3.6.9
+
 ## 2.0.2
 
 > 11/22/2021
