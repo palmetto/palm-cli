@@ -1,6 +1,5 @@
 from typing import Optional, Tuple
 import subprocess
-from subprocess import PIPE
 from sys import version_info
 
 
@@ -18,7 +17,7 @@ def cmd_name_from_file(filename: str) -> str:
 
 def run_on_host(
     cmd: str,
-    bubble_error: Optional[bool] = False,
+    check: Optional[bool] = False,
     capture_output: Optional[bool] = False,
 ) -> Tuple[int, str, str]:
     """A simplifed, platform-and-version agnostic interface
@@ -30,27 +29,26 @@ def run_on_host(
          - errors in the shell are NOT bubbled up by default
         Args:
             cmd: the command to run.
-            bubble_error: if True raise a `CalledProcessError<https://docs.python.org/3.6/library/subprocess.html#subprocess.CalledProcessError>`_
+            check: if True raise a `CalledProcessError<https://docs.python.org/3.6/library/subprocess.html#subprocess.CalledProcessError>`_
             capture_output: if True, stdout and stderr will be suppressed
         Returns:
             Tuple: status code, stdout, stderr
     """
     major, minor, patch, _, _ = version_info
-    kwargs = dict(shell=True, check=bubble_error)
+    kwargs = dict(shell=True, check=check)
     if major < 3 or minor < 5:
         raise UnsupportedVersion(f"Python version {major}.{minor} is not supported.")
     if minor < 7:
-        if not capture_output:
+        from subprocess import PIPE
+
+        if capture_output:
             kwargs.update(dict(stdout=PIPE, stderr=PIPE))
     else:
-        if capture_output:
-            kwargs.update(dict(capture_output=True))
-        else:
-            kwargs.update(dict(stdout=PIPE, stderr=PIPE))
+        kwargs.update(dict(capture_output=capture_output))
 
     completed = subprocess.run(cmd, **kwargs)
     return (
         completed.returncode,
-        None if capture_output else completed.stdout.decode("utf-8"),
-        None if capture_output else completed.stderr.decode("utf-8"),
+        completed.stdout.decode("utf-8") if completed.stdout else "",
+        completed.stderr.decode("utf-8") if completed.stderr else "",
     )

@@ -51,11 +51,11 @@ class Environment:
     def run_on_host(
         self,
         cmd: str,
-        bubble_error: Optional[bool] = False,
+        check: Optional[bool] = False,
         capture_output: Optional[bool] = False,
     ) -> Tuple[int, str, str]:
         """context wrapper for :obj:`palm.utils.run_on_host`"""
-        return run_on_host(cmd, bubble_error, capture_output)
+        return run_on_host(cmd, check, capture_output)
 
     def import_module(self, module_name: str, module_path: Path):
         """Imports a module from a path

@@ -134,7 +134,7 @@ That could look something like this:
   def cli(ctx):
       """Starts the container as daemon, watches the logs, then exits"""
       ctx.run_on_host("docker-compose run -d super_slow_starting_django_app",
-                           bubble_error=True)
+                           check=True)
         
       ## this is where we watch, pseudo-blocking
       building_logs = str()

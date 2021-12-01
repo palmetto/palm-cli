@@ -81,5 +81,5 @@ class BasePlugin:
         upgrade_cmd = f"python3 -m pip install {install_url}"
 
         for cmd in (uninstall_cmd, upgrade_cmd):
-            _, _, _ = run_on_host(cmd, bubble_error=True)
+            _, _, _ = run_on_host(cmd, check=True)
         return (True, 'Plugin upgraded successfully')
