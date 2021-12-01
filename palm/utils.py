@@ -33,6 +33,7 @@ def run_on_host(
             capture_output: if True, stdout and stderr will be suppressed
         Returns:
             Tuple: status code, stdout, stderr
+
     """
     major, minor, patch, _, _ = version_info
     kwargs = dict(shell=True, check=check)

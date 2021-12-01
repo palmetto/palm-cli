@@ -58,6 +58,8 @@ class PalmCLI(click.MultiCommand):
         dedupe = set(cmds)
         cmds = list(dedupe)
         cmds.sort()
+        project_excluded_commands = self.palm.config.get('excluded_commands', [])
+        cmds = filter(lambda x: x not in project_excluded_commands, cmds)
         return cmds
 
     def get_command(self, ctx, cmd_name: str) -> click.Command:
@@ -88,12 +90,18 @@ def get_version():
 def required_dependencies_ready():
 
     docker_checks = (
-        ("docker --version", "Docker is not installed, please install it first",),
+        (
+            "docker --version",
+            "Docker is not installed, please install it first",
+        ),
         (
             "docker-compose --version",
             "Docker Compose is not installed, please install it first",
         ),
-        ("docker ps", "Docker is not running, please start it first",),
+        (
+            "docker ps",
+            "Docker is not running, please start it first",
+        ),
     )
     for cmd, msg in docker_checks:
         if run_on_host(cmd, capture_output=True)[0] > 0:
