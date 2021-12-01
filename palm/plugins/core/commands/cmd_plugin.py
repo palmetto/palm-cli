@@ -11,7 +11,9 @@ def cli():
 @cli.command()
 @click.option("--name", multiple=False, required=True, help="Name of the plugin")
 @click.option("--author", multiple=False, help="Name of the plugin author")
-@click.option("--author-email", multiple=False, help="Email address of the plugin author")
+@click.option(
+    "--author-email", multiple=False, help="Email address of the plugin author"
+)
 @click.pass_context
 def new(ctx, name: str, author: Optional[str], author_email: Optional[str]):
     """
