@@ -18,3 +18,10 @@ def test_run_on_host_happy_path():
     assert success == 0
     assert out == "hello world!\n"
     assert err == ''
+
+def test_run_on_host_capture_output():
+    cmd = "echo 'hello world!'"
+    success, out, err = run_on_host(cmd, capture_output=True)
+    assert success == 0
+    assert out == None
+    assert err == None

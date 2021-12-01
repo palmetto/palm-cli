@@ -1,5 +1,6 @@
 from typing import Optional, Tuple
 import subprocess
+from subprocess import PIPE
 from sys import version_info
 
 
@@ -38,16 +39,17 @@ def run_on_host(
     if major < 3 or minor < 5:
         raise UnsupportedVersion(f"Python version {major}.{minor} is not supported.")
     if minor < 7:
-        from subprocess import PIPE
-
         if not capture_output:
             kwargs.update(dict(stdout=PIPE, stderr=PIPE))
     else:
-        kwargs.update(dict(capture_output=capture_output))
+        if capture_output:
+            kwargs.update(dict(capture_output=True))
+        else:
+            kwargs.update(dict(stdout=PIPE, stderr=PIPE))
 
     completed = subprocess.run(cmd, **kwargs)
     return (
         completed.returncode,
-        completed.stdout.decode("utf-8"),
-        completed.stderr.decode("utf-8"),
+        None if capture_output else completed.stdout.decode("utf-8"),
+        None if capture_output else completed.stderr.decode("utf-8"),
     )
