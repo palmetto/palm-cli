@@ -49,10 +49,13 @@ class Environment:
         click.secho(msg, fg="green" if success else "red")
 
     def run_on_host(
-        self, cmd: str, bubble_error: Optional[bool] = False
+        self,
+        cmd: str,
+        bubble_error: Optional[bool] = False,
+        run_on_host: Optional[bool] = False,
     ) -> Tuple[int, str, str]:
         """context wrapper for :obj:`palm.utils.run_on_host`"""
-        return run_on_host(cmd, bubble_error)
+        return run_on_host(cmd, bubble_error, run_on_host)
 
     def import_module(self, module_name: str, module_path: Path):
         """Imports a module from a path

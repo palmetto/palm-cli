@@ -16,7 +16,9 @@ def cmd_name_from_file(filename: str) -> str:
 
 
 def run_on_host(
-    cmd: str, bubble_error: Optional[bool] = False
+    cmd: str,
+    bubble_error: Optional[bool] = False,
+    capture_output: Optional[bool] = False,
 ) -> Tuple[int, str, str]:
     """A simplifed, platform-and-version agnostic interface
         for subprocess.
@@ -38,9 +40,11 @@ def run_on_host(
     if minor < 7:
         from subprocess import PIPE
 
-        kwargs.update(dict(stdout=PIPE, stderr=PIPE))
+        if not capture_output:
+            kwargs.update(dict(stdout=PIPE, stderr=PIPE))
     else:
-        kwargs.update(dict(capture_output=True))
+        kwargs.update(dict(capture_output=capture_output))
+
     completed = subprocess.run(cmd, **kwargs)
     return (
         completed.returncode,
