@@ -36,6 +36,19 @@ the order of overriding would be determined by the order of plugins in your proj
 ``.palm/config.yaml`` file. Finally, if you define a ``build`` command in your project,
 as a repo command, it would override all other definitions of the ``build`` command.
 
+Excluding commands from your project
+------------------------------------
+
+Sometimes, you may want to exclude commands from your project. This is done by
+adding the ``excluded_commands`` configuration to your project's ``.palm/config.yaml``.
+
+Example:
+
+.. code:: yaml
+    excluded_commands:
+      - containerize
+
+
 Command Groups
 ==============
 
