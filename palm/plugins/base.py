@@ -1,9 +1,7 @@
 import importlib
 from typing import List, Optional, Tuple
 from pathlib import Path
-from palm.utils import is_cmd_file, \
-    cmd_name_from_file, \
-    run_on_host
+from palm.utils import is_cmd_file, cmd_name_from_file, run_on_host
 
 
 class BasePlugin:
@@ -21,7 +19,7 @@ class BasePlugin:
             name (str): Name of the plugin
             command_dir (Path): Path to the directory containing commands
             version (Optional[str], optional): Plugin version. Defaults to "unknown".
-            package_location (Optional[str], optional): Either pypi package name 
+            package_location (Optional[str], optional): Either pypi package name
                 or github https URL. Used for installation Defaults to None.
         """
         self.name = name
