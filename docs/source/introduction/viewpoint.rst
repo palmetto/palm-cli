@@ -73,7 +73,7 @@ Most seasoned Engineers would cringe if they came across a function like this:
       // awful code goes here 
    }
 
-And yet, the first instinct when engineering a development environments is 
+And yet, the first instinct when engineering a development environment is 
 often to generate reams of stagnant documentation! 
 For example, let’s say a team of Developers randomly suffer from this error: 
 
@@ -96,7 +96,7 @@ Convention is to add this find to the project Readme.md, like this:
    your docker environment may be out of memory. Start by running `docker rm -f $(docker ps -qa)` … 
 
 But what if, instead of writing docs - docs the Developers will likely forget to check, 
-with steps that will need to methodically replicated, 
+with steps that will need to methodically replicated -  
 what if the fix was automated? Enter palm. 
 
 .. code:: python
@@ -106,11 +106,11 @@ what if the fix was automated? Enter palm.
    def cmd_up(ctx):
        “”” starts the compose stack”””
        echo(“starting docker stack…”)
-       exit_code, out, err = ctx.docker_up()
+       exit_code, out, err = ctx.docker_up(capture_output=True)
        cryptic_message_indicating_no_memory = “ERROR: unable to read file app/conf: file does not exist or access denied”
        if cryptic_message_indicating_no_memory in err:
            red_echo(“docker may be out of memory, cleaning up first…”)
-           ctx.docker_clean()
+           ctx.docker_full_clean()
            ctx.docker_up(bubble_error=True)
            green_echo(“docker stack started.”)       
 	

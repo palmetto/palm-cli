@@ -111,25 +111,26 @@ When an organization adopts palm, moving from one codebase to another becomes fl
 Developers can confidently pick up and start working with any code, anywhere in the organization - including code they have never seen before. 
 
 
+
 Palm & The Modern Work Dynamic
 ==============================
 
-Depending on which sources you reference, tenure for a Software Developer is only 12-20 months (on average) at any given organization. 
-Regardless of the reason for this, the migratory nature of Software Development was one of the intial motivators for creating palm. 
-We simply became tired of building one-off dev toolkits every time we started a new role.
-
-With a rapidly changing 
 Consulting
 ^^^^^^^^^^
+*Coming Soon!*
 
 Offshoring & Nearshoring
 ^^^^^^^^^^^^^^^^^^^^^^^^
+*Coming Soon!*
 
 Gig Work - For the Organization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*Coming Soon!*
 
 Gig Work - For the Gig Worker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*Coming Soon!*
 
 Open Source Software
 ^^^^^^^^^^^^^^^^^^^^
+*Coming Soon!*
