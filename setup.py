@@ -22,7 +22,7 @@ long_description = Path(this_directory, 'README.md').read_text()
 
 setup(
     name='palm',
-    version='2.0.2',  # Don't forget to bump the version in docs/source/conf.py too!
+    version='2.1.0',  # Don't forget to bump the version in docs/source/conf.py too!
     description='Palm CLI',
     long_description=long_description,
     long_description_content_type='text/markdown',

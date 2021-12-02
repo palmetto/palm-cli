@@ -1,0 +1,6 @@
+directories:
+  - "scripts"
+files:
+  - Dockerfile.txt: "Dockerfile"
+  - docker-compose.yaml: "docker-compose.yaml"
+  - entrypoint.sh.txt: "scripts/entrypoint.sh"

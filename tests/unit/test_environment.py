@@ -5,8 +5,14 @@ from palm.code_generator import CodeGenerator
 
 
 def test_run_in_docker(environment, monkeypatch):
-    monkeypatch.setattr(subprocess, 'run', lambda *args, **kwargs: True)
+    class MockCompletedProcess:
+        returncode = 0
+        stdout = b'tested'
+        stderr = b''
 
+    monkeypatch.setattr(
+        subprocess, 'run', lambda *args, **kwargs: MockCompletedProcess()
+    )
     success, msg = environment.run_in_docker('test')
     assert success is True
     assert msg == 'Success! Palm completed with exit code 0'

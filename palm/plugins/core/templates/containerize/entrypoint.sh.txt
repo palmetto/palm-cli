@@ -1,0 +1,15 @@
+#! /bin/bash -x
+# Entrypoint script for docker
+{% if package_manager == 'poetry' %}
+pip3 install poetry
+poetry config virtualenvs.create false
+poetry install
+{% endif %}
+{% if package_manager == 'pip3' %}
+pip3 install -r requirements.txt
+pip3 install pytest
+{% endif %}
+{% if package_manager == 'unknown' %}
+# Palm was unable to detect which package manager you are using.
+# You will need to update this entrypoint script before your container can run
+{% endif %}

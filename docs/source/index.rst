@@ -4,6 +4,11 @@ Palm CLI Documentation
 
 **Palm** — the extensible CLI at your fingertips!
 
+**Check Out Some** :doc:`Example Use Cases <introduction/examples>`
+
+**Understanding The Palm Viewpoint:** :doc:`Why do my CLIs need a CLI?<introduction/viewpoint>`
+
+
 What is Palm?
 =============
 
@@ -15,6 +20,7 @@ What is Palm?
 - A tool for building and managing your own CLI commands.
 - Built with python and click
 
+
 Contents
 --------
 
@@ -25,7 +31,9 @@ Contents
    commands
    code-generation
    plugins
-
+   containerization
+   branding/index
+   
 Usage
 -----
 
