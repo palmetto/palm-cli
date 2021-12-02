@@ -11,7 +11,7 @@ Features:
 - **Containerize**: NEW command added for containerization of Python projects with `palm containerize`
 - **Shell**: NEW command to shell into the project container and execute arbitrary commands
 - **Plugin generator**: NEW command to generate the boilerplate code for writing a new plugin
-- **Exclude commands**: Added the ability to exclude/disable `palm` commands from a project's config
+- **Excluded commands**: Added the ability to exclude/disable `palm` commands from a project's config
 - **run_on_host**: Added a new function, `ctx.obj.run_on_host`, to assist with developing new commands 
 to run on your local machine, standardizing the interface around Python's `subprocess` with platform
 and version agnostic support (well, version agnostic >= 3.6.9).
