@@ -2,7 +2,7 @@
 Wait. Why Do My CLIs need a CLI?
 ================================
 
-For a seasoned Engineer, the idea of wrapping public software interfaces in an abstraction layer will probably set off some warning bells. Admittedly, at first glace palm can appear to add unnecessary complexity and “magic” to an already polished API. For example, bringing up a docker-compose service stack:
+For a seasoned Engineer, the idea of wrapping public software interfaces in an abstraction layer will probably set off some warning bells. Admittedly, at first glance palm can appear to add unnecessary complexity and “magic” to an already polished API. For example, bringing up a docker-compose service stack:
 
 .. code:: bash
     
@@ -49,7 +49,7 @@ In this case the stack is down and the needed port is allocated by an orphan con
    Starting compose… Started.
    Running 84 tests via pytest…
 
-Suddenly, palm starts to make a lot of sense. The abstraction layer that palm provides allows you to architect simplicity and consistency into your development environments, across languages, frameworks, and infrastructure designs. You decide what each command does, designing the workflow interface for each repo. A simple, single-container Jekyll app, and complex, multi-cloud microservices ecosystem, implemented by different teams with completely different skills, can share a common interface. 
+Suddenly, palm starts to make a lot of sense. The abstraction layer that palm provides allows you to architect simplicity and consistency into your development environments across languages, frameworks, and infrastructure designs. You decide what each command does, designing the workflow interface for each repo. A simple single-container Jekyll app, and a complex multi-cloud microservices ecosystem, each implemented by different teams with completely different skills, can share a common interface. 
 
 Palm Is Working Software
 ====================
@@ -96,7 +96,7 @@ Convention is to add this find to the project Readme.md, like this:
    your docker environment may be out of memory. Start by running `docker rm -f $(docker ps -qa)` … 
 
 But what if, instead of writing docs - docs the Developers will likely forget to check, 
-with steps that will need to methodically replicated -  
+with steps that will need to be methodically replicated -  
 what if the fix was automated? Enter palm. 
 
 .. code:: python
@@ -105,14 +105,14 @@ what if the fix was automated? Enter palm.
 
    def cmd_up(ctx):
        “”” starts the compose stack”””
-       echo(“starting docker stack…”)
+       echo(“Starting docker stack…”)
        exit_code, out, err = ctx.docker_up(capture_output=True)
        cryptic_message_indicating_no_memory = “ERROR: unable to read file app/conf: file does not exist or access denied”
        if cryptic_message_indicating_no_memory in err:
-           red_echo(“docker may be out of memory, cleaning up first…”)
+           red_echo(“Docker may be out of memory, cleaning up first…”)
            ctx.docker_full_clean()
            ctx.docker_up(bubble_error=True)
-           green_echo(“docker stack started.”)       
+           green_echo(“Docker stack started.”)       
 	
 Now and forever, your developers will see this when they run out of memory:
 
@@ -120,8 +120,8 @@ Now and forever, your developers will see this when they run out of memory:
 
    $ palm up 
    Starting docker stack…
-   docker may be out of memory, cleaning up first...
-   docker stack started.
+   Docker may be out of memory, cleaning up first...
+   Docker stack started.
 
 Of course this solution is very basic. In a real implementation we might want to 
 check that the file exists and has the correct permissions, prompt the developer before nuking the docker environment etc. 
