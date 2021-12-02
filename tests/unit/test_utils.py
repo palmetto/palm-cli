@@ -14,7 +14,7 @@ def test_cmd_name_from_file():
 
 def test_run_on_host_happy_path():
     cmd = "echo 'hello world!'"
-    success, out, err = run_on_host(cmd)
+    success, out, err = run_on_host(cmd, capture_output=True)
     assert success == 0
     assert out == "hello world!\n"
     assert err == ''
