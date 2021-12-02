@@ -14,7 +14,7 @@ Features:
 - **Exclude commands**: Added the ability to exclude/disable `palm` commands from a project's config
 - **run_on_host**: Added a new function, `ctx.obj.run_on_host`, to assist with developing new commands 
 to run on your local machine, standardizing the interface around Python's `subprocess` with platform
-and version agnostic support (well, version agnostic as long as its at least 3.6.9).
+and version agnostic support (well, version agnostic >= 3.6.9).
 - **Logo/Branding**: We have a logo!! It is 90's retro and it is cool. Also added branding guidelines
 
 Improvements:
