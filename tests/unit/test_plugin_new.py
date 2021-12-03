@@ -4,6 +4,7 @@ from pathlib import Path
 path_suffix = "palm/plugins/core/templates/plugin/"
 plugin_dir = Path.cwd() / path_suffix
 
+
 def test_defined_template_files_exist():
     """Simple but a place bugs hide"""
     plugin_conf = yaml.safe_load((plugin_dir / "template-config.yaml").read_text())
