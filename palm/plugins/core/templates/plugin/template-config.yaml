@@ -8,4 +8,4 @@ files:
     - plugin_template.tpl.py: 'palm/plugins/{{plugin_name}}/{{plugin_name}}_plugin.py'
     - empty_file.py: 'palm/plugins/{{plugin_name}}/commands/__init__.py'
     - empty_file.py: 'README.md'
-    - setup.py: 'setup.py'
+    - setup.tpl.py: 'setup.py'
