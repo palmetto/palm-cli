@@ -1,6 +1,7 @@
 import yaml
 from pathlib import Path
 
+
 def test_defined_template_files_exist():
     """Simple but a place bugs hide"""
 
