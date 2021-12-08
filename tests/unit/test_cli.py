@@ -90,7 +90,7 @@ def test_scaffold_new_command_group(use_palm_dir):
     target_path = Path('.palm', 'cmd_groupname.py')
     assert target_path.exists()
     assert "@click.group()" in target_path.read_text()
-    assert "def test(ctx):" in target_path.read_text()
+    assert "def test(environment):" in target_path.read_text()
 
 
 def test_scaffold_config(use_palm_dir):
