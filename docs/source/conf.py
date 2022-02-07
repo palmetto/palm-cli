@@ -22,7 +22,7 @@ copyright = '2021, Palmetto Data Team'
 author = 'Palmetto Data Team'
 
 # The full version, including alpha/beta/rc tags
-release = '2.1.0'
+release = '2.1.1'
 
 
 # -- General configuration ---------------------------------------------------
