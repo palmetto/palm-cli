@@ -1,5 +1,18 @@
 # Palm CLI Changelog
 
+## 2.1.1
+
+> 7/2/2022
+
+### Bug fixes
+* Resolve a template issue when running `palm plugin new` 
+
+### Improvements
+* Command templates now use click's @pass_obj decorator and pass the `environment`
+argument, this is a cleaner API for interacting with the Palm.Environment class
+* CI now runs against multiple python versions
+* Black version is pinned for consistency between local & CI runs
+
 ## 2.1.0
 
 > 12/01/2021
