@@ -32,6 +32,7 @@ def new(ctx, name: str, author: Optional[str], author_email: Optional[str]):
     target_dir = click.prompt(
         "Where do you want to create the plugin?", default=default_target_dir
     )
+    target_dir = Path(target_dir)
     if not target_dir.exists():
         click.secho("Target directory does not exist", fg="yellow")
         create_target_dir = click.confirm(
