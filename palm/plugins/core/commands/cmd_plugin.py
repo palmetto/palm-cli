@@ -25,13 +25,17 @@ def new(ctx, name: str, author: Optional[str], author_email: Optional[str]):
     if not author_email:
         author_email = click.prompt("What is the email address for the author?")
 
+    if name.startswith("palm-"):
+        name = name[5:]
+
     # TODO: Currently, this generator has to be run from withing an existing project
     # This isn't ideal, but it works. In the future I'd like to move this command
     # out of the core plugin and into a separate system-wide plugin.
-    default_target_dir = Path(Path.cwd().parent, name)
+    default_target_dir = Path(Path.cwd().parent, f'palm-{name}')
     target_dir = click.prompt(
         "Where do you want to create the plugin?", default=default_target_dir
     )
+    target_dir = Path(target_dir)
     if not target_dir.exists():
         click.secho("Target directory does not exist", fg="yellow")
         create_target_dir = click.confirm(
