@@ -7,6 +7,7 @@ import yaml
 
 from .utils import merge_dicts
 
+
 class PalmConfig:
     """Palm config class
     Reads the .palm/config.yaml from the current project

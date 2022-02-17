@@ -1,5 +1,6 @@
 import pytest
 import yaml
+
 # Test defaults - no configuration provided in no_palm_config fixture
 
 
@@ -34,7 +35,9 @@ def test_raises_on_protected_branches(palm_config_protected):
     with pytest.raises(SystemExit):
         palm_config_protected.validate_branch()
 
+
 # Global config
+
 
 def test_create_global_config_file(no_palm_config, tmp_path):
     config_path = tmp_path / '.palm' / 'config.yaml'
@@ -48,17 +51,18 @@ def test_create_global_config_file(no_palm_config, tmp_path):
 def test_get_global_config(no_palm_config, tmp_path):
     config_path = tmp_path / '.palm' / 'config.yaml'
     no_palm_config._create_global_config_file(config_path)
-    test_config = { 'plugins': ['foo'], 'excluded_commands': ['bar'] }
+    test_config = {'plugins': ['foo'], 'excluded_commands': ['bar']}
     config_path.write_text(yaml.dump(test_config))
 
     result = no_palm_config._get_global_config(config_path)
     assert result == test_config
 
+
 def test_get_config_merges_repo_and_global(no_palm_config, monkeypatch):
-    repo_config = { 'plugins': ['foo'], 'excluded_commands': ['bar'] }
-    global_config = { 'plugins': ['baz'], 'excluded_commands': ['qux'] }
+    repo_config = {'plugins': ['foo'], 'excluded_commands': ['bar']}
+    global_config = {'plugins': ['baz'], 'excluded_commands': ['qux']}
     monkeypatch.setattr(no_palm_config, '_get_repo_config', lambda: repo_config)
     monkeypatch.setattr(no_palm_config, '_get_global_config', lambda: global_config)
 
     result = no_palm_config._get_config()
-    assert result == { 'plugins': ['baz', 'foo'], 'excluded_commands': ['qux', 'bar'] }
+    assert result == {'plugins': ['baz', 'foo'], 'excluded_commands': ['qux', 'bar']}
