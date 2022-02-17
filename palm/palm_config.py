@@ -2,8 +2,10 @@ from pathlib import Path
 from typing import Optional, List
 from pygit2 import Repository
 from click import secho
+from deepmerge import always_merger
 import yaml
 
+from .utils import merge_dicts
 
 class PalmConfig:
     """Palm config class
@@ -25,6 +27,9 @@ class PalmConfig:
         return Repository(str(self.project_root)).head.shorthand
 
     def _get_config(self) -> object:
+        return always_merger.merge(self._get_global_config(), self._get_repo_config())
+
+    def _get_repo_config(self) -> object:
         config_path = self.project_root / '.palm' / 'config.yaml'
         if not config_path.exists():
             secho(
@@ -39,6 +44,21 @@ class PalmConfig:
 
         return yaml.safe_load(config_path.read_text())
 
+    def _get_global_config(self, global_config_path: Optional[str] = None) -> object:
+        config_path = global_config_path or Path().home() / '.palm' / 'config.yaml'
+        if not config_path.exists():
+            self._create_global_config_file(config_path)
+
+        return yaml.safe_load(config_path.read_text())
+
+    def _create_global_config_file(self, config_path) -> None:
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        default_config = {
+            'plugins': [],
+            'excluded_commands': [],
+        }
+        config_path.write_text(yaml.dump(default_config))
+
     def validate_branch(self) -> None:
         """Raises SystemExit if branch is protected."""
         if self.branch not in self.protected_branches:
@@ -46,10 +66,6 @@ class PalmConfig:
         msg = f"You are currently on protected branch {self.branch}. For your safety Palm will not run!"
         secho(msg, fg="red")
         raise SystemExit(msg)
-
-    @property
-    def has_config(self) -> bool:
-        return len(self.config.keys()) > 0
 
     @property
     def protected_branches(self) -> List[Optional[str]]:
