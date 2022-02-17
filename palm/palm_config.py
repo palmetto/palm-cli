@@ -5,8 +5,6 @@ from click import secho
 from deepmerge import always_merger
 import yaml
 
-from .utils import merge_dicts
-
 
 class PalmConfig:
     """Palm config class
