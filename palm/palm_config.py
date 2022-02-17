@@ -26,9 +26,20 @@ class PalmConfig:
         return Repository(str(self.project_root)).head.shorthand
 
     def _get_config(self) -> object:
+        """Gets both global and repo configs, merging them together.
+        
+        Returns:
+            object: dict of merged global and repo configs
+        """
         return always_merger.merge(self._get_global_config(), self._get_repo_config())
 
     def _get_repo_config(self) -> object:
+        """Gets the repo config, reading yaml and returning a dict.
+        If the config does not exist, prompt the user to create it.
+
+        Returns:
+            object: dict of repo config, or empty dict if no config
+        """
         config_path = self.project_root / '.palm' / 'config.yaml'
         if not config_path.exists():
             secho(
@@ -43,7 +54,16 @@ class PalmConfig:
 
         return yaml.safe_load(config_path.read_text())
 
-    def _get_global_config(self, global_config_path: Optional[str] = None) -> object:
+    def _get_global_config(self, global_config_path: Optional[Path] = None) -> object:
+        """Gets the global config, reading yaml and returning a dict.
+        If the config does not exist, create it.
+
+        Args:
+            global_config_path (Optional[Path], optional): Used for testing. Defaults to None.
+
+        Returns:
+            object: dict of global config
+        """
         config_path = global_config_path or Path().home() / '.palm' / 'config.yaml'
         if not config_path.exists():
             self._create_global_config_file(config_path)
@@ -51,6 +71,7 @@ class PalmConfig:
         return yaml.safe_load(config_path.read_text())
 
     def _create_global_config_file(self, config_path) -> None:
+        """Creates the global config file."""
         config_path.parent.mkdir(parents=True, exist_ok=True)
         default_config = {
             'plugins': [],
