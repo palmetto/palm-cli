@@ -27,7 +27,7 @@ class PalmConfig:
 
     def _get_config(self) -> object:
         """Gets both global and repo configs, merging them together.
-        
+
         Returns:
             object: dict of merged global and repo configs
         """
