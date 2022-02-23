@@ -37,7 +37,7 @@ setup(
     palm=palm.cli:cli
   ''',
     license='Apache License 2.0',
-    install_requires=Path("palm/requirements.txt").read_text().splitlines(),
+    install_requires=Path("requirements.txt").read_text().splitlines(),
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
