@@ -4,6 +4,9 @@
 
 > 24/2/2022
 
+Python Version Support"
+- **Dropped support for python3.6** Python 3.6 is end of life and supporting it started to cause issues with dependent packages. We are dropping support for python 3.6 in palm v2.2.0
+
 Features:
 - **Global config & Global plugins** Palm now supports installing plugins globally!
 After updating to palm 2.2.0, the first time you run `palm ...` a new global config
