@@ -44,6 +44,23 @@ Example plugin configuration
   plugins:
     - dbt
 
+Configuring Global Plugins
+==========================
+
+You can also configure plugins that are not specific to a project. This is
+done by adding the name of the plugin to the ``~/.palm/config.yaml`` file in
+the user's home directory. This global configuration file will be created the 
+first time palm is run.
+
+Example global plugin configuration
+
+.. code:: yaml
+
+  plugins:
+    - workflow
+    - git
+
+
 Using plugin commands
 =====================
 
