@@ -5,7 +5,6 @@ from pathlib import Path
 import yaml
 import pygit2
 import shutil
-import tarfile
 from palm.plugins.base import BasePlugin
 from palm.plugin_manager import PluginManager
 from palm.environment import Environment
@@ -72,11 +71,7 @@ def mock_repository(tmp_path):
         def __enter__(self):
             path = Path(__file__).parent / 'data' / self.name
             temp_repo_path = Path(self.tmp_path) / path.stem
-            if path.suffix == '.tar':
-                tar = tarfile.open(path)
-                tar.extractall(self.tmp_path)
-                tar.close()
-            elif path.suffix == '.git':
+            if path.suffix == '.git':
                 shutil.copytree(path, temp_repo_path)
             else:
                 raise ValueError(f'Unexpected {path.suffix} extension')
