@@ -62,6 +62,7 @@ def plugin_manager(tmp_path):
 def mock_current_branch(self):
     return 'test'
 
+
 def mock_repository(tmp_path):
     class TemporaryRepository:
         def __init__(self, name, tmp_path):
@@ -80,7 +81,7 @@ def mock_repository(tmp_path):
 
         def __exit__(self, exc_type, exc_value, traceback):
             pass
-        
+
     with TemporaryRepository('testrepo.git', tmp_path) as path:
         yield pygit2.Repository(path)
 
