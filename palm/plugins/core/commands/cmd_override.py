@@ -2,6 +2,7 @@ import click
 import shutil
 from pathlib import Path
 
+
 @click.command('override')
 @click.option('--name', multiple=False, required=True, help='Name of the command')
 @click.pass_obj
@@ -17,8 +18,11 @@ def cli(environment, name: str):
         return
 
     if not target_path.parent.exists():
-        click.secho("palm is not initialized in this project, please run 'palm init' first", fg='red')
+        click.secho(
+            "palm is not initialized in this project, please run 'palm init' first",
+            fg='red',
+        )
         return
-    
+
     shutil.copy(origin_path, target_path)
     click.secho(f"{name} command overridden to {target_path}", fg='green')
