@@ -3,6 +3,9 @@ import pytest
 from unittest import mock
 from pathlib import Path
 import yaml
+import pygit2
+import shutil
+import tarfile
 from palm.plugins.base import BasePlugin
 from palm.plugin_manager import PluginManager
 from palm.environment import Environment
@@ -60,6 +63,32 @@ def plugin_manager(tmp_path):
 def mock_current_branch(self):
     return 'test'
 
+def mock_repository(tmp_path):
+    class TemporaryRepository:
+        def __init__(self, name, tmp_path):
+            self.name = name
+            self.tmp_path = tmp_path
+
+        def __enter__(self):
+            path = Path(__file__).parent / 'data' / self.name
+            temp_repo_path = Path(self.tmp_path) / path.stem
+            if path.suffix == '.tar':
+                tar = tarfile.open(path)
+                tar.extractall(self.tmp_path)
+                tar.close()
+            elif path.suffix == '.git':
+                shutil.copytree(path, temp_repo_path)
+            else:
+                raise ValueError(f'Unexpected {path.suffix} extension')
+
+            return temp_repo_path
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            pass
+        
+    with TemporaryRepository('testrepo.git', tmp_path) as path:
+        yield pygit2.Repository(path)
+
 
 def write_config_to_path(path, config):
     path.parent.mkdir(parents=True)
@@ -70,6 +99,7 @@ def write_config_to_path(path, config):
 # TODO: parametrize the palm_config fixture for different configs
 @pytest.fixture
 def no_palm_config(tmp_path, monkeypatch):
+    monkeypatch.setattr(PalmConfig, '_get_repo', mock_repository)
     monkeypatch.setattr(PalmConfig, '_get_current_branch', mock_current_branch)
 
     return PalmConfig(Path(tmp_path))
@@ -84,6 +114,7 @@ def palm_config(tmp_path, monkeypatch):
         'protected_branches': ['main'],
     }
     write_config_to_path(palm_config_path, mock_config)
+    monkeypatch.setattr(PalmConfig, '_get_repo', mock_repository)
     monkeypatch.setattr(PalmConfig, '_get_current_branch', mock_current_branch)
     return PalmConfig(Path(tmp_path))
 
@@ -97,12 +128,14 @@ def palm_config_protected(tmp_path, monkeypatch):
     def mock_current_branch(self):
         return 'main'
 
+    monkeypatch.setattr(PalmConfig, '_get_repo', mock_repository)
     monkeypatch.setattr(PalmConfig, '_get_current_branch', mock_current_branch)
     return PalmConfig(Path(tmp_path))
 
 
 @pytest.fixture
 def environment(tmp_path, monkeypatch):
+    monkeypatch.setattr(PalmConfig, '_get_repo', mock_repository)
     monkeypatch.setattr(PalmConfig, '_get_current_branch', mock_current_branch)
     pm = mock_plugin_manager(tmp_path)
     config = PalmConfig(Path(tmp_path))
