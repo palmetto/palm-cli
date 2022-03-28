@@ -82,7 +82,7 @@ class CodeGenerator:
             config_data = yaml.safe_load(
                 (self.template_path / "template-config.yaml").read_text()
             )
-        except FileExistsError:
+        except FileNotFoundError:
             print(f"No template-config.yaml found in {self.template_path}")
         except:
             raise Exception("Error reading template-config.yaml")

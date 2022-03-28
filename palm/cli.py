@@ -95,7 +95,7 @@ def required_dependencies_ready():
             "Docker is not installed, please install it first",
         ),
         (
-            "docker-compose --version",
+            "which docker-compose || where docker-compose",
             "Docker Compose is not installed, please install it first",
         ),
         (

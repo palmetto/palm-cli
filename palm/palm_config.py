@@ -20,10 +20,19 @@ class PalmConfig:
     def __init__(self, project_path: Optional["Path"] = Path.cwd()):
         self.project_root = project_path
         self.config = self._get_config()
+        self.repo = self._get_repo()
         self.branch = self._get_current_branch()
 
+    def _get_repo(self) -> Repository:
+        """Gets the repo object.
+
+        Returns:
+            Repository: repo object
+        """
+        return Repository(str(self.project_root))
+
     def _get_current_branch(self) -> str:
-        return Repository(str(self.project_root)).head.shorthand
+        return self.repo.head.shorthand
 
     def _get_config(self) -> object:
         """Gets both global and repo configs, merging them together.
