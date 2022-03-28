@@ -1,5 +1,29 @@
 # Palm CLI Changelog
 
+## 2.2.0
+
+> 24/2/2022
+
+Python Version Support"
+- **Dropped support for python3.6** Python 3.6 is end of life and supporting it started to cause issues with dependent packages. We are dropping support for python 3.6 in palm v2.2.0
+
+Features:
+- **Global config & Global plugins** Palm now supports installing plugins globally!
+After updating to palm 2.2.0, the first time you run `palm ...` a new global config
+will be created at `~/.palm/config.yaml`, you can add plugins to this config to
+make them available to all of your repositories! This feature was developed to 
+support a Palmetto internal `palm-workflow` plugin, which is used to manage our
+dev workflow in Trello.
+
+Bug Fixes:
+- **pygit2 version pin adjusted**: The upper version pin on pygit2 was removed to resolve an error
+installing palm on newer versions of MacOS. Note that libgit2 is still required, 
+per the requirements of pygit2. A future version will introduce checking for libgit2
+and more friendly error messaging.
+- **Upgraded jinja**: We were previously using an unsupported version of Jinja which was using
+a deprecated method in markupsafe, markupsafe removed that method which caused an error when
+installing palm. We upgraded to the latest version of jinja to resolve this issue and get the latest jinja features.
+
 ## 2.1.1
 
 > 7/2/2022
