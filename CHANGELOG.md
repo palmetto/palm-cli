@@ -1,10 +1,23 @@
 # Palm CLI Changelog
 
+## 2.3.0
+
+> 28/3/2022
+
+
+Features:
+- **Override command** The new `palm override` command makes it easy to change the functionality of core or plugin commands in your project.
+- **git repo added to palm config** Developers can now access the pygit2 Repository via the context.obj.palm.config - this can be helpful when implementing commands that use git or need data from the repo.
+
+Improvements
+- **Startup speed** changed the implementation of checking docker-compose is installed, this fixes intermittent slowdowns on startup
+- **Dependency upgrades**: Click updated to v8.1 and up, Black updated to v22.3.0
+
 ## 2.2.0
 
 > 24/2/2022
 
-Python Version Support"
+Python Version Support:
 - **Dropped support for python3.6** Python 3.6 is end of life and supporting it started to cause issues with dependent packages. We are dropping support for python 3.6 in palm v2.2.0
 
 Features:
