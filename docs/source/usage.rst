@@ -81,3 +81,27 @@ project's Palm configuration.
 - image_name: (str) the name of the docker image used to run your project
 - plugins: (list) a list of plugins used by your project, plugins must be installed!
 - protected_branches: (list) a list of github branches that palm will not run against
+
+**Global palm configuration**
+
+As of palm v2.2.0 palm also supports a global configuration file. This file is
+automatically created at ``~/.palm/config.yaml`` and contains the following options:
+
+- plugins: (list) a list of plugins used globally, plugins must be installed!
+- excluded_commands: (list) a list of palm commands that you do not want to use.
+
+Shell Completion
+================
+
+To enable autocomplete for palm commands, add one of the following shell-specific 
+lines to your shell's profile. Once added, either source your profile or start
+a new shell session.
+
+**zsh**:
+``eval "$(_PALM_COMPLETE=zsh_source palm)"``
+
+**bash**:
+``eval "$(_PALM_COMPLETE=bash_source palm)"``
+
+**fish**:
+``eval "$(_PALM_COMPLETE=fish_source palm)"``

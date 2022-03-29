@@ -34,21 +34,6 @@ To upgrade palm to the latest version, use `pip install palm -U`
 2. You will need [Python3](https://www.python.org/downloads/) 
    You can check to see if you already have it with `python3 --version`
 
-#### Adding shell autocomplete
-
-To enable autocomplete for palm commands, add one of the following shell-specific 
-lines to your shell's profile. Once added, either source your profile or start
-a new shell session.
-
-**zsh**:
-`eval "$(_PALM_COMPLETE=zsh_source palm)"`
-
-**bash**:
-`eval "$(_PALM_COMPLETE=bash_source palm)"`
-
-**fish**:
-`eval "$(_PALM_COMPLETE=fish_source palm)"`
-
 #### Developing palm
 
 **If you have the repo on your computer** 
