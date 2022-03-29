@@ -105,3 +105,8 @@ a new shell session.
 
 **fish**:
 ``eval "$(_PALM_COMPLETE=fish_source palm)"``
+
+**Adding shell completion to your commands**
+
+If you'd like to add/improve shell completion for your own commands, check out
+the click documentation for `shell-completion <https://click.palletsprojects.com/en/8.0.x/shell-completion/#custom-type-completion>`_.
