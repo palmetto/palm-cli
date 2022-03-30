@@ -16,7 +16,10 @@ class Environment:
         self.plugin_manager = plugin_manager
 
     def run_in_docker(
-        self, cmd: str, env_vars: Optional[dict] = {}, no_bin_bash: Optional[bool] = False
+        self,
+        cmd: str,
+        env_vars: Optional[dict] = {},
+        no_bin_bash: Optional[bool] = False,
     ) -> Tuple[bool, str]:
         """Shells out and runs the cmd in docker
 
