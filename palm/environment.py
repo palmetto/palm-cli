@@ -16,7 +16,7 @@ class Environment:
         self.plugin_manager = plugin_manager
 
     def run_in_docker(
-        self, cmd: str, env_vars: Optional[dict] = {}
+        self, cmd: str, env_vars: Optional[dict] = {}, no_bin_bash: Optional[bool] = False
     ) -> Tuple[bool, str]:
         """Shells out and runs the cmd in docker
 
@@ -29,7 +29,10 @@ class Environment:
         docker_cmd = ['docker-compose run --service-ports --rm']
         docker_cmd.extend(self._build_env_vars(env_vars))
         docker_cmd.append(self.palm.image_name)
-        docker_cmd.append(f'/bin/bash -c "{cmd}" ')
+        if no_bin_bash:
+            docker_cmd.append(cmd)
+        else:
+            docker_cmd.append(f'/bin/bash -c "{cmd}" ')
 
         ex_code, _, _ = run_on_host(' '.join(docker_cmd))
         if ex_code == 0:
