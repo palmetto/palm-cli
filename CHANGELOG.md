@@ -1,5 +1,21 @@
 # Palm CLI Changelog
 
+## 2.4.0
+
+> 10/4/2022
+
+Features:
+- **Run docker commands without /bin/bash** - Added optional arguments to
+environment.run_in_docker allows developers to execute commands in their docker
+containers without prepending them with /bin/bash -c. This is useful & necessary
+for images with a specific entrypoint
+
+Improvements:
+- **Added documentation** New documentation for:
+  - Global palm configuration
+  - Shell autocomplete
+  - Upgrading palm
+
 ## 2.3.0
 
 > 28/3/2022

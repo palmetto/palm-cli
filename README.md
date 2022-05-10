@@ -22,6 +22,10 @@ you can do that with this command:
 echo "\nexport PATH=$PATH:/Users/yourname/Library/Python/3.8/bin\n" >> ~/.zprofile
 ```
 
+#### Upgrading palm
+
+To upgrade palm to the latest version, use `pip install palm -U`
+
 #### Requirements
 
 1. You will need [Docker](https://docs.docker.com/get-docker/)
