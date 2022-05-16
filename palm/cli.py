@@ -87,7 +87,9 @@ class PalmCLI(click.MultiCommand):
 
                 plugin_name = self.plugin_manager.plugin_command_dict.get(cmd.name)
                 if not plugin_name:
-                    plugin_name = self.plugin_manager.plugin_command_dict.get(subcommand)
+                    plugin_name = self.plugin_manager.plugin_command_dict.get(
+                        subcommand
+                    )
 
                 if plugin_name not in subsections:
                     subsections[plugin_name] = []
