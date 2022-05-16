@@ -75,11 +75,10 @@ class PalmCLI(click.MultiCommand):
                 continue
             if cmd.hidden:
                 continue
-
             commands.append((subcommand, cmd))
 
-        # allow for 3 times the default spacing
         if len(commands):
+            # allow for 3 times the default spacing
             limit = formatter.width - 6 - max(len(cmd[0]) for cmd in commands)
 
             subsections = {}
@@ -92,11 +91,12 @@ class PalmCLI(click.MultiCommand):
 
                 if plugin_name not in subsections:
                     subsections[plugin_name] = []
+
                 subsections[plugin_name].append((subcommand, help))
 
-            for plugin_name, rows in subsections.items():
+            for plugin_name, cmds in subsections.items():
                 with formatter.section(plugin_name.title()):
-                    formatter.write_dl(rows)
+                    formatter.write_dl(cmds)
 
     def get_command(self, ctx, cmd_name: str) -> click.Command:
         try:
