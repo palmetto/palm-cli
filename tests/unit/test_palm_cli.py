@@ -41,7 +41,8 @@ def test_format_commands_properly_outputs_command_help(mock_help_formatter, monk
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
     m.assert_called()
     expected_command_dl = ('test',  'Run tests for your application (pytest)')
-    assert m.call_args.args[0][0] == expected_command_dl
+    call_args = [call.args[0] for call in m.call_args_list]
+    assert call_args[0][0] == expected_command_dl
 
 def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatch):
     PalmCLIInstance = PalmCLI()
