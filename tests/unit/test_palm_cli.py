@@ -69,7 +69,7 @@ def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatc
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
 
     assert m.call_count == 2
-    # This is dumb and gross, but properly asserting multiple call args in python 3.7 
+    # This is dumb and gross, but properly asserting multiple call args in python 3.7
     # doesn't seem to work.
     call_args = [str(call) for call in m.call_args_list]
     assert "call('Core')" in call_args
