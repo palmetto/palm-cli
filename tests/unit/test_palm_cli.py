@@ -3,15 +3,17 @@ from unittest import mock
 from click import HelpFormatter
 from palm.cli import PalmCLI
 
+
 @pytest.fixture
 def mock_help_formatter(monkeypatch):
     formatter = HelpFormatter()
     return formatter
 
-class MockCommand():
+
+class MockCommand:
     def __init__(self, name):
         self.name = name
-    
+
     @property
     def hidden(self):
         return False
@@ -31,7 +33,10 @@ def test_format_commands_adds_headings_for_plugins(mock_help_formatter, monkeypa
     # Test command exists in the core plugin
     m.assert_called_once_with('Core')
 
-def test_format_commands_properly_outputs_command_help(mock_help_formatter, monkeypatch):
+
+def test_format_commands_properly_outputs_command_help(
+    mock_help_formatter, monkeypatch
+):
     """Test command formatting"""
     PalmCLIInstance = PalmCLI()
     monkeypatch.setattr(PalmCLIInstance, 'list_commands', lambda x: ['test'])
@@ -40,15 +45,18 @@ def test_format_commands_properly_outputs_command_help(mock_help_formatter, monk
     ctx = {}
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
     m.assert_called()
-    expected_command_dl = ('test',  'Run tests for your application (pytest)')
+    expected_command_dl = ('test', 'Run tests for your application (pytest)')
     call_args = [call.args[0] for call in m.call_args_list]
     assert call_args[0][0] == expected_command_dl
 
+
 def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatch):
     PalmCLIInstance = PalmCLI()
-    
+
     monkeypatch.setattr(PalmCLIInstance, 'list_commands', lambda x: ['test', 'foo'])
-    monkeypatch.setattr(PalmCLIInstance, 'get_command', lambda ctx, cmd_name: MockCommand(cmd_name))
+    monkeypatch.setattr(
+        PalmCLIInstance, 'get_command', lambda ctx, cmd_name: MockCommand(cmd_name)
+    )
     plugin_manager = PalmCLIInstance.plugin_manager
     mock_plugin_dict = {
         'test': 'core',
