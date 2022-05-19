@@ -46,8 +46,7 @@ def test_format_commands_properly_outputs_command_help(
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
     m.assert_called()
     expected_command_dl = ('test', 'Run tests for your application (pytest)')
-    call_args = [call.args[0] for call in m.call_args_list]
-    assert call_args[0][0] == expected_command_dl
+    m.assert_called_with([expected_command_dl])
 
 
 def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatch):
@@ -70,7 +69,8 @@ def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatc
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
 
     assert m.call_count == 2
-    call_args = [call.args[0] for call in m.call_args_list]
-
-    assert 'Core' in call_args
-    assert 'Bar' in call_args
+    # This is dumb and gross, but properly asserting multiple call args in python 3.7 
+    # doesn't seem to work.
+    call_args = [str(call) for call in m.call_args_list]
+    assert "call('Core')" in call_args
+    assert "call('Bar')" in call_args
