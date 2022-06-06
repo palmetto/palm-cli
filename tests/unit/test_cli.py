@@ -11,7 +11,7 @@ def use_palm_dir():
     """Palm runner with a .palm directory"""
     runner = CliRunner()
     with runner.isolated_filesystem():
-        os.mkdir('.palm')
+        Path('.palm').mkdir()
 
         yield runner
 
