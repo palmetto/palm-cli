@@ -42,7 +42,7 @@ def cli(
         click.secho("Palm is already initialized", fg="red")
         return
 
-    os.mkdir('.palm')
+    Path('.palm').mkdir()
     open(f'{palm_target_dir}/__init__.py', 'a').close()
 
     for command in commands:
