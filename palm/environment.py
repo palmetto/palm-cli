@@ -76,7 +76,8 @@ class Environment:
             module_path (Path): Absolute Path to the module file
 
         Returns:
-            ModuleSpec: The module spec of the imported module
+            ModuleSpec: The module spec of the imported module, 
+            or None if the module was not found
         """
         try:
             spec = importlib.util.spec_from_file_location(module_name, module_path)
@@ -84,7 +85,7 @@ class Environment:
             spec.loader.exec_module(mod)
         except ImportError as error:
             click.secho(f'Import error: {error}', fg="red")
-            return
+            return None
         return mod
 
     def generate(
