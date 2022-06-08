@@ -1,4 +1,3 @@
-import pytest
 from unittest import mock
 from importlib.machinery import ModuleSpec
 from palm.plugins.base import BasePlugin

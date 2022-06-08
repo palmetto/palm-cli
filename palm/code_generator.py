@@ -1,7 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 import yaml
-import os
 
 
 class CodeGenerator:

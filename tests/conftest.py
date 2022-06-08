@@ -1,4 +1,3 @@
-from typing import Optional
 import pytest
 from unittest import mock
 from pathlib import Path
@@ -9,7 +8,6 @@ from palm.plugins.base import BasePlugin
 from palm.plugin_manager import PluginManager
 from palm.environment import Environment
 from palm.palm_config import PalmConfig
-from palm.code_generator import CodeGenerator
 import sys
 
 sys.modules['palm.plugins.mock'] = mock.Mock()
