@@ -1,6 +1,7 @@
 import importlib
 from typing import List, Optional, Tuple
 from pathlib import Path
+from urllib.parse import urlparse
 from palm.utils import is_cmd_file, cmd_name_from_file, run_on_host
 
 
@@ -71,7 +72,9 @@ class BasePlugin:
         """
         if self.package_location is None:
             return (False, 'This plugin does not support upgrading via palm')
-        if 'github.com' in self.package_location:
+
+        package_url = urlparse(self.package_location)
+        if package_url.hostname == 'github.com':
             install_url = f'git+{self.package_location}'
         else:  # This should be a pypi package name
             install_url = self.package_location
