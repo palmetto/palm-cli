@@ -1,7 +1,6 @@
 import importlib
 from typing import List
 from .plugins.base import BasePlugin as Plugin
-from importlib import import_module
 from click import secho
 
 
@@ -32,7 +31,7 @@ class PluginManager:
             Plugin: Plugin instance
         """
         try:
-            module: Plugin = import_module('.' + plugin_name, 'palm.plugins')
+            module: Plugin = importlib.import_module('.' + plugin_name, 'palm.plugins')
         except ModuleNotFoundError as e:
             if e.name == 'palm.plugins.' + plugin_name:
                 secho(f'Could not find plugin: {plugin_name}!', fg='red')

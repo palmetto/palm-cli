@@ -1,7 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 import yaml
-import os
 
 
 class CodeGenerator:
@@ -43,7 +42,7 @@ class CodeGenerator:
             )
 
             if not directory_path.is_dir():
-                os.mkdir(directory_path)
+                directory_path.mkdir(parents=True)
             else:
                 print(f"{directory_path} already exists")
 

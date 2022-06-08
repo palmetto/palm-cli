@@ -3,7 +3,6 @@ import click
 import importlib
 import os
 import pkg_resources
-from pathlib import Path
 from typing import Optional, Any, Callable, List
 
 from .environment import Environment
@@ -61,6 +60,44 @@ class PalmCLI(click.MultiCommand):
         project_excluded_commands = self.palm.config.get('excluded_commands', [])
         cmds = filter(lambda x: x not in project_excluded_commands, cmds)
         return cmds
+
+    def format_commands(self, ctx, formatter) -> None:
+        """
+        Formats the list of commands for the help page
+        Group commands by plugin
+        """
+        commands = []
+        for subcommand in self.list_commands(ctx):
+            cmd = self.get_command(ctx, subcommand)
+            # What is this, the tool lied about a command.  Ignore it
+            if cmd is None:
+                continue
+            if cmd.hidden:
+                continue
+            commands.append((subcommand, cmd))
+
+        if len(commands):
+            # allow for 3 times the default spacing
+            limit = formatter.width - 6 - max(len(cmd[0]) for cmd in commands)
+
+            subsections = {}
+            for subcommand, cmd in commands:
+                help = cmd.get_short_help_str(limit)
+
+                plugin_name = self.plugin_manager.plugin_command_dict.get(cmd.name)
+                if not plugin_name:
+                    plugin_name = self.plugin_manager.plugin_command_dict.get(
+                        subcommand
+                    )
+
+                if plugin_name not in subsections:
+                    subsections[plugin_name] = []
+
+                subsections[plugin_name].append((subcommand, help))
+
+            for plugin_name, cmds in subsections.items():
+                with formatter.section(plugin_name.title()):
+                    formatter.write_dl(cmds)
 
     def get_command(self, ctx, cmd_name: str) -> click.Command:
         try:

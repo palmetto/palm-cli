@@ -1,6 +1,5 @@
 from typing import Optional
 import click
-import os
 from pathlib import Path
 from palm.plugins.core.create_files import *
 
@@ -42,8 +41,8 @@ def cli(
         click.secho("Palm is already initialized", fg="red")
         return
 
-    os.mkdir('.palm')
-    open(f'{palm_target_dir}/__init__.py', 'a').close()
+    Path('.palm').mkdir()
+    Path('.palm/__init__.py').touch()
 
     for command in commands:
         click.echo(f'Adding template for {command}...')
