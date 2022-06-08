@@ -76,7 +76,7 @@ class Environment:
             module_path (Path): Absolute Path to the module file
 
         Returns:
-            ModuleSpec: The module spec of the imported module, 
+            ModuleSpec: The module spec of the imported module,
             or None if the module was not found
         """
         try:
