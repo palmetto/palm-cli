@@ -1,6 +1,5 @@
 from distutils.core import setup
 from pathlib import Path
-from setuptools import find_packages
 import sys
 
 # require version of setuptools that supports find_namespace_packages

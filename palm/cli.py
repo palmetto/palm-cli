@@ -3,7 +3,6 @@ import click
 import importlib
 import os
 import pkg_resources
-from pathlib import Path
 from typing import Optional, Any, Callable, List
 
 from .environment import Environment

@@ -1,8 +1,6 @@
 from pathlib import Path
 from typing import List, Optional
 import yaml
-import shutil
-import fileinput
 
 
 def create_config(
