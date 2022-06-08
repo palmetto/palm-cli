@@ -42,7 +42,7 @@ def cli(
         return
 
     Path('.palm').mkdir()
-    open(f'{palm_target_dir}/__init__.py', 'a').close()
+    Path('.palm/__init__.py').touch()
 
     for command in commands:
         click.echo(f'Adding template for {command}...')
