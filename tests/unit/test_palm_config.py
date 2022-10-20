@@ -31,9 +31,9 @@ def test_reads_protected_branches(palm_config):
     assert palm_config.protected_branches == ["main"]
 
 
-def test_raises_on_protected_branches(palm_config_protected):
-    with pytest.raises(SystemExit):
-        palm_config_protected.validate_branch()
+def test_returns_false_on_protected_branches(palm_config_protected):
+    result = palm_config_protected.is_valid_branch()
+    assert result is False
 
 
 # Global config

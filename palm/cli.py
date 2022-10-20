@@ -28,9 +28,9 @@ class PalmCLI(click.MultiCommand):
         result_callback: Optional[Callable[..., Any]] = None,
         **attrs: Any,
     ) -> None:
-        try:
-            palm_config.validate_branch()
-        except SystemExit as e:
+        if not palm_config.is_valid_branch():
+            msg = f"You are currently on protected branch {palm_config.branch}. For your safety Palm will not run!"
+            click.secho(msg, fg="red")
             sys.exit(1)
         self.palm = palm_config
         self.plugin_manager = plugin_manager_instance
