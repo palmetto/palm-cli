@@ -9,6 +9,8 @@ from deepmerge import always_merger
 from pygit2 import Repository
 
 from .palm_exceptions import NoRepositoryError
+
+
 class PalmConfig:
     """Palm config class
     Reads the .palm/config.yaml from the current project
@@ -17,6 +19,7 @@ class PalmConfig:
     Args:
         project_root: The root path object if not cwd
     """
+
     project_root: Optional["Path"]
     config: dict = {}
     repo: Optional[Repository] = None

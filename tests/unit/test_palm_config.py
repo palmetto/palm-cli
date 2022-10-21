@@ -32,6 +32,7 @@ def test_reads_protected_branches(palm_config):
 
 # Validate branches
 
+
 def test_validate_branch_returns_false_on_protected_branches(palm_config_protected):
     result = palm_config_protected.is_valid_branch()
     assert result is False
@@ -42,6 +43,7 @@ def test_validate_branch_returns_true_when_no_repo(no_repo_palm_config):
 
 
 # Global config
+
 
 def test_create_global_config_file(no_palm_config, tmp_path):
     config_path = tmp_path / ".palm" / "config.yaml"
@@ -73,6 +75,7 @@ def test_get_config_merges_repo_and_global(no_palm_config, monkeypatch):
 
 
 # Global plugins
+
 
 def test_global_plugins_are_loaded_without_repo(no_repo_palm_config, monkeypatch):
     plugins = no_repo_palm_config.plugins

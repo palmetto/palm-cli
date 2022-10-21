@@ -2,6 +2,7 @@ import click
 import sys
 from pathlib import Path
 
+
 @click.command("new")
 @click.option('--project_type', '-p', help='The type of project to create')
 @click.option('--template', '-t', help='Cookie cutter template to use')
@@ -44,6 +45,7 @@ def cli(enviornment, project_type: str, template: str, list: bool = False):
     containerize = click.confirm('Would you like to containerize this project?')
     if containerize:
         enviornment.run_on_host('palm containerize')
+
 
 def list_templates(enviornment):
     """List global cookiecutter templates"""

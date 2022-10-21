@@ -100,6 +100,7 @@ def no_palm_config(tmp_path, monkeypatch):
 
     return PalmConfig(Path(tmp_path))
 
+
 @pytest.fixture
 def no_repo_palm_config(tmp_path, monkeypatch):
     monkeypatch.setattr(PalmConfig, '_get_repo', lambda self: None)
