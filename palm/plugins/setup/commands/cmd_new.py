@@ -40,7 +40,7 @@ def cli(enviornment, global_template: str, template: str, list: bool = False):
         click.secho(f'You will need to complete set up manually', fg='red')
         sys.exit(1)
 
-    if not(Path(dir) / '.palm').exists():
+    if not (Path(dir) / '.palm').exists():
         enviornment.run_on_host('cd {dir} && palm init')
 
     containerize = click.confirm('Would you like to containerize this project?')
