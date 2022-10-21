@@ -1,4 +1,3 @@
-import pytest
 import yaml
 
 # Test defaults - no configuration provided in no_palm_config fixture
