@@ -4,7 +4,9 @@ from pathlib import Path
 
 
 @click.command("new")
-@click.option('--global-template', '-g', help='Name of a global cookecutter template to use')
+@click.option(
+    '--global-template', '-g', help='Name of a global cookecutter template to use'
+)
 @click.option('--template', '-t', help='Cookie cutter template to use')
 @click.option('--list', '-l', is_flag=True, help='List global cookiecutter templates')
 @click.pass_obj
