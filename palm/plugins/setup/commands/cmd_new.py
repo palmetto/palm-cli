@@ -10,18 +10,18 @@ from pathlib import Path
 @click.option('--template', '-t', help='Cookie cutter template to use')
 @click.option('--list', '-l', is_flag=True, help='List global cookiecutter templates')
 @click.pass_obj
-def cli(enviornment, project_type: str, template: str, list: bool = False):
+def cli(enviornment, global_template: str, template: str, list: bool = False):
     """Create a new project with cookiecutter"""
     if list:
         list_templates(enviornment)
         sys.exit(0)
 
-    if project_type:
+    if global_template:
         default_cookiecutters = enviornment.palm.config.get('default_cookiecutters', {})
-        template = default_cookiecutters.get(project_type)
+        template = default_cookiecutters.get(global_template)
 
     if not template:
-        click.secho(f'No template defined for type {project_type}', fg='red')
+        click.secho(f'No template defined for type {global_template}', fg='red')
         template = click.prompt('Please enter a cookiecutter template url')
 
     click.secho(f'Creating new {template} project', fg='green')
