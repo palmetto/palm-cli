@@ -114,8 +114,9 @@ class PalmConfig:
         """Creates the global config file."""
         config_path.parent.mkdir(parents=True, exist_ok=True)
         default_config = {
-            "plugins": [],
-            "excluded_commands": [],
+            'plugins': [],
+            'excluded_commands': [],
+            'default_cookiecutters': {},
         }
         config_path.write_text(yaml.dump(default_config))
 

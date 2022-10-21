@@ -5,18 +5,17 @@ from pathlib import Path
 @click.command("new")
 @click.option('--project_type', '-p', help='The type of project to create')
 @click.option('--template', '-t', help='Cookie cutter template to use')
+@click.option('--list', '-l', is_flag=True, help='List global cookiecutter templates')
 @click.pass_obj
-def cli(enviornment, project_type: str, template: str):
+def cli(enviornment, project_type: str, template: str, list: bool = False):
     """Create a new project with cookiecutter"""
+    if list:
+        list_templates(enviornment)
+        sys.exit(0)
+
     if project_type:
-        # Dictionary of standard project templates
-        # This should be moved to a config file!
-        cookie_cutters = {
-            'dbt': 'https://github.com/datacoves/cookiecutter-dbt',
-            'python': 'https://github.com/mariushelf/cookiecutter_python',
-            'python-package': 'https://github.com/Mgancita/cookiecutter-pypackage',
-        }
-        template = cookie_cutters.get(project_type)
+        default_cookiecutters = enviornment.palm.config.get('default_cookiecutters', {})
+        template = default_cookiecutters.get(project_type)
 
     if not template:
         click.secho(f'No template defined for type {project_type}', fg='red')
@@ -45,3 +44,10 @@ def cli(enviornment, project_type: str, template: str):
     containerize = click.confirm('Would you like to containerize this project?')
     if containerize:
         enviornment.run_on_host('palm containerize')
+
+def list_templates(enviornment):
+    """List global cookiecutter templates"""
+    default_cookiecutters = enviornment.palm.config.get('default_cookiecutters', {})
+    click.secho('Global cookiecutter templates:', fg='green')
+    for key in default_cookiecutters.keys():
+        click.echo(f'  {key}: {default_cookiecutters[key]}')

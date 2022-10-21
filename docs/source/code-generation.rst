@@ -25,7 +25,7 @@ For full documentation of the generator see ``palm/code_generator.py`` in the Pa
 CLI source code
 
 Template config
-===============
+---------------
 
 The ``template-config.yaml`` file is a fundamental piece of code generation with palm.
 It describes the directory structure we want to create, and where each of our templates
@@ -53,10 +53,39 @@ The ``replacements`` dict allows this template-config to be used to create a dir
 containing an appropriately named sql file and a yaml file.
 
 Gotchas
-=======
+-------
 
 Generating code is awesome, but there are gotchas to be aware of.
 
 1. Generating code that contains jinja is a pain, all jinja expressions must be
    provided as replacements in the template, to prevent jinja from trying to
    evaluate them during code generation.
+
+New Projects with Cookicutter
+=============================
+
+Palm includes a `palm new` command which uses `cookiecutter <https://cookiecutter.readthedocs.io/en/1.7.2/>`_
+to generate new projects. This is a great way to get started on a new project, and
+is the recommended way to start a new project.
+
+Default cookiecutter templates
+------------------------------
+
+Palm allows you to configure a set of default cookiecutter templates, which can be
+used to generate new projects. To configure a default cookiecutter template, add
+a ``default_cookiecutters`` dictionary to your global palm config file
+(``~/.pam/config.yaml``). The key is a shorthand name for the template, and the value
+is the cookiecutter template url. For example:
+
+.. code:: yaml
+
+   default_cookiecutters:
+     dbt: 'https://github.com/datacoves/cookiecutter-dbt'
+
+You can then use ``palm new -p dbt`` to generate a new dbt project using the
+cookiecutter template.
+
+**Recommendation**: Sharing a global set of default cookiecutter templates is a great
+way to standardize your organization's approach to new projects. We recommend you
+share a set of default cookiecutter templates across your organization, and
+document them in your organization's documentation system.
