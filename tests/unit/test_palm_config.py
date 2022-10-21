@@ -51,7 +51,7 @@ def test_create_global_config_file(no_palm_config, tmp_path):
 
     assert config_path.exists()
     global_config = yaml.safe_load(config_path.read_text())
-    assert global_config.keys() == {'plugins', 'excluded_commands'}
+    assert global_config.keys() == {'default_cookiecutters', 'plugins', 'excluded_commands'}
 
 
 def test_get_global_config(no_palm_config, tmp_path):
