@@ -26,7 +26,7 @@ def test_check_has_containerization(tmp_path, environment):
     result = Containerizer(ctx.obj, tmp_path).has_containerization()
 
     assert result == False
-    Path('Dockerfile').touch()
+    Path("Dockerfile").touch()
     result = Containerizer(ctx.obj, tmp_path).has_containerization()
     assert result
 
@@ -37,7 +37,7 @@ def test_has_env(tmp_path, environment):
     result = Containerizer(ctx.obj, tmp_path).has_env()
     assert result == False
 
-    Path('.env').touch()
+    Path(".env").touch()
     result = Containerizer(ctx.obj, tmp_path).has_env()
     assert result
 

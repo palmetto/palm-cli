@@ -89,7 +89,7 @@ Command Syntax
 - The ``cli`` function should be decorated with either the ``@click.command``
   decorator or the ``@click.group`` decorator.
 - The ``cli`` function can optionally be decorated with ``@click.pass_obj`` and
-  accept an ``environment`` argument, which is a click context object. The ``environment`` is a useful 
+  accept an ``environment`` argument, which is a click context object. The ``environment`` is a useful
   Environment provided by palm that enables you to perform complex operations, like
   running in docker containers, generating code, etc.
 - For commands within a command group, each command _must_ be decorated with the
