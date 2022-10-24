@@ -2,11 +2,11 @@
 Code generation
 ===============
 
-Palm includes a set of code generation commands that allow you to generate code 
-for your project, automating repetitive boiler plating tasks, and making your 
+Palm includes a set of code generation commands that allow you to generate code
+for your project, automating repetitive boiler plating tasks, and making your
 codebase more consistent.
 
-Code generation in palm is powered by `Jinja2 <https://jinja2docs.readthedocs.io/en/stable/>`_ 
+Code generation in palm is powered by `Jinja2 <https://jinja2docs.readthedocs.io/en/stable/>`_
 and `PyYAML <https://pyyaml.org/>`_.
 
 Basics
@@ -16,7 +16,7 @@ To use Palm code generation you will need:
 
 1. A directory of templates. We recommended you make a subdirectory within your
    project's .palm directory.
-2. A YAML configuration file called ``template-config.yaml`` - this is a 
+2. A YAML configuration file called ``template-config.yaml`` - this is a
    configuration file that describes how to generate code.
 3. A palm command which is decorated with the ``@click.pass_context`` decorator and
    calls ``ctx.obj.generate(template_path, output_path, replacements)``.
@@ -42,7 +42,7 @@ in your config file.
 Example template config
 
 .. code:: yaml
-   
+
    directories:
      - "{{model_name}}"
    files:
@@ -58,5 +58,5 @@ Gotchas
 Generating code is awesome, but there are gotchas to be aware of.
 
 1. Generating code that contains jinja is a pain, all jinja expressions must be
-   provided as replacements in the template, to prevent jinja from trying to 
+   provided as replacements in the template, to prevent jinja from trying to
    evaluate them during code generation.
