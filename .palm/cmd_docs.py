@@ -6,14 +6,14 @@ import click
 CODE_DOCS_URI = "http://localhost:8989"
 
 
-@click.command("docs")
-@click.pass_context
-def cli(ctx):
+@click.command('docs')
+@click.pass_obj
+def cli(environment):
     """Generates internal readthedocs for palm and serves them"""
 
     click.echo(f"Launching palm-cli readthedocs at {CODE_DOCS_URI}...")
-    exit_code, out, err = ctx.obj.run_on_host(
-        "docker-compose run -d --rm --service-ports palm_docs"
+    exit_code, out, err = environment.run_on_host(
+        'docker-compose run -d --rm --service-ports palm_docs'
     )
     if exit_code > 0:
         if "port is already allocated" in err:

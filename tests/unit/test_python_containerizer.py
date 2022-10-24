@@ -18,7 +18,7 @@ PythonContainerizer.__abstractmethods__ = set()
 def test_detect_package_manager(tmp_path, environment):
     os.chdir(tmp_path)
     ctx = MockContext(obj=environment)
-    pc = PythonContainerizer(ctx, tmp_path)
+    pc = PythonContainerizer(ctx.obj, tmp_path)
 
     with pytest.raises(Exception):
         pc.detect_package_manager()
@@ -32,7 +32,7 @@ def test_detect_package_manager(tmp_path, environment):
 def test_has_requirements_txt(tmp_path, environment):
     os.chdir(tmp_path)
     ctx = MockContext(obj=environment)
-    c = PythonContainerizer(ctx, tmp_path)
+    c = PythonContainerizer(ctx.obj, tmp_path)
 
     assert not c.has_requirements_txt()
     Path("requirements.txt").touch()
@@ -42,7 +42,7 @@ def test_has_requirements_txt(tmp_path, environment):
 def test_has_poetry(tmp_path, environment):
     os.chdir(tmp_path)
     ctx = MockContext(obj=environment)
-    c = PythonContainerizer(ctx, tmp_path)
+    c = PythonContainerizer(ctx.obj, tmp_path)
 
     assert not c.has_poetry()
     Path("poetry.lock").touch()
@@ -58,7 +58,7 @@ def test_run(tmp_path, environment):
     Path(".env").touch()
     Path("requirements.txt").touch()
     ctx = MockContext(obj=environment)
-    c = PythonContainerizer(ctx, templates_dir)
+    c = PythonContainerizer(ctx.obj, templates_dir)
     c.run()
 
     assert Path(tmp_path, "Dockerfile").exists()
@@ -68,12 +68,12 @@ def test_run(tmp_path, environment):
 
 def test_validate_python_version(tmp_path, environment):
     ctx = MockContext(obj=environment)
-    default_version_pc = PythonContainerizer(ctx, tmp_path)
+    default_version_pc = PythonContainerizer(ctx.obj, tmp_path)
     assert default_version_pc.validate_python_version()
-    valid_version_pc = PythonContainerizer(ctx, tmp_path, "3.9")
+    valid_version_pc = PythonContainerizer(ctx.obj, tmp_path, '3.9')
     assert valid_version_pc.validate_python_version()
 
-    invalid_version_pc = PythonContainerizer(ctx, tmp_path, "2.8")
+    invalid_version_pc = PythonContainerizer(ctx.obj, tmp_path, '2.8')
     assert not invalid_version_pc.validate_python_version()
-    invalid_value_pc = PythonContainerizer(ctx, tmp_path, "foo")
+    invalid_value_pc = PythonContainerizer(ctx.obj, tmp_path, 'foo')
     assert not invalid_value_pc.validate_python_version()

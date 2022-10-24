@@ -32,7 +32,7 @@ def test_create_command(tmp_path, environment):
 
     ctx = MockContext(obj=environment)
 
-    create_command(ctx, "testing", template_dir, target_dir)
+    create_command(ctx.obj, 'testing', template_dir, target_dir)
 
     cmd_file = Path(target_dir / "cmd_testing.py")
     assert cmd_file.exists()

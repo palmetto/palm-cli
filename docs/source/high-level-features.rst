@@ -28,7 +28,7 @@ Code generation
 
 Palm includes code generation functionality, powered by jinja. Code generation
 allows you to automate repetitive boiler plating tasks, and keep your codebase
-consistent. Code generation is driven by the ``ctx.obj.generate()`` function.
+consistent. Code generation is driven by the ``environment.generate()`` function.
 
 See the :doc:`code-generation` section for more information.
 

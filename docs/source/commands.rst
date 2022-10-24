@@ -88,8 +88,8 @@ Command Syntax
 
 - The ``cli`` function should be decorated with either the ``@click.command``
   decorator or the ``@click.group`` decorator.
-- The ``cli`` function can optionally be decorated with ``@click.pass_context`` and
-  accept a ``ctx`` argument, which is a click context. The ctx.obj is a useful
+- The ``cli`` function can optionally be decorated with ``@click.pass_obj`` and
+  accept an ``environment`` argument, which is a click context object. The ``environment`` is a useful 
   Environment provided by palm that enables you to perform complex operations, like
   running in docker containers, generating code, etc.
 - For commands within a command group, each command _must_ be decorated with the
@@ -104,14 +104,14 @@ Common patterns and important notes
 
 The global ``run_in_docker`` function is used to execute a command in the docker
 container for the current project. This is used in many palm commands. This function
-is provided via the palm context. If you want to use ``run_in_docker`` in your
-own command, ensure you use the ``@click.pass_context`` decorator for your command,
-then use ``ctx.obj.run_in_docker(command)``.
+is provided via the palm context. If you want to use ``run_in_docker`` in your 
+own command, ensure you use the ``@click.pass_obj`` decorator for your command, 
+then use ``environment.run_in_docker(command)``.
 
 **Run on Host**:
 
 Palm provides a simple interface for running shell commands directly on your machine via
-the context (similarly to how ``run_in_docker`` is accessed, via ``ctx.obj``). We highly
+the context (similarly to how ``run_in_docker`` is accessed, via ``environment``). We highly
 recommend using ``run_on_host`` over rolling your own subprocess commands.
 
 .. warning::
@@ -121,14 +121,14 @@ recommend using ``run_on_host`` over rolling your own subprocess commands.
   The prime directive of palm is to give all your developers an identical interface and
   experience, regardless of environment. Different versions of python running on different
   operating systems can behave differently when calling ``subprocess``; palm normalizes this
-  behavior in ```ctx.obj.run_on_host``.
+  behavior in ```environment.run_on_host``. 
 
 **Importing code**:
 
 When writing "repo" commands in your project, you will not be able to use
 conventional relative imports in your commands, as the command is executed in
 the context of palm. If you need to share logic between commands, or import code
-from your project, you must do this with the ``ctx.obj.import_module`` function.
+from your project, you must do this with the ``environment.import_module`` function. 
 This function is provided via the palm context and uses importlib to ensure
 your shared code is imported from the correct location at run time.
 
@@ -143,17 +143,17 @@ That could look something like this:
   ## ./palm/cmd_slow_starter.py
   ...
   @click.command('slow_starter')
-  @click.pass_context
-  def cli(ctx):
+  @click.pass_obj
+  def cli(environment):
       """Starts the container as daemon, watches the logs, then exits"""
-      ctx.run_on_host("docker-compose run -d super_slow_starting_django_app",
+      environment.run_on_host("docker-compose run -d super_slow_starting_django_app",
                            check=True)
 
       ## this is where we watch, pseudo-blocking
       building_logs = str()
       while "Starting local webserver via runserver on port 8080..." \
         not in building_logs:
-          logs, _, _ = ctx.run_on_host("docker-compose logs static_app")
+          logs, _, _ = environment.run_on_host("docker-compose logs static_app")
             if logs != building_logs:
                 building_logs = logs
                 click.echo(logs)

@@ -18,8 +18,8 @@ To use Palm code generation you will need:
    project's .palm directory.
 2. A YAML configuration file called ``template-config.yaml`` - this is a
    configuration file that describes how to generate code.
-3. A palm command which is decorated with the ``@click.pass_context`` decorator and
-   calls ``ctx.obj.generate(template_path, output_path, replacements)``.
+3. A palm command which is decorated with the ``@click.pass_obj`` decorator and
+   calls ``environment.generate(template_path, output_path, replacements)``.
 
 For full documentation of the generator see ``palm/code_generator.py`` in the Palm
 CLI source code

@@ -150,13 +150,13 @@ def required_dependencies_ready():
 
 @click.group(cls=PalmCLI, context_settings=CONTEXT_SETTINGS)
 @click.version_option(get_version())
-@click.pass_context
-def cli(ctx):
+@click.pass_obj
+def cli(environment):
     """Palmetto data product command line interface."""
     is_test = os.getenv("PALM_TEST")
     if not (is_test or required_dependencies_ready()):
-        ctx.exit(1)
-    ctx.obj = Environment(plugin_manager_instance, palm_config)
+        sys.exit(1)
+    environment = Environment(plugin_manager_instance, palm_config)
 
 
 if __name__ == "__main__":

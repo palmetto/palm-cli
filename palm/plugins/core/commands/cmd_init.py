@@ -21,9 +21,9 @@ templates_dir = Path(Path(__file__).parents[1], "templates").resolve()
 @click.option(
     "-c", "--commands", multiple=True, help="List of command names to scaffold"
 )
-@click.pass_context
+@click.pass_obj
 def cli(
-    ctx,
+    environment,
     image_name: Optional[str],
     plugins: Optional[tuple],
     protected_branches: Optional[tuple],
@@ -47,11 +47,11 @@ def cli(
     Path(".palm/__init__.py").touch()
 
     for command in commands:
-        click.echo(f"Adding template for {command}...")
-        create_command(ctx, command, template_dir, palm_target_dir)
+        click.echo(f'Adding template for {command}...')
+        create_command(environment, command, template_dir, palm_target_dir)
 
     if not image_name:
-        image_name = ctx.obj.palm.image_name
+        image_name = environment.palm.image_name
 
     create_config(palm_target_dir, image_name, plugins, protected_branches)
 

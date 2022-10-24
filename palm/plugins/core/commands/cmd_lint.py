@@ -1,8 +1,8 @@
 import click
 
 
-@click.command("lint")
-@click.pass_context
-def cli(ctx):
+@click.command('lint')
+@click.pass_obj
+def cli(environment):
     """lint the codebase with black"""
-    ctx.obj.run_in_docker('black --skip-string-normalization --exclude="\.tpl\.py" .')
+    environment.run_in_docker('black --skip-string-normalization --exclude="\.tpl\.py" .')
