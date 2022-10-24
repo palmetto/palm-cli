@@ -37,5 +37,8 @@ jobs:
       - uses: psf/black@stable
         with:
           options: |
-            '--check --diff --skip-string-normalization --exclude="\.tpl\.py"'
+            '--check \
+            --diff \
+            --skip-string-normalization \
+            --exclude="\.tpl\.py"'
           version: '22.3.0'
