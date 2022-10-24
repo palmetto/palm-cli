@@ -5,4 +5,6 @@ import click
 @click.pass_obj
 def cli(environment):
     """lint the codebase with black"""
-    environment.run_in_docker('black --skip-string-normalization --exclude="\.tpl\.py" .')
+    environment.run_in_docker(
+        'black --skip-string-normalization --exclude="\.tpl\.py" .'
+    )

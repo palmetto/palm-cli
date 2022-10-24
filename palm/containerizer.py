@@ -108,7 +108,7 @@ class PythonContainerizer(Containerizer):
     def run(self) -> None:
         """Run the containerizer"""
         self.check_setup()
-        self.package_manager = self.detes_package_manager()
+        self.package_manager = self.detect_package_manager()
 
         super().generate(self.target_dir, self.replacements)
 
