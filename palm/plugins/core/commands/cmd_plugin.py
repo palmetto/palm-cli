@@ -57,7 +57,7 @@ def new(environment, name: str, author: Optional[str], author_email: Optional[st
     }
 
     environment.generate(template_path, target_dir, replacements)
-    click.secho(f'{name} plugin created in {target_dir}', fg='green')
+    click.secho(f"{name} plugin created in {target_dir}", fg="green")
 
 
 @cli.command()

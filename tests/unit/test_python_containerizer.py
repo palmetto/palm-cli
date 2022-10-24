@@ -70,10 +70,10 @@ def test_validate_python_version(tmp_path, environment):
     ctx = MockContext(obj=environment)
     default_version_pc = PythonContainerizer(ctx.obj, tmp_path)
     assert default_version_pc.validate_python_version()
-    valid_version_pc = PythonContainerizer(ctx.obj, tmp_path, '3.9')
+    valid_version_pc = PythonContainerizer(ctx.obj, tmp_path, "3.9")
     assert valid_version_pc.validate_python_version()
 
-    invalid_version_pc = PythonContainerizer(ctx.obj, tmp_path, '2.8')
+    invalid_version_pc = PythonContainerizer(ctx.obj, tmp_path, "2.8")
     assert not invalid_version_pc.validate_python_version()
-    invalid_value_pc = PythonContainerizer(ctx.obj, tmp_path, 'foo')
+    invalid_value_pc = PythonContainerizer(ctx.obj, tmp_path, "foo")
     assert not invalid_value_pc.validate_python_version()

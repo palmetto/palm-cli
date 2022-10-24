@@ -47,7 +47,7 @@ def cli(
     Path(".palm/__init__.py").touch()
 
     for command in commands:
-        click.echo(f'Adding template for {command}...')
+        click.echo(f"Adding template for {command}...")
         create_command(environment, command, template_dir, palm_target_dir)
 
     if not image_name:

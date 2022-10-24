@@ -27,7 +27,7 @@ def command(environment, name: List[str]):
     """Add a new palm command to the current repo"""
     for command in name:
         create_command(environment, command, template_dir, palm_target_dir)
-        click.secho(f'{command} command created in {palm_target_dir}', fg='green')
+        click.secho(f"{command} command created in {palm_target_dir}", fg="green")
 
 
 @cli.command()
@@ -51,7 +51,7 @@ def group(environment, group: str, command: List[str]):
     }
 
     environment.generate(template_path, palm_target_dir, replacements)
-    click.secho(f'{group} command group created in {palm_target_dir}', fg='green')
+    click.secho(f"{group} command group created in {palm_target_dir}", fg="green")
 
 
 @cli.command("config")

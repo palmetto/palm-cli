@@ -1,7 +1,7 @@
 import click
 
 
-@click.command('lint')
+@click.command("lint")
 @click.pass_obj
 def cli(environment):
     """lint the codebase with black"""
