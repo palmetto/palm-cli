@@ -155,7 +155,7 @@ def cli(ctx):
     """Palmetto data product command line interface."""
     is_test = os.getenv("PALM_TEST")
     if not (is_test or required_dependencies_ready()):
-        sys.exit(1)
+        ctx.exit(1)
     ctx.obj = Environment(plugin_manager_instance, palm_config)
 
 

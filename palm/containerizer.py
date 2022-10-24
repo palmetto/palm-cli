@@ -17,18 +17,18 @@ class Containerizer(ABC):
     Implementations of run() should call check_setup() and generate()
     """
 
-    def __init__(self, environment, template_dir: Path) -> None:
+    def __init__(self, ctx, template_dir: Path) -> None:
         """Containerizer constructor
 
         Args:
-            environment (click.context.object): The click context object from the calling command
+            ctx (click.context): The click context object from the calling command
             template_dir (Path): Path to the templates directory
         """
-        self.environment = environment
+        self.ctx = ctx
         # By default, image name is read from .palm/config.yaml since this is used
         # to execute commands in the container. This may be overridden in a containerizer
         # but you would need to ensure the image_name matches in config.yaml
-        self.project_name = environment.palm.image_name
+        self.project_name = ctx.obj.palm.image_name
         self.template_dir = template_dir
 
     @abstractmethod
@@ -46,7 +46,7 @@ class Containerizer(ABC):
             target_dir (Path): Path to directory where generated files should be placed
             replacements (dict): Dict of replacements to be made in template files
         """
-        self.environment.generate(self.template_dir, target_dir, replacements)
+        self.ctx.obj.generate(self.template_dir, target_dir, replacements)
         psu.make_executable(Path(target_dir, "scripts", "entrypoint.sh"))
 
     def check_setup(self) -> None:
@@ -91,16 +91,16 @@ class PythonContainerizer(Containerizer):
     """Containerizer for Python projects"""
 
     def __init__(
-        self, environment, template_dir: Path, python_version: Optional[str] = '3.8'
+        self, ctx, template_dir: Path, python_version: Optional[str] = "3.8"
     ) -> None:
         """PythonContainerizer constructor
 
         Args:
-            environment (click.context.object): The click context object from the calling command
+            ctx (click.context): The click context object from the calling command
             template_dir (Path): Path to the templates directory
         """
-        self.environment = environment
-        self.project_name = environment.palm.image_name
+        self.ctx = ctx
+        self.project_name = ctx.obj.palm.image_name
         self.template_dir = template_dir
         self.python_version = python_version
         self.package_manager = ""
