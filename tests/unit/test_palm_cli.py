@@ -1,6 +1,8 @@
-import pytest
 from unittest import mock
+
+import pytest
 from click import HelpFormatter
+
 from palm.cli import PalmCLI
 
 
@@ -25,13 +27,13 @@ class MockCommand:
 def test_format_commands_adds_headings_for_plugins(mock_help_formatter, monkeypatch):
     """Test command formatting"""
     PalmCLIInstance = PalmCLI()
-    monkeypatch.setattr(PalmCLIInstance, 'list_commands', lambda x: ['test'])
+    monkeypatch.setattr(PalmCLIInstance, "list_commands", lambda x: ["test"])
     m = mock.Mock()
     monkeypatch.setattr(mock_help_formatter, "write_heading", m)
     ctx = {}
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
     # Test command exists in the core plugin
-    m.assert_called_once_with('Core')
+    m.assert_called_once_with("Core")
 
 
 def test_format_commands_properly_outputs_command_help(
@@ -39,29 +41,29 @@ def test_format_commands_properly_outputs_command_help(
 ):
     """Test command formatting"""
     PalmCLIInstance = PalmCLI()
-    monkeypatch.setattr(PalmCLIInstance, 'list_commands', lambda x: ['test'])
+    monkeypatch.setattr(PalmCLIInstance, "list_commands", lambda x: ["test"])
     m = mock.Mock()
     monkeypatch.setattr(mock_help_formatter, "write_dl", m)
     ctx = {}
     PalmCLIInstance.format_commands(ctx, mock_help_formatter)
     m.assert_called()
-    expected_command_dl = ('test', 'Run tests for your application (pytest)')
+    expected_command_dl = ("test", "Run tests for your application (pytest)")
     m.assert_called_with([expected_command_dl])
 
 
 def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatch):
     PalmCLIInstance = PalmCLI()
 
-    monkeypatch.setattr(PalmCLIInstance, 'list_commands', lambda x: ['test', 'foo'])
+    monkeypatch.setattr(PalmCLIInstance, "list_commands", lambda x: ["test", "foo"])
     monkeypatch.setattr(
-        PalmCLIInstance, 'get_command', lambda ctx, cmd_name: MockCommand(cmd_name)
+        PalmCLIInstance, "get_command", lambda ctx, cmd_name: MockCommand(cmd_name)
     )
     plugin_manager = PalmCLIInstance.plugin_manager
     mock_plugin_dict = {
-        'test': 'core',
-        'foo': 'bar',
+        "test": "core",
+        "foo": "bar",
     }
-    monkeypatch.setattr(plugin_manager, 'plugin_command_dict', mock_plugin_dict)
+    monkeypatch.setattr(plugin_manager, "plugin_command_dict", mock_plugin_dict)
 
     m = mock.Mock()
     monkeypatch.setattr(mock_help_formatter, "write_heading", m)

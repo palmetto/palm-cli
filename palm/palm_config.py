@@ -1,9 +1,10 @@
 from pathlib import Path
-from typing import Optional, List
-from pygit2 import Repository
+from typing import List, Optional
+
+import yaml
 from click import secho
 from deepmerge import always_merger
-import yaml
+from pygit2 import Repository
 
 
 class PalmConfig:
@@ -49,15 +50,15 @@ class PalmConfig:
         Returns:
             object: dict of repo config, or empty dict if no config
         """
-        config_path = self.project_root / '.palm' / 'config.yaml'
+        config_path = self.project_root / ".palm" / "config.yaml"
         if not config_path.exists():
             secho(
-                'No palm config found in .palm/config.yml, please run \'palm scaffold config\'',
-                fg='yellow',
+                "No palm config found in .palm/config.yml, please run 'palm scaffold config'",
+                fg="yellow",
             )
             secho(
-                'Some palm commands may not work correctly without palm config',
-                fg='yellow',
+                "Some palm commands may not work correctly without palm config",
+                fg="yellow",
             )
             return {}
 
@@ -73,7 +74,7 @@ class PalmConfig:
         Returns:
             object: dict of global config
         """
-        config_path = global_config_path or Path().home() / '.palm' / 'config.yaml'
+        config_path = global_config_path or Path().home() / ".palm" / "config.yaml"
         if not config_path.exists():
             self._create_global_config_file(config_path)
 
@@ -83,8 +84,8 @@ class PalmConfig:
         """Creates the global config file."""
         config_path.parent.mkdir(parents=True, exist_ok=True)
         default_config = {
-            'plugins': [],
-            'excluded_commands': [],
+            "plugins": [],
+            "excluded_commands": [],
         }
         config_path.write_text(yaml.dump(default_config))
 
@@ -103,11 +104,11 @@ class PalmConfig:
         Returns:
              list[Optional[str]]: list of branch names e.g ['main', 'master']
         """
-        return self.config.get('protected_branches') or []
+        return self.config.get("protected_branches") or []
 
     @property
     def project_root_snake_case(self):
-        return self.project_root.name.replace('-', '_')
+        return self.project_root.name.replace("-", "_")
 
     @property
     def image_name(self) -> str:
@@ -118,12 +119,12 @@ class PalmConfig:
         Returns:
             str: Name of docker image to use
         """
-        return self.config.get('image_name') or self.project_root_snake_case
+        return self.config.get("image_name") or self.project_root_snake_case
 
     @property
     def plugins(self) -> list:
-        core_plugins = ['core']
-        plugins_from_config = self.config.get('plugins') or []
+        core_plugins = ["core"]
+        plugins_from_config = self.config.get("plugins") or []
         # The order here defines the order in which commands will be overridden
         # Plugins on the right will override plugins on the left!
-        return core_plugins + plugins_from_config + ['repo']
+        return core_plugins + plugins_from_config + ["repo"]

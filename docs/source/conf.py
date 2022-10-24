@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'palm-cli'
-copyright = '2021, Palmetto Data Team'
-author = 'Palmetto Data Team'
+project = "palm-cli"
+copyright = "2021, Palmetto Data Team"
+author = "Palmetto Data Team"
 
 # The full version, including alpha/beta/rc tags
-release = '2.4.1'
+release = "2.4.1"
 
 
 # -- General configuration ---------------------------------------------------
@@ -33,7 +33,7 @@ release = '2.4.1'
 extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -46,11 +46,11 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 html_logo = "_static/img/svg/logo-subheader-white.svg"
 html_theme_options = {"logo_only": True}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]

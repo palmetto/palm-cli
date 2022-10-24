@@ -2,9 +2,9 @@
 Plugins
 =======
 
-Palm plugins extend the functionality of the CLI. They usually add new commands 
-that are specific to a particular platform or framework. A plugin could also 
-share organization-specific functionality across multiple projects, or provide 
+Palm plugins extend the functionality of the CLI. They usually add new commands
+that are specific to a particular platform or framework. A plugin could also
+share organization-specific functionality across multiple projects, or provide
 a common base for a set of commands.
 
 Core plugins
@@ -49,7 +49,7 @@ Configuring Global Plugins
 
 You can also configure plugins that are not specific to a project. This is
 done by adding the name of the plugin to the ``~/.palm/config.yaml`` file in
-the user's home directory. This global configuration file will be created the 
+the user's home directory. This global configuration file will be created the
 first time palm is run.
 
 Example global plugin configuration
@@ -64,7 +64,7 @@ Example global plugin configuration
 Using plugin commands
 =====================
 
-Once you have installed and configured a plugin, it's commands should be available 
+Once you have installed and configured a plugin, it's commands should be available
 for use within the project. To confirm this and to explore the available commands
 run ``palm --help`` to list the available commands in your project.
 
