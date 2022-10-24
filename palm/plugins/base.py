@@ -1,8 +1,9 @@
 import importlib
-from typing import List, Optional, Tuple
 from pathlib import Path
+from typing import List, Optional, Tuple
 from urllib.parse import urlparse
-from palm.utils import is_cmd_file, cmd_name_from_file, run_on_host
+
+from palm.utils import cmd_name_from_file, is_cmd_file, run_on_host
 
 
 class BasePlugin:
@@ -37,7 +38,7 @@ class BasePlugin:
         """
         command_list = []
 
-        for path in self.command_dir.glob('*.py'):
+        for path in self.command_dir.glob("*.py"):
             if is_cmd_file(path.name):
                 command_list.append(cmd_name_from_file(path.name))
 
@@ -61,7 +62,7 @@ class BasePlugin:
         Returns:
             importlib.ModuleSpec: ModuleSpec for the command
         """
-        command_path = self.command_dir / f'cmd_{command_name}.py'
+        command_path = self.command_dir / f"cmd_{command_name}.py"
         return importlib.util.spec_from_file_location(command_name, command_path)
 
     def update(self) -> Tuple[bool, str]:
@@ -71,11 +72,11 @@ class BasePlugin:
             Tuple[bool, str]: Tuple of ('success', 'message')
         """
         if self.package_location is None:
-            return (False, 'This plugin does not support upgrading via palm')
+            return (False, "This plugin does not support upgrading via palm")
 
         package_url = urlparse(self.package_location)
-        if package_url.hostname == 'github.com':
-            install_url = f'git+{self.package_location}'
+        if package_url.hostname == "github.com":
+            install_url = f"git+{self.package_location}"
         else:  # This should be a pypi package name
             install_url = self.package_location
 
@@ -85,4 +86,4 @@ class BasePlugin:
 
         for cmd in (uninstall_cmd, upgrade_cmd):
             _, _, _ = run_on_host(cmd, check=True)
-        return (True, 'Plugin upgraded successfully')
+        return (True, "Plugin upgraded successfully")

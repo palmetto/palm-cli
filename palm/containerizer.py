@@ -1,11 +1,13 @@
-from abc import ABC, abstractmethod
-from typing import Dict, Optional
-from pathlib import Path
 import re
-import click
 import sys
-from palm.palm_exceptions import AbortPalm
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import Dict, Optional
+
+import click
+
 import palm.project_setup_utils as psu
+from palm.palm_exceptions import AbortPalm
 
 
 class Containerizer(ABC):
@@ -68,7 +70,7 @@ class Containerizer(ABC):
         Returns:
             bool: true if Dockerfile or docker-compose.yaml exists
         """
-        containerization_files = ['docker-compose.yaml', 'Dockerfile']
+        containerization_files = ["docker-compose.yaml", "Dockerfile"]
 
         for file in containerization_files:
             if Path(file).exists():
@@ -89,7 +91,7 @@ class PythonContainerizer(Containerizer):
     """Containerizer for Python projects"""
 
     def __init__(
-        self, ctx, template_dir: Path, python_version: Optional[str] = '3.8'
+        self, ctx, template_dir: Path, python_version: Optional[str] = "3.8"
     ) -> None:
         """PythonContainerizer constructor
 
@@ -101,7 +103,7 @@ class PythonContainerizer(Containerizer):
         self.project_name = ctx.obj.palm.image_name
         self.template_dir = template_dir
         self.python_version = python_version
-        self.package_manager = ''
+        self.package_manager = ""
 
     def run(self) -> None:
         """Run the containerizer"""

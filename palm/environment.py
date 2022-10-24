@@ -1,12 +1,14 @@
-from typing import Optional, Tuple
 import importlib
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
+
 import click
-from palm.utils import run_on_host
+
 from palm.plugin_manager import PluginManager
-from .palm_config import PalmConfig
+from palm.utils import run_on_host
+
 from .code_generator import CodeGenerator
+from .palm_config import PalmConfig
 
 
 class Environment:
@@ -29,7 +31,7 @@ class Environment:
         """
         click.secho(f"Executing command `{cmd}` in compose...", fg="yellow")
 
-        docker_cmd = ['docker-compose run --service-ports --rm']
+        docker_cmd = ["docker-compose run --service-ports --rm"]
         docker_cmd.extend(self._build_env_vars(env_vars))
         docker_cmd.append(self.palm.image_name)
         if no_bin_bash:
@@ -37,9 +39,9 @@ class Environment:
         else:
             docker_cmd.append(f'/bin/bash -c "{cmd}" ')
 
-        ex_code, _, _ = run_on_host(' '.join(docker_cmd))
+        ex_code, _, _ = run_on_host(" ".join(docker_cmd))
         if ex_code == 0:
-            return (True, 'Success! Palm completed with exit code 0')
+            return (True, "Success! Palm completed with exit code 0")
         return (False, f"Fail! Palm exited with code {ex_code}")
 
     def run_in_shell(self, cmd: str, env_vars: Optional[dict] = {}):
@@ -84,7 +86,7 @@ class Environment:
             mod = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(mod)
         except ImportError as error:
-            click.secho(f'Import error: {error}', fg="red")
+            click.secho(f"Import error: {error}", fg="red")
             return None
         return mod
 
@@ -96,5 +98,5 @@ class Environment:
     def _build_env_vars(self, env_vars: dict) -> List[str]:
         env_vars_list = []
         for key in env_vars.keys():
-            env_vars_list.append(f'-e {key.upper()}={env_vars[key]}')
+            env_vars_list.append(f"-e {key.upper()}={env_vars[key]}")
         return env_vars_list

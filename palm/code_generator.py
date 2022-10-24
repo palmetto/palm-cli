@@ -1,6 +1,7 @@
-from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
+
 import yaml
+from jinja2 import Environment, FileSystemLoader
 
 
 class CodeGenerator:
@@ -50,11 +51,11 @@ class CodeGenerator:
             for key in file_item:
                 template = key
                 destination = env.from_string(file_item[key]).render(self.replacements)
-                print(f'Generating {template} to {destination}')
+                print(f"Generating {template} to {destination}")
                 t = env.get_template(template)
                 templated_contents = t.render(self.replacements)
 
-                with open(Path(Path.cwd(), self.target_path, destination), 'w') as fh:
+                with open(Path(Path.cwd(), self.target_path, destination), "w") as fh:
                     fh.write(templated_contents)
 
         return "Generated successfully"

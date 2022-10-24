@@ -1,9 +1,11 @@
-from typing import Optional
-import click
 from pathlib import Path
+from typing import Optional
+
+import click
+
 from palm.plugins.core.create_files import *
 
-palm_target_dir = f'{Path.cwd()}/.palm'
+palm_target_dir = f"{Path.cwd()}/.palm"
 templates_dir = Path(Path(__file__).parents[1], "templates").resolve()
 
 
@@ -35,17 +37,17 @@ def cli(
     based on the options provided
     Creates command files based on the --commands option
     """
-    template_dir = Path(Path(__file__).parents[1], "templates") / 'command'
+    template_dir = Path(Path(__file__).parents[1], "templates") / "command"
 
     if Path(palm_target_dir).exists():
         click.secho("Palm is already initialized", fg="red")
         return
 
-    Path('.palm').mkdir()
-    Path('.palm/__init__.py').touch()
+    Path(".palm").mkdir()
+    Path(".palm/__init__.py").touch()
 
     for command in commands:
-        click.echo(f'Adding template for {command}...')
+        click.echo(f"Adding template for {command}...")
         create_command(ctx, command, template_dir, palm_target_dir)
 
     if not image_name:
@@ -53,4 +55,4 @@ def cli(
 
     create_config(palm_target_dir, image_name, plugins, protected_branches)
 
-    click.secho('Success! Project initialized with Palm CLI', fg='green')
+    click.secho("Success! Project initialized with Palm CLI", fg="green")
