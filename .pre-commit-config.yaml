@@ -6,7 +6,7 @@ repos:
     - id: yamllint
       args: [-d relaxed]
       verbose: true
-      exclude: codeql-analysis.yml
+      exclude: .github/workflows/*
   - repo: https://github.com/timothycrosley/isort
     rev: 5.10.1
     hooks:
