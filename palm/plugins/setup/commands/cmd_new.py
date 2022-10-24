@@ -11,7 +11,20 @@ from pathlib import Path
 @click.option('--list', '-l', is_flag=True, help='List global cookiecutter templates')
 @click.pass_obj
 def cli(environment, global_template: str, template: str, list: bool = False):
-    """Create a new project with cookiecutter"""
+    """
+    Create a new project with cookiecutter.
+
+    Cookiecutter is a command-line utility that creates projects from
+    cookiecutters (project templates).
+
+    This command will create a new project, in a new directory. You should
+    run this command from the directory where you want the new project to
+    be created.
+
+    Global templates are defined in your global palm config file.
+    See the docs for more information:
+    https://palm-cli.readthedocs.io/en/latest/code-generation.html#new-projects-with-cookiecutter
+    """
     if list:
         list_templates(environment)
         sys.exit(0)
@@ -33,7 +46,6 @@ def cli(environment, global_template: str, template: str, list: bool = False):
     else:
         click.secho(f'Failed to create project', fg='red')
         sys.exit(1)
-
 
 
 def list_templates(environment):
