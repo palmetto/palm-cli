@@ -2,9 +2,9 @@ from pathlib import Path
 from typing import Optional, List, Union
 import yaml
 from xmlrpc.client import Boolean
-from pygit2 import Repository, discover_repository
+from pygit2 import Repository, discover_repository, GitError
 
-from click import secho
+from click import secho, echo
 from deepmerge import always_merger
 from pygit2 import Repository
 
@@ -64,7 +64,14 @@ class PalmConfig:
             Union[str, None]: branch name, or None if not in a repo
         """
         if self.repo:
-            return self.repo.head.shorthand
+            try:
+                self.repo.head.shorthand
+            except GitError as e:
+                secho('Error finding an active branch.', fg='red')
+                echo(
+                    'If this is a new repo, you should make an initial commit before using palm.\n'
+                )
+                raise e
 
         return None
 
@@ -90,7 +97,7 @@ class PalmConfig:
                 fg="yellow",
             )
             secho(
-                "Some palm commands may not work correctly without palm config",
+                "Some palm commands may not work correctly without palm config \n",
                 fg="yellow",
             )
             return {}
