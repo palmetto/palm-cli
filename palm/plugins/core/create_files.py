@@ -21,11 +21,11 @@ def create_config(
         yaml.safe_dump(base_config, file)
 
 
-def create_command(ctx, command: str, template_dir: Path, target_dir: Path):
+def create_command(environment, command: str, template_dir: Path, target_dir: Path):
     """Creates a new cmd file from template"""
 
     replacements = {
         "command": command,
     }
 
-    ctx.obj.generate(template_dir, target_dir, replacements)
+    environment.generate(template_dir, target_dir, replacements)

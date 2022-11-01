@@ -19,8 +19,8 @@ def test_command():
     return """import click
 
 @click.command('foo')
-@click.pass_context
-def cli(ctx):
+@click.pass_obj
+def cli(environment):
     print('test')
 """
 

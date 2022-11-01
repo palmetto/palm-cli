@@ -21,12 +21,12 @@ def cli():
     required=True,
     help="Name of the command(s) you are adding",
 )
-@click.pass_context
-def command(ctx, name: List[str]):
-    template_dir = Path(Path(__file__).parents[1], "templates") / "command"
+@click.pass_obj
+def command(environment, name: List[str]):
+    template_dir = Path(Path(__file__).parents[1], "templates") / 'command'
     """Add a new palm command to the current repo"""
     for command in name:
-        create_command(ctx, command, template_dir, palm_target_dir)
+        create_command(environment, command, template_dir, palm_target_dir)
         click.secho(f"{command} command created in {palm_target_dir}", fg="green")
 
 
@@ -41,8 +41,8 @@ def command(ctx, name: List[str]):
     required=True,
     help="Name of the commands within the command group",
 )
-@click.pass_context
-def group(ctx, group: str, command: List[str]):
+@click.pass_obj
+def group(environment, group: str, command: List[str]):
     """Add a new palm command group to the current repo"""
     template_path = Path(Path(__file__).parents[1], "templates") / "command_group"
     replacements = {
@@ -50,7 +50,7 @@ def group(ctx, group: str, command: List[str]):
         "commands": command,
     }
 
-    ctx.obj.generate(template_path, palm_target_dir, replacements)
+    environment.generate(template_path, palm_target_dir, replacements)
     click.secho(f"{group} command group created in {palm_target_dir}", fg="green")
 
 
@@ -63,14 +63,14 @@ def group(ctx, group: str, command: List[str]):
     multiple=True,
     help="List of branches you do not want to run palm on",
 )
-@click.pass_context
+@click.pass_obj
 def config(
-    ctx,
+    environment,
     image_name: Optional[str],
     plugins: Optional[tuple],
     protected_branches: Optional[tuple],
 ):
     """Generate a base .palm/config for existing projects"""
-    image_name = image_name or ctx.obj.palm.image_name
+    image_name = image_name or environment.palm.image_name
     create_config(palm_target_dir, image_name, plugins, protected_branches)
     click.secho("Palm config created!", fg="green")

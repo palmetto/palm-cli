@@ -50,7 +50,7 @@ class Environment:
         deprecation_msg = (
             "DEPRECATION: run_in_shell has been renamed to "
             "`run_in_docker` and will be removed in a future version. "
-            "Please update your commands to use ctx.obj.run_in_docker"
+            "Please update your commands to use environment.run_in_docker"
         )
         click.secho(deprecation_msg, fg="yellow")
         success, msg = self.run_in_docker(cmd, env_vars)
