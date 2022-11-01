@@ -102,6 +102,13 @@ def no_palm_config(tmp_path, monkeypatch):
 
 
 @pytest.fixture
+def no_repo_palm_config(tmp_path, monkeypatch):
+    monkeypatch.setattr(PalmConfig, '_get_repo', lambda self: None)
+
+    return PalmConfig(Path(tmp_path))
+
+
+@pytest.fixture
 def palm_config(tmp_path, monkeypatch):
     palm_config_path = tmp_path / ".palm" / "config.yaml"
     mock_config = {

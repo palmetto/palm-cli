@@ -1,4 +1,3 @@
-import pytest
 import yaml
 
 # Test defaults - no configuration provided in no_palm_config fixture
@@ -31,9 +30,16 @@ def test_reads_protected_branches(palm_config):
     assert palm_config.protected_branches == ["main"]
 
 
-def test_raises_on_protected_branches(palm_config_protected):
-    with pytest.raises(SystemExit):
-        palm_config_protected.validate_branch()
+# Validate branches
+
+
+def test_validate_branch_returns_false_on_protected_branches(palm_config_protected):
+    result = palm_config_protected.is_valid_branch()
+    assert result is False
+
+
+def test_validate_branch_returns_true_when_no_repo(no_repo_palm_config):
+    assert no_repo_palm_config.is_valid_branch() is True
 
 
 # Global config
@@ -44,8 +50,12 @@ def test_create_global_config_file(no_palm_config, tmp_path):
     no_palm_config._create_global_config_file(config_path)
 
     assert config_path.exists()
-    global_config = yaml.load(config_path.read_text())
-    assert global_config.keys() == {"plugins", "excluded_commands"}
+    global_config = yaml.safe_load(config_path.read_text())
+    assert global_config.keys() == {
+        'default_cookiecutters',
+        'plugins',
+        'excluded_commands',
+    }
 
 
 def test_get_global_config(no_palm_config, tmp_path):
@@ -65,4 +75,12 @@ def test_get_config_merges_repo_and_global(no_palm_config, monkeypatch):
     monkeypatch.setattr(no_palm_config, "_get_global_config", lambda: global_config)
 
     result = no_palm_config._get_config()
-    assert result == {"plugins": ["baz", "foo"], "excluded_commands": ["qux", "bar"]}
+    assert result == {'plugins': ['baz', 'foo'], 'excluded_commands': ['qux', 'bar']}
+
+
+# Global plugins
+
+
+def test_global_plugins_are_loaded_without_repo(no_repo_palm_config, monkeypatch):
+    plugins = no_repo_palm_config.plugins
+    assert plugins == ['setup']
