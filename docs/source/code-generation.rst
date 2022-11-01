@@ -22,7 +22,7 @@ To use Palm code generation you will need:
    calls ``environment.generate(template_path, output_path, replacements)``.
 
 For full documentation of the generator see ``palm/code_generator.py`` in the Palm
-CLI source code
+CLI source code.
 
 Template config
 ===============

@@ -103,6 +103,7 @@ what if the fix was automated? Enter palm.
 
    #.palm/cmd_up.py
 
+   @click.pass_obj
    def cmd_up(environment):
        “”” starts the compose stack”””
        echo(“Starting docker stack…”)
