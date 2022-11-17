@@ -65,7 +65,7 @@ class PalmConfig:
         """
         if self.repo:
             try:
-                self.repo.head.shorthand
+                return self.repo.head.shorthand
             except GitError as e:
                 secho('Error finding an active branch.', fg='red')
                 echo(

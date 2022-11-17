@@ -1,5 +1,6 @@
 import shutil
 import sys
+import zipfile
 from pathlib import Path
 from unittest import mock
 
@@ -59,10 +60,6 @@ def plugin_manager(tmp_path):
     return mock_plugin_manager(tmp_path)
 
 
-def mock_current_branch(self):
-    return "test"
-
-
 def mock_repository(tmp_path):
     class TemporaryRepository:
         def __init__(self, name, tmp_path):
@@ -72,7 +69,10 @@ def mock_repository(tmp_path):
         def __enter__(self):
             path = Path(__file__).parent / "data" / self.name
             temp_repo_path = Path(self.tmp_path) / path.stem
-            if path.suffix == ".git":
+            if path.suffix == '.zip':
+                with zipfile.ZipFile(path) as zipf:
+                    zipf.extractall(self.tmp_path)
+            elif path.suffix == ".git":
                 shutil.copytree(path, temp_repo_path)
             else:
                 raise ValueError(f"Unexpected {path.suffix} extension")
@@ -82,8 +82,9 @@ def mock_repository(tmp_path):
         def __exit__(self, exc_type, exc_value, traceback):
             pass
 
-    with TemporaryRepository("testrepo.git", tmp_path) as path:
-        yield pygit2.Repository(path)
+    # Note barerepo head is set to test branch
+    with TemporaryRepository("barerepo.zip", tmp_path) as path:
+        return pygit2.Repository(path)
 
 
 def write_config_to_path(path, config):
@@ -95,8 +96,7 @@ def write_config_to_path(path, config):
 # TODO: parametrize the palm_config fixture for different configs
 @pytest.fixture
 def no_palm_config(tmp_path, monkeypatch):
-    monkeypatch.setattr(PalmConfig, "_get_repo", mock_repository)
-    monkeypatch.setattr(PalmConfig, "_get_current_branch", mock_current_branch)
+    monkeypatch.setattr(PalmConfig, "_get_repo", lambda self: mock_repository(tmp_path))
 
     return PalmConfig(Path(tmp_path))
 
@@ -117,8 +117,7 @@ def palm_config(tmp_path, monkeypatch):
         "protected_branches": ["main"],
     }
     write_config_to_path(palm_config_path, mock_config)
-    monkeypatch.setattr(PalmConfig, "_get_repo", mock_repository)
-    monkeypatch.setattr(PalmConfig, "_get_current_branch", mock_current_branch)
+    monkeypatch.setattr(PalmConfig, "_get_repo", lambda self: mock_repository(tmp_path))
     return PalmConfig(Path(tmp_path))
 
 
@@ -131,15 +130,14 @@ def palm_config_protected(tmp_path, monkeypatch):
     def mock_current_branch(self):
         return "main"
 
-    monkeypatch.setattr(PalmConfig, "_get_repo", mock_repository)
+    monkeypatch.setattr(PalmConfig, "_get_repo", lambda self: mock_repository(tmp_path))
     monkeypatch.setattr(PalmConfig, "_get_current_branch", mock_current_branch)
     return PalmConfig(Path(tmp_path))
 
 
 @pytest.fixture
 def environment(tmp_path, monkeypatch):
-    monkeypatch.setattr(PalmConfig, "_get_repo", mock_repository)
-    monkeypatch.setattr(PalmConfig, "_get_current_branch", mock_current_branch)
+    monkeypatch.setattr(PalmConfig, "_get_repo", lambda self: mock_repository(tmp_path))
     pm = mock_plugin_manager(tmp_path)
     config = PalmConfig(Path(tmp_path))
     return Environment(pm, config)
