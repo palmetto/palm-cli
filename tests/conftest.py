@@ -86,6 +86,7 @@ def mock_repository(tmp_path):
     with TemporaryRepository("barerepo.zip", tmp_path) as path:
         return pygit2.Repository(path)
 
+
 def write_config_to_path(path, config):
     path.parent.mkdir(parents=True)
     with open(path, "w") as f:
