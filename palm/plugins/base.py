@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 from urllib.parse import urlparse
 
 from palm.utils import cmd_name_from_file, is_cmd_file, run_on_host
+from palm.plugins.base_plugin_config import BasePluginConfig
 
 
 class BasePlugin:
@@ -13,6 +14,7 @@ class BasePlugin:
         command_dir: Path,
         version: Optional[str] = "unknown",
         package_location: Optional[str] = None,
+        config: Optional[BasePluginConfig] = None,
         **kwargs,
     ) -> None:
         """Initialize a plugin.
@@ -29,6 +31,7 @@ class BasePlugin:
         self.version = version
         self.package_location = package_location
         self.__dict__.update(kwargs)
+        self.config = config.get_config() if config else {}
 
     def all_commands(self) -> List:
         """Get the commands for a plugin.

@@ -100,3 +100,6 @@ class Environment:
         for key in env_vars.keys():
             env_vars_list.append(f"-e {key.upper()}={env_vars[key]}")
         return env_vars_list
+
+    def plugin_config(self, plugin_name: str):
+        return self.plugin_manager.plugins.get(plugin_name).config
