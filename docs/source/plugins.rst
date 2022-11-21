@@ -87,3 +87,22 @@ Or, maybe you have a set of commands you want to share with other people?
 Writing a plugin is a great way to contribute to the Palm CLI ecosystem.
 
 Check out the :doc:'write-a-plugin' section to learn how to write your own plugin.
+
+Plugin config
+=============
+
+Some plugins require configuration to work. This configuration is stored in the
+``.palm/config.yaml`` file in the project directory. The configuration for each
+plugin is stored under the ``plugin_config`` key at the root of the config file.
+
+Example plugin config
+
+.. code:: yaml
+
+  plugin_config:
+    dbt:
+      prod_artifacts: path/to/artifacts/
+      target: /path/to/target/
+
+Plugin config is loaded into the plugin's ``config`` attribute. Commands can
+access this config by calling ``environment.plugin_config(plugin_name)``.
