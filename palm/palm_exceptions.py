@@ -8,3 +8,12 @@ class NoRepositoryError(Exception):
     """
 
     pass
+
+class InvalidConfigError(Exception):
+    """
+    Raised when the config is invalid.
+    """
+
+    def __init__(self, message: str = "Invalid config"):
+        self.message = message
+        super().__init__(self.message)

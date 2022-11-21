@@ -4,6 +4,8 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel, ValidationError
 
+from palm.palm_exceptions import InvalidConfigError
+
 class BasePluginConfig(ABC):
     def __init__(self, plugin_name: str, model: BaseModel):
         self.plugin_name = plugin_name
@@ -11,39 +13,35 @@ class BasePluginConfig(ABC):
         self.model = model
 
     @abstractmethod
-    def set_config(self) -> bool:
+    def set(self) -> dict:
         """Setter for plugin config
 
         This method should be implemented by the plugin to set the config
         for the plugin. It should return True if the config was set successfully,
         and False if it was not.
 
-        Implementations of this method should call self.write_config to write
+        Implementations of this method should call self.write(config) to write
         the config to the config file.
 
         Returns:
-            bool: True if config was set successfully, False if not
+            dict: The config that was set
         """
         pass
 
-    def validate_config(self, config: dict) -> bool:
-        """Validates the plugin config against the pydantic model
+    def write(self, config: dict):
+        palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
+        if not 'plugin_config' in palm_config.keys():
+            palm_config['plugin_config'] = {}
 
-        Args:
-            config (dict): The config to validate
+        if not self.validate(config):
+            click.secho("Invalid config, not writing to config file", fg="red")
+            raise InvalidConfigError
 
-        Returns:
-            bool: Returns True if the config is valid, False otherwise
-        """
-        try:
-            self.model(**config)
-            return True
-        except ValidationError as e:
-            click.secho(f"Invalid config for plugin {self.plugin_name}", fg="red")
-            click.echo(e)
-            return False
+        palm_config['plugin_config'][self.plugin_name] = config
+        self.config_path.write_text(yaml.dump(palm_config))
 
-    def get_config(self) -> dict:
+
+    def get(self) -> dict:
         if not self.config_path.exists():
             click.secho(
                 f"Config file not found at {self.config_path}, run palm init",
@@ -51,28 +49,33 @@ class BasePluginConfig(ABC):
             )
             return {}
 
-        return self.read_config()
+        return self._read()
 
-    def read_config(self) -> dict:
+
+    def _read(self) -> dict:
         palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
         plugin_config = palm_config.get('plugin_config', {}).get(self.plugin_name, {})
 
         if not plugin_config:
-            self.set_config()
+            plugin_config = self.set()
 
-        if not self.validate_config(plugin_config):
-            return {}
+        if not self.validate(plugin_config):
+            raise InvalidConfigError
 
         return plugin_config
 
-    def write_config(self, config: dict):
-        palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
-        if not 'plugin_config' in palm_config.keys():
-            palm_config['plugin_config'] = {}
+    def validate(self, config: dict) -> bool:
+        """Validates the plugin config against the pydantic model
 
-        if not self.validate_config(config):
-            click.secho("Invalid config, not writing to config file", fg="red")
-            return
+        Args:
+            config (dict): The config to validate
 
-        palm_config['plugin_config'][self.plugin_name] = config
-        self.config_path.write_text(yaml.dump(palm_config))
+        Returns:
+            bool: Returns True if the config is valid, Raises InvalidConfigError if not
+        """
+        try:
+            self.model(**config)
+            return True
+        except ValidationError as e:
+            msg = f"Invalid config for plugin {self.plugin_name}: {e}"
+            raise InvalidConfigError(msg)
