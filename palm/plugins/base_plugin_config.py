@@ -47,14 +47,15 @@ class BasePluginConfig(ABC):
         palm_config['plugin_config'][self.plugin_name] = config
         self.config_path.write_text(yaml.dump(palm_config))
 
-    def get(self) -> dict:
+    def get(self) -> BaseModel:
         if not self.config_path.exists():
             click.secho(
                 f"Config file not found at {self.config_path}, run palm init", fg="red"
             )
             return {}
 
-        return self._read()
+        config_dict = self._read()
+        return self.model(**config_dict)
 
     def _read(self) -> dict:
         palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
