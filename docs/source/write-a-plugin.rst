@@ -34,8 +34,8 @@ the plugin every time you want to test changes to the plugin
 Creating a Plugin Config
 ========================
 
-If you wantto make your plugin configurable, you will need to create a plugin 
-config object and provide it to the plugin constructor. 
+If you wantto make your plugin configurable, you will need to create a plugin
+config object and provide it to the plugin constructor.
 
 The plugin config object:
 - must be a subclass of ``palm.plugins.base_plugin_config.BasePluginConfig``
@@ -68,3 +68,21 @@ Here is an example of a plugin config object and how to use it in a plugin:
 
   # Create the plugin, providing the config object
   my_plugin = BasePlugin(name='my_plugin', config=MyPluginConfig())
+
+Using Plugin Config values
+--------------------------
+
+To use the config values in your plugin's commands, a ``plugin_config`` method
+is provided on the environment object. This method takes the name of the plugin
+and returns the config values for that plugin.
+
+Here is an example of how to use the plugin config values in a plugin command:
+
+.. code:: python
+
+  @click.command()
+  @click.pass_obj
+  def my_command(environment):
+      plugin_config = env.plugin_config('my_plugin')
+      my_config_value = plugin_config.get('my_config_value', '')
+      click.echo(f"my_config_value is {my_config_value}")
