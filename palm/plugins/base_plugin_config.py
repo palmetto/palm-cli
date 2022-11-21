@@ -6,6 +6,7 @@ from pydantic import BaseModel, ValidationError
 
 from palm.palm_exceptions import InvalidConfigError
 
+
 class BasePluginConfig(ABC):
     def __init__(self, plugin_name: str, model: BaseModel):
         self.plugin_name = plugin_name
@@ -29,6 +30,12 @@ class BasePluginConfig(ABC):
         pass
 
     def write(self, config: dict):
+        if not self.config_path.exists():
+            click.secho(
+                f"Config file not found at {self.config_path}, run palm init", fg="red"
+            )
+            return
+
         palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
         if not 'plugin_config' in palm_config.keys():
             palm_config['plugin_config'] = {}
@@ -40,17 +47,14 @@ class BasePluginConfig(ABC):
         palm_config['plugin_config'][self.plugin_name] = config
         self.config_path.write_text(yaml.dump(palm_config))
 
-
     def get(self) -> dict:
         if not self.config_path.exists():
             click.secho(
-                f"Config file not found at {self.config_path}, run palm init",
-                fg="red"
+                f"Config file not found at {self.config_path}, run palm init", fg="red"
             )
             return {}
 
         return self._read()
-
 
     def _read(self) -> dict:
         palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)

@@ -9,6 +9,7 @@ class NoRepositoryError(Exception):
 
     pass
 
+
 class InvalidConfigError(Exception):
     """
     Raised when the config is invalid.
