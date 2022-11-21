@@ -2,11 +2,13 @@ from abc import ABC, abstractmethod
 import click
 from pathlib import Path
 import yaml
+from pydantic import BaseModel, ValidationError
 
 class BasePluginConfig(ABC):
-    def __init__(self, plugin_name: str):
+    def __init__(self, plugin_name: str, model: BaseModel):
         self.plugin_name = plugin_name
         self.config_path = Path.cwd() / ".palm" / f"config.yaml"
+        self.model = model
 
     @abstractmethod
     def set_config(self) -> bool:
@@ -24,14 +26,8 @@ class BasePluginConfig(ABC):
         """
         pass
 
-    @abstractmethod
     def validate_config(self, config: dict) -> bool:
-        """Validation method for plugin config
-
-        This method should be implemented by the plugin to validate the config.
-        Called before reading and writing the config file.
-        Reading an invalid config will return an empty dict.
-        Writing an invalid config will not write to the config file.
+        """Validates the plugin config against the pydantic model
 
         Args:
             config (dict): The config to validate
@@ -39,7 +35,13 @@ class BasePluginConfig(ABC):
         Returns:
             bool: Returns True if the config is valid, False otherwise
         """
-        pass
+        try:
+            self.model(**config)
+            return True
+        except ValidationError as e:
+            click.secho(f"Invalid config for plugin {self.plugin_name}", fg="red")
+            click.echo(e)
+            return False
 
     def get_config(self) -> dict:
         if not self.config_path.exists():
@@ -59,7 +61,6 @@ class BasePluginConfig(ABC):
             self.set_config()
 
         if not self.validate_config(plugin_config):
-            click.secho("Invalid plugin config", fg="red")
             return {}
 
         return plugin_config
