@@ -3,15 +3,18 @@ import sys
 import zipfile
 from pathlib import Path
 from unittest import mock
+from pydantic import BaseModel
 
 import pygit2
 import pytest
 import yaml
 
+
 from palm.environment import Environment
 from palm.palm_config import PalmConfig
 from palm.plugin_manager import PluginManager
 from palm.plugins.base import BasePlugin
+from palm.plugins.base_plugin_config import BasePluginConfig
 
 sys.modules["palm.plugins.mock"] = mock.Mock()
 
@@ -26,14 +29,14 @@ def cli(environment):
 """
 
 
-def mock_plugin(name, path):
+def mock_plugin(name, path, config=None):
     plugin_dir = path / name
     commands_dir = plugin_dir / "commands"
     commands_dir.mkdir(parents=True)
     with open(commands_dir / "cmd_foo.py", "w") as f:
         f.write(test_command())
 
-    return BasePlugin(name, commands_dir)
+    return BasePlugin(name, commands_dir, config=config)
 
 
 # TODO: parametrize the test_plugin fixture and remove second_test_plugin
@@ -58,6 +61,28 @@ def mock_plugin_manager(tmp_path):
 @pytest.fixture
 def plugin_manager(tmp_path):
     return mock_plugin_manager(tmp_path)
+
+
+class TestConfigModel(BaseModel):
+    value: str
+
+
+class MockPluginConfig(BasePluginConfig):
+    def __init__(self, plugin_name, model, config):
+        self.config = config
+        super().__init__(plugin_name, model)
+
+    def set(self) -> dict:
+        return self.config
+
+
+@pytest.fixture
+def mock_plugin_config(
+    config: dict,
+    plugin_name: str = 'test',
+    model: BasePluginConfig = TestConfigModel,
+):
+    return MockPluginConfig(plugin_name, model, config)
 
 
 def mock_repository(tmp_path):

@@ -1,3 +1,4 @@
+from unittest import mock
 import subprocess
 from pathlib import Path
 
@@ -49,3 +50,8 @@ def test_build_env_vars(environment):
     result = environment._build_env_vars(env_vars)
 
     assert result == ["-e PALM_ENV=test"]
+
+
+def test_get_plugin_config_no_config(environment):
+    result = environment.plugin_config("mock")
+    assert result == None
