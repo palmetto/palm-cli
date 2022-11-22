@@ -61,7 +61,7 @@ Generating code is awesome, but there are gotchas to be aware of.
    provided as replacements in the template, to prevent jinja from trying to
    evaluate them during code generation.
 
-New Projects with Cookicutter
+New Projects with Cookiecutter
 =============================
 
 Palm includes a `palm new` command which uses `cookiecutter <https://cookiecutter.readthedocs.io/en/1.7.2/>`_
