@@ -54,4 +54,4 @@ def test_build_env_vars(environment):
 
 def test_get_plugin_config_no_config(environment):
     result = environment.plugin_config("mock")
-    assert result == {}
+    assert result == None
