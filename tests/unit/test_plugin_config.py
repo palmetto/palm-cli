@@ -28,7 +28,7 @@ def test_base_config_write(mock_plugin_config, tmp_path, monkeypatch):
     # Set some config to prevent error when writing
     config_path.write_text(yaml.dump({'image_name': 'palm-test'}))
     monkeypatch.setattr(config, "config_path", config_path)
-    config.write({"value": "foo"})
+    config._write({"value": "foo"})
 
     config = yaml.safe_load(config_path.read_text())
     assert config["plugin_config"]["test"]["value"] == "foo"
