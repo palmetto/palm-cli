@@ -34,7 +34,7 @@ the plugin every time you want to test changes to the plugin
 Creating a Plugin Config
 ========================
 
-If you wantto make your plugin configurable, you will need to create a plugin
+If you want to make your plugin configurable, you will need to create a plugin
 config object and provide it to the plugin constructor.
 
 The plugin config object:
