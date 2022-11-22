@@ -25,7 +25,7 @@ jobs:
       - name: Check version matches tag
         id: check_version
         run: |
-          if [ "${{ steps.get_version.outputs.VERSION }}" != "${GITHUB_REF#refs/tags/v}" ]; then
+          if [ "v${{ steps.get_version.outputs.VERSION }}" != "${GITHUB_REF#refs/tags/v}" ]; then
             echo "Version number in setup.py does not match tag"
             exit 1
           fi
