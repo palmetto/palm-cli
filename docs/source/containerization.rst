@@ -19,13 +19,13 @@ Palm ships with basic containerization for Python projects.
 
 **Before you start**
 
-- Make sure your project is initialized with ``palm init``, the image_name
+- Make sure your project is initialized with ``palm init``, the image_name 
   configuration will be used by the containerization tool.
 - You should ensure you have a .env file in your project root directory. This file
   should include the environment variables you need to run your project. It should
   also be added to your .gitignore file.
 - You need to be using requirements.txt or poetry.lock to manage your dependencies.
-  If you are using a different package management system, please open an issue on
+  If you are using a different package management system, please open an issue on 
   Github and we will consider adding support for it.
 
 Use ``palm containerize`` to set up your project with Docker.
@@ -39,13 +39,13 @@ How containerization works
 Palm containerization generates the following files in your project root directory:
 
 - Dockerfile: The Dockerfile used to build your project
-- docker-compose.yml: Docker compose is used to load the .env file and volume
-  mount your project code so that you can make changes without having to rebuild
+- docker-compose.yml: Docker compose is used to load the .env file and volume 
+  mount your project code so that you can make changes without having to rebuild 
   or restart the container.
-- scripts/entrypoint.sh: This script is used to run your project. It is executed
-  by the Dockerfile as it's entrypoint. This is where your dependencies are
-  installed. Note: we do not recommend executing your project code directly in
-  the entrypoint as this limits the flexibility of your container, instead use
+- scripts/entrypoint.sh: This script is used to run your project. It is executed 
+  by the Dockerfile as it's entrypoint. This is where your dependencies are 
+  installed. Note: we do not recommend executing your project code directly in 
+  the entrypoint as this limits the flexibility of your container, instead use 
   palm commands to run your project, this allows you to determine what each instance
   of the container is doing (run, test, etc.).
 
@@ -58,14 +58,14 @@ for Python projects. For projects using a specific framework, or a different lan
 we recommend that you implement your own containerization solution. To do this,
 you will need to:
 
-- Create a new containerizer command in your project
+- Create a new containerizer command in your project 
   (``palm scaffold command --name containerize``).
-- Duplicate the templates from ``palm/plugins/core/templates/containerize`` and
-  add them to your project. Make the necessary changes to support your
+- Duplicate the templates from ``palm/plugins/core/templates/containerize`` and 
+  add them to your project. Make the necessary changes to support your 
   containerization needs.
-- Subclass the ``Containerizer`` class and override the ``run()`` and
+- Subclass the ``Containerizer`` class and override the ``run()`` and 
   ``package_manager()`` methods.
-- Open up cmd_containerize.py and implement any logic + Call YourSubclass.run()
+- Open up cmd_containerize.py and implement any logic + Call YourSubclass.run() 
   in your command.
 
 To see an example of custom containerization, see ``cmd_containerize.py`` in the

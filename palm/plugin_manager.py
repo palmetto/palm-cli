@@ -1,9 +1,7 @@
 import importlib
 from typing import List
-
-from click import secho
-
 from .plugins.base import BasePlugin as Plugin
+from click import secho
 
 
 class PluginManager:
@@ -33,11 +31,11 @@ class PluginManager:
             Plugin: Plugin instance
         """
         try:
-            module: Plugin = importlib.import_module("." + plugin_name, "palm.plugins")
+            module: Plugin = importlib.import_module('.' + plugin_name, 'palm.plugins')
         except ModuleNotFoundError as e:
-            if e.name == "palm.plugins." + plugin_name:
-                secho(f"Could not find plugin: {plugin_name}!", fg="red")
-            secho(f"Error importing plugin: {e}", fg="red")
+            if e.name == 'palm.plugins.' + plugin_name:
+                secho(f'Could not find plugin: {plugin_name}!', fg='red')
+            secho(f'Error importing plugin: {e}', fg='red')
             raise
 
         plugin = module.Plugin
@@ -48,9 +46,8 @@ class PluginManager:
 
     def extend_plugin_command_mapping(self, plugin_name: str) -> None:
         """Merges the plugin commands to the PluginManager plugin_command_dict
-        Note that this is using dict merging. In the event of 2 plugins having
-        the same command name, the second command will supercede the first,
-        replacing it.
+        Note that this is using dict merging. In the event of 2 plugins having the
+        same command name, the second command will supercede the first, replacing it.
 
         Args:
             plugin_name (str): name of the plugin

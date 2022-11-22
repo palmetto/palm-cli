@@ -1,11 +1,11 @@
 directories:
-  - palm
-  - palm/plugins
-  - palm/plugins/{{plugin_name}}
-  - palm/plugins/{{plugin_name}}/commands
+- palm
+- palm/plugins
+- palm/plugins/{{plugin_name}}
+- palm/plugins/{{plugin_name}}/commands
 files:
-  - plugin_init.tpl.py: 'palm/plugins/{{plugin_name}}/__init__.py'
-  - plugin_template.tpl.py: 'palm/plugins/{{plugin_name}}/{{plugin_name}}_plugin.py'
-  - empty_file.py: 'palm/plugins/{{plugin_name}}/commands/__init__.py'
-  - empty_file.py: 'README.md'
-  - setup.tpl.py: 'setup.py'
+    - plugin_init.tpl.py: 'palm/plugins/{{plugin_name}}/__init__.py'
+    - plugin_template.tpl.py: 'palm/plugins/{{plugin_name}}/{{plugin_name}}_plugin.py'
+    - empty_file.py: 'palm/plugins/{{plugin_name}}/commands/__init__.py'
+    - empty_file.py: 'README.md'
+    - setup.tpl.py: 'setup.py'

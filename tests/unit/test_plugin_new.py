@@ -1,6 +1,5 @@
-from pathlib import Path
-
 import yaml
+from pathlib import Path
 
 path_suffix = "palm/plugins/core/templates/plugin/"
 plugin_dir = Path.cwd() / path_suffix

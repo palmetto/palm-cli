@@ -1,8 +1,8 @@
 import click
 
 
-@click.command("shell")
-@click.pass_obj
-def cli(environment):
+@click.command('shell')
+@click.pass_context
+def cli(ctx):
     """Bash into your docker image to run arbitrary commands"""
-    environment.run_in_docker("bash")
+    ctx.obj.run_in_docker('bash')

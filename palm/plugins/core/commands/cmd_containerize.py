@@ -1,7 +1,5 @@
-from pathlib import Path
-
 import click
-
+from pathlib import Path
 from palm.containerizer import PythonContainerizer
 
 
@@ -14,7 +12,6 @@ from palm.containerizer import PythonContainerizer
 )
 @click.pass_context
 def cli(ctx, version: str):
-    all_templates_dir = Path(Path(__file__).parents[1], "templates")
-    template_dir = all_templates_dir / "containerize"
+    template_dir = Path(Path(__file__).parents[1], "templates") / "containerize"
     PythonContainerizer(ctx, template_dir, version).run()
     click.secho(f"Containerized {ctx.obj.palm.image_name}", fg="green")

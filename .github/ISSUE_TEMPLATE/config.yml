@@ -2,6 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Palm Core Team
     url: data-analytics-team@palmetto.com
-    about: |
-     Please report security vulnerabilities to this email address,
-     not in public issues.
+    about: Please report security vulnerabilities to this email address, not in public issues.

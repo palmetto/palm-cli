@@ -28,7 +28,7 @@ help text for commands in the current project
 System Requirements
 ===================
 
-Palm is designed to be OS agnostic and should work on Windows, Mac OS X, and
+Palm is designed to be OS agnostic and should work on Windows, Mac OS X, and 
 common Linux distributions.
 
 Palm requires the following software to be installed and running on your
@@ -36,7 +36,7 @@ device:
 
 1. `Docker <https://docs.docker.com/get-docker/>`_
    You can check to see if you already have it with ``docker --version``
-2. `Python3 <https://www.python.org/downloads/>`_
+2. `Python3 <https://www.python.org/downloads/>`_ 
    You can check to see if you already have it with ``python3 --version``
 
 
@@ -58,7 +58,7 @@ To verify that the installation was successful, run ``palm --version``.
   WARNING: The script palm is installed in '/Users/yourname/Library/Python/3.8/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 
-you will need to add ``'/Users/yourname/Library/Python/3.8/bin'`` to your path for
+you will need to add ``'/Users/yourname/Library/Python/3.8/bin'`` to your path for 
 ``palm`` to work. You can do that with one of these commands (depending on your
 shell of choice):
 
@@ -93,7 +93,7 @@ automatically created at ``~/.palm/config.yaml`` and contains the following opti
 Shell Completion
 ================
 
-To enable autocomplete for palm commands, add one of the following shell-specific
+To enable autocomplete for palm commands, add one of the following shell-specific 
 lines to your shell's profile. Once added, either source your profile or start
 a new shell session.
 

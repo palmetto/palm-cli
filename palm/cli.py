@@ -1,15 +1,14 @@
+import sys
+import click
 import importlib
 import os
-import sys
-from typing import Any, Callable, List, Optional
-
-import click
 import pkg_resources
+from typing import Optional, Any, Callable, List
 
 from .environment import Environment
 from .palm_config import PalmConfig
 from .plugin_manager import PluginManager
-from .utils import cmd_name_from_file, is_cmd_file, run_on_host
+from .utils import is_cmd_file, cmd_name_from_file, run_on_host
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="PALM")
 
@@ -28,9 +27,9 @@ class PalmCLI(click.MultiCommand):
         result_callback: Optional[Callable[..., Any]] = None,
         **attrs: Any,
     ) -> None:
-        if not palm_config.is_valid_branch():
-            msg = f"You are currently on protected branch {palm_config.branch}. For your safety Palm will not run!"
-            click.secho(msg, fg="red")
+        try:
+            palm_config.validate_branch()
+        except SystemExit as e:
             sys.exit(1)
         self.palm = palm_config
         self.plugin_manager = plugin_manager_instance
@@ -58,7 +57,7 @@ class PalmCLI(click.MultiCommand):
         dedupe = set(cmds)
         cmds = list(dedupe)
         cmds.sort()
-        project_excluded_commands = self.palm.config.get("excluded_commands", [])
+        project_excluded_commands = self.palm.config.get('excluded_commands', [])
         cmds = filter(lambda x: x not in project_excluded_commands, cmds)
         return cmds
 
@@ -109,10 +108,10 @@ class PalmCLI(click.MultiCommand):
             mod = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(mod)
         except ImportError as error:
-            click.secho(f"Import error: {error}", fg="red")
+            click.secho(f'Import error: {error}', fg="red")
             return
         except FileNotFoundError:
-            click.secho("Command not found, check spelling!", fg="red")
+            click.secho('Command not found, check spelling!', fg="red")
             return
         return mod.cli
 
@@ -121,7 +120,7 @@ def get_version():
     try:
         version = pkg_resources.require("palm")[0].version
     except pkg_resources.DistributionNotFound:
-        version = "unknown"
+        version = 'unknown'
     return version
 
 

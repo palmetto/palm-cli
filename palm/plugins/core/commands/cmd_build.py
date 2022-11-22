@@ -1,6 +1,5 @@
-import subprocess
-
 import click
+import subprocess
 
 
 @click.command("build")

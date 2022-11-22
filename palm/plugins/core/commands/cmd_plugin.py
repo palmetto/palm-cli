@@ -1,6 +1,5 @@
-from pathlib import Path
 from typing import Optional
-
+from pathlib import Path
 import click
 
 
@@ -15,8 +14,8 @@ def cli():
 @click.option(
     "--author-email", multiple=False, help="Email address of the plugin author"
 )
-@click.pass_obj
-def new(environment, name: str, author: Optional[str], author_email: Optional[str]):
+@click.pass_context
+def new(ctx, name: str, author: Optional[str], author_email: Optional[str]):
     """
     Generate a new plugin
     """
@@ -29,11 +28,10 @@ def new(environment, name: str, author: Optional[str], author_email: Optional[st
     if name.startswith("palm-"):
         name = name[5:]
 
-    # TODO: Currently, this generator has to be run from withing an existing
-    # project. This isn't ideal, but it works. In the future I'd like to move
-    # this command out of the core plugin and into a separate
-    # system-wide plugin.
-    default_target_dir = Path(Path.cwd().parent, f"palm-{name}")
+    # TODO: Currently, this generator has to be run from withing an existing project
+    # This isn't ideal, but it works. In the future I'd like to move this command
+    # out of the core plugin and into a separate system-wide plugin.
+    default_target_dir = Path(Path.cwd().parent, f'palm-{name}')
     target_dir = click.prompt(
         "Where do you want to create the plugin?", default=default_target_dir
     )
@@ -48,22 +46,22 @@ def new(environment, name: str, author: Optional[str], author_email: Optional[st
             return
         target_dir.mkdir(parents=True)
 
-    template_path = Path(Path(__file__).parents[1], "templates") / "plugin"
+    template_path = Path(Path(__file__).parents[1], "templates") / 'plugin'
     replacements = {
-        "plugin_name": name,
-        "plugin_class_name": f"{name.title().replace('_', '')}Plugin",
-        "author": author,
-        "author_email": author_email,
+        'plugin_name': name,
+        'plugin_class_name': f"{name.title().replace('_', '')}Plugin",
+        'author': author,
+        'author_email': author_email,
     }
 
-    environment.generate(template_path, target_dir, replacements)
-    click.secho(f"{name} plugin created in {target_dir}", fg="green")
+    ctx.obj.generate(template_path, target_dir, replacements)
+    click.secho(f'{name} plugin created in {target_dir}', fg='green')
 
 
 @cli.command()
 @click.option("--name", multiple=False, help="Name of the plugin")
-@click.pass_obj
-def versions(environment, name: Optional[str]):
+@click.pass_context
+def versions(ctx, name: Optional[str]):
     """
     Output plugin versions
 
@@ -72,15 +70,14 @@ def versions(environment, name: Optional[str]):
 
     if name:
         try:
-            plugins = [environment.plugin_manager.plugins[name]]
+            plugins = [ctx.obj.plugin_manager.plugins[name]]
         except KeyError:
-            click.secho(f"Plugin {name} not installed in this project", fg="red")
+            click.secho(f"Plugin {name} not installed in this project", fg='red')
             return
     else:
-        plugins = list(environment.plugin_manager.plugins.values())
+        plugins = list(ctx.obj.plugin_manager.plugins.values())
 
-    # Do not display core or repo 'plugins'
-    # since those are versioned with palm core
+    # Do not display core or repo 'plugins' since those are versioned with palm core
     excluded_plugins = ["core", "repo"]
     plugins = [p for p in plugins if p.name not in excluded_plugins]
 
@@ -94,8 +91,8 @@ def versions(environment, name: Optional[str]):
 
 @cli.command()
 @click.option("--name", multiple=False, required=True, help="Name of the plugin")
-@click.pass_obj
-def update(environment, name: Optional[str]):
+@click.pass_context
+def update(ctx, name: Optional[str]):
     """
     Update a plugin
 
@@ -103,39 +100,17 @@ def update(environment, name: Optional[str]):
     """
     excluded_plugins = ["core", "repo"]
     if name in excluded_plugins:
-        click.secho(f"Plugin {name} is a core plugin and cannot be updated", fg="red")
+        click.secho(f"Plugin {name} is a core plugin and cannot be updated", fg='red')
 
     try:
-        plugin = environment.plugin_manager.plugins[name]
+        plugin = ctx.obj.plugin_manager.plugins[name]
     except KeyError:
-        click.secho(f"Plugin {name} not installed in this project", fg="red")
+        click.secho(f"Plugin {name} not installed in this project", fg='red')
         return
 
     click.echo(f"Updating {plugin.name}...")
     success, message = plugin.update()
     if success:
-        click.secho(f"Plugin {plugin.name} updated successfully", fg="green")
+        click.secho(f"Plugin {plugin.name} updated successfully", fg='green')
     else:
-        click.secho(f"Plugin {plugin.name} update failed: {message}", fg="red")
-
-
-@cli.command()
-@click.option("--name", multiple=False, required=True, help="Name of the plugin")
-@click.pass_obj
-def configure(environment, name: Optional[str]):
-    """
-    Update a plugin
-
-    If the name option is provided, update the specified plugin
-    """
-    try:
-        plugin = environment.plugin_manager.plugins[name]
-    except KeyError:
-        click.secho(f"Plugin {name} not installed in this project", fg="red")
-        return
-
-    success = plugin.config.update()
-    if success:
-        click.secho(f"Plugin {plugin.name} configured successfully", fg="green")
-    else:
-        click.secho(f"Plugin {plugin.name} configuration failed", fg="red")
+        click.secho(f"Plugin {plugin.name} update failed: {message}", fg='red')
