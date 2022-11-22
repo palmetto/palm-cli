@@ -84,5 +84,4 @@ Here is an example of how to use the plugin config values in a plugin command:
   @click.pass_obj
   def my_command(environment):
       plugin_config = env.plugin_config('my_plugin')
-      my_config_value = plugin_config.get('my_config_value', '')
-      click.echo(f"my_config_value is {my_config_value}")
+      click.echo(f"my_config_value is {plugin_config.my_config_value}")
