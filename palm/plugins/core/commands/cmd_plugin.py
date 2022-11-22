@@ -134,8 +134,8 @@ def configure(environment, name: Optional[str]):
         click.secho(f"Plugin {name} not installed in this project", fg="red")
         return
 
-    config = plugin.config.set()
-    if config:
+    success = plugin.config.update()
+    if success:
         click.secho(f"Plugin {plugin.name} configured successfully", fg="green")
     else:
         click.secho(f"Plugin {plugin.name} configuration failed", fg="red")
