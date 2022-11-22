@@ -117,3 +117,25 @@ def update(environment, name: Optional[str]):
         click.secho(f"Plugin {plugin.name} updated successfully", fg="green")
     else:
         click.secho(f"Plugin {plugin.name} update failed: {message}", fg="red")
+
+
+@cli.command()
+@click.option("--name", multiple=False, required=True, help="Name of the plugin")
+@click.pass_obj
+def configure(environment, name: Optional[str]):
+    """
+    Update a plugin
+
+    If the name option is provided, update the specified plugin
+    """
+    try:
+        plugin = environment.plugin_manager.plugins[name]
+    except KeyError:
+        click.secho(f"Plugin {name} not installed in this project", fg="red")
+        return
+
+    config = plugin.config.set()
+    if config:
+        click.secho(f"Plugin {plugin.name} configured successfully", fg="green")
+    else:
+        click.secho(f"Plugin {plugin.name} configuration failed", fg="red")

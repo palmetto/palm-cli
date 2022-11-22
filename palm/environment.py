@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 import click
+from pydantic import BaseModel
 
 from palm.plugin_manager import PluginManager
 from palm.utils import run_on_host
@@ -93,6 +94,16 @@ class Environment:
     def generate(
         self, template_path: Path, target_path: Path, replacements: dict
     ) -> str:
+        """Runs a template through the code generator
+
+        Args:
+            template_path (Path): Path to the directory containing the template
+            target_path (Path): Path to the directory where the generated code will be written
+            replacements (dict): Dict of replacements to make in the template
+
+        Returns:
+            str: The path to the generated code
+        """
         return CodeGenerator(template_path, target_path, replacements).run()
 
     def _build_env_vars(self, env_vars: dict) -> List[str]:
@@ -101,5 +112,17 @@ class Environment:
             env_vars_list.append(f"-e {key.upper()}={env_vars[key]}")
         return env_vars_list
 
-    def plugin_config(self, plugin_name: str):
-        return self.plugin_manager.plugins.get(plugin_name).config
+    def plugin_config(self, plugin_name: str) -> Optional[BaseModel]:
+        """Returns the config for a plugin
+
+        Args:
+            plugin_name (str): The name of the plugin
+
+        Returns:
+            Optional[BaseModel]: The config for the plugin, or None if the plugin
+            is not found or does not have a config
+        """
+        plugin = self.plugin_manager.plugins.get(plugin_name)
+        if plugin and plugin.config:
+            return plugin.config.get()
+        return None

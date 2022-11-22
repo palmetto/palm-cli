@@ -31,7 +31,7 @@ class BasePlugin:
         self.version = version
         self.package_location = package_location
         self.__dict__.update(kwargs)
-        self.config = config.get() if config else {}
+        self.config = config
 
     def all_commands(self) -> List:
         """Get the commands for a plugin.
