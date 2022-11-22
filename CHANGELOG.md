@@ -20,13 +20,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   using cookiecutter directly? Because with palm, you're able to configure a set
   of default cookiecutter templates, which helps keep projects consistent.
   Every developer, on every team, should use the same set of templates!
+- **Plugin Configs** enable plugins to define a configuration object which is
+  persisted in the .palm/config.yml. Configurations are defined by the plugin
+  and made available to each command via the palm environment. The next release
+  of palm-dbt will include a working example of Plugin Configuration!
 - **Pre-commit** Added pre-commit hooks to palm to improve contributor
   experience.
+- **Continuous deployment** via github actions workflow.
+- **Additional Dependencies** palm-cli now depends on cookiecutter >= 2.0 for
+  project scaffolding via `palm new` and pydantic >= 1.9 for Plugin Configs.
 
 ### Changed
 
 - **linting & cleanup** as a result of adding more tools in out pre-commit
   hooks, we also cleaned up some poorly formatted files in the project!.
+- **Use pass_obj** all core commands now use `@click.pass_obj` to provide the
+  palm environment to the command, rather than the more convoluted
+  `@click.pass_context()`
 
 ## [2.4.1] - 2022-06-08
 
