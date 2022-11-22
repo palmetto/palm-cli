@@ -103,15 +103,16 @@ what if the fix was automated? Enter palm.
 
    #.palm/cmd_up.py
 
-   def cmd_up(ctx):
+   @click.pass_obj
+   def cmd_up(environment):
        “”” starts the compose stack”””
        echo(“Starting docker stack…”)
-       exit_code, out, err = ctx.docker_up(capture_output=True)
+       exit_code, out, err = environment.docker_up(capture_output=True)
        cryptic_message_indicating_no_memory = “ERROR: unable to read file app/conf: file does not exist or access denied”
        if cryptic_message_indicating_no_memory in err:
            red_echo(“Docker may be out of memory, cleaning up first…”)
-           ctx.docker_full_clean()
-           ctx.docker_up(bubble_error=True)
+           environment.docker_full_clean()
+           environment.docker_up(bubble_error=True)
            green_echo(“Docker stack started.”)       
 	
 Now and forever, your developers will see this when they run out of memory:

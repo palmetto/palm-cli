@@ -1,12 +1,15 @@
-from typing import Optional, Tuple
 import importlib
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
+
 import click
-from palm.utils import run_on_host
+from pydantic import BaseModel
+
 from palm.plugin_manager import PluginManager
-from .palm_config import PalmConfig
+from palm.utils import run_on_host
+
 from .code_generator import CodeGenerator
+from .palm_config import PalmConfig
 
 
 class Environment:
@@ -29,7 +32,7 @@ class Environment:
         """
         click.secho(f"Executing command `{cmd}` in compose...", fg="yellow")
 
-        docker_cmd = ['docker-compose run --service-ports --rm']
+        docker_cmd = ["docker-compose run --service-ports --rm"]
         docker_cmd.extend(self._build_env_vars(env_vars))
         docker_cmd.append(self.palm.image_name)
         if no_bin_bash:
@@ -37,9 +40,9 @@ class Environment:
         else:
             docker_cmd.append(f'/bin/bash -c "{cmd}" ')
 
-        ex_code, _, _ = run_on_host(' '.join(docker_cmd))
+        ex_code, _, _ = run_on_host(" ".join(docker_cmd))
         if ex_code == 0:
-            return (True, 'Success! Palm completed with exit code 0')
+            return (True, "Success! Palm completed with exit code 0")
         return (False, f"Fail! Palm exited with code {ex_code}")
 
     def run_in_shell(self, cmd: str, env_vars: Optional[dict] = {}):
@@ -48,7 +51,7 @@ class Environment:
         deprecation_msg = (
             "DEPRECATION: run_in_shell has been renamed to "
             "`run_in_docker` and will be removed in a future version. "
-            "Please update your commands to use ctx.obj.run_in_docker"
+            "Please update your commands to use environment.run_in_docker"
         )
         click.secho(deprecation_msg, fg="yellow")
         success, msg = self.run_in_docker(cmd, env_vars)
@@ -84,17 +87,42 @@ class Environment:
             mod = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(mod)
         except ImportError as error:
-            click.secho(f'Import error: {error}', fg="red")
+            click.secho(f"Import error: {error}", fg="red")
             return None
         return mod
 
     def generate(
         self, template_path: Path, target_path: Path, replacements: dict
     ) -> str:
+        """Runs a template through the code generator
+
+        Args:
+            template_path (Path): Path to the directory containing the template
+            target_path (Path): Path to the directory where the generated code will be written
+            replacements (dict): Dict of replacements to make in the template
+
+        Returns:
+            str: The path to the generated code
+        """
         return CodeGenerator(template_path, target_path, replacements).run()
 
     def _build_env_vars(self, env_vars: dict) -> List[str]:
         env_vars_list = []
         for key in env_vars.keys():
-            env_vars_list.append(f'-e {key.upper()}={env_vars[key]}')
+            env_vars_list.append(f"-e {key.upper()}={env_vars[key]}")
         return env_vars_list
+
+    def plugin_config(self, plugin_name: str) -> Optional[BaseModel]:
+        """Returns the config for a plugin
+
+        Args:
+            plugin_name (str): The name of the plugin
+
+        Returns:
+            Optional[BaseModel]: The config for the plugin, or None if the plugin
+            is not found or does not have a config
+        """
+        plugin = self.plugin_manager.plugins.get(plugin_name)
+        if plugin and plugin.config:
+            return plugin.config.get()
+        return None
