@@ -44,14 +44,18 @@ def test_get_config(mock_plugin_config, tmp_path, monkeypatch):
 
     assert config.get() == {"value": "foo"}
 
+
 @pytest.mark.parametrize("config", [{"value": "foo"}])
-def test_update_config_returns_success_and_config(mock_plugin_config, tmp_path, monkeypatch):
+def test_update_config_returns_success_and_config(
+    mock_plugin_config, tmp_path, monkeypatch
+):
     config = mock_plugin_config
     config_path = tmp_path / "config.yaml"
     config_path.write_text(yaml.dump({'image_name': 'palm-test'}))
     monkeypatch.setattr(config, "config_path", config_path)
 
     assert config.update() == (True, {"value": "foo"})
+
 
 @pytest.mark.parametrize("config", [{"value": "foo"}])
 def test_update_config_writes_to_file(mock_plugin_config, tmp_path, monkeypatch):
@@ -67,7 +71,9 @@ def test_update_config_writes_to_file(mock_plugin_config, tmp_path, monkeypatch)
 
 
 @pytest.mark.parametrize("config", [{}])
-def test_update_config_raises_for_invalid_config(mock_plugin_config, tmp_path, monkeypatch):
+def test_update_config_raises_for_invalid_config(
+    mock_plugin_config, tmp_path, monkeypatch
+):
     config = mock_plugin_config
     config_path = tmp_path / "config.yaml"
     config_path.write_text(yaml.dump({'image_name': 'palm-test'}))
@@ -75,6 +81,7 @@ def test_update_config_raises_for_invalid_config(mock_plugin_config, tmp_path, m
 
     with pytest.raises(InvalidConfigError):
         config.update()
+
 
 @pytest.mark.parametrize("config", [{}])
 def test_read_config_with_update(mock_plugin_config, tmp_path, monkeypatch):
