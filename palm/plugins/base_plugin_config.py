@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-import click
 from pathlib import Path
+
+import click
 import yaml
 from pydantic import BaseModel, ValidationError
 
@@ -18,8 +19,7 @@ class BasePluginConfig(ABC):
         """Setter for plugin config
 
         This method should be implemented by the plugin to set the config
-        for the plugin. It should return True if the config was set successfully,
-        and False if it was not.
+        for the plugin. It should return the dict for the config that was set.
 
         Returns:
             dict: The config that was set
@@ -72,10 +72,10 @@ class BasePluginConfig(ABC):
 
     def _read(self) -> dict:
         palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
-        plugin_config = palm_config.get('plugin_config', {}).get(self.plugin_name, {})
+        plugin_config = palm_config.get("plugin_config", {}).get(self.plugin_name, {})
 
         if not plugin_config:
-            plugin_config = self.update()
+            self.update()
 
         if not self.validate(plugin_config):
             raise InvalidConfigError
@@ -90,12 +90,12 @@ class BasePluginConfig(ABC):
             return
 
         palm_config = yaml.load(self.config_path.read_text(), Loader=yaml.FullLoader)
-        if not 'plugin_config' in palm_config.keys():
-            palm_config['plugin_config'] = {}
+        if not "plugin_config" in palm_config.keys():
+            palm_config["plugin_config"] = {}
 
         if not self.validate(config):
             click.secho("Invalid config, not writing to config file", fg="red")
             raise InvalidConfigError
 
-        palm_config['plugin_config'][self.plugin_name] = config
+        palm_config["plugin_config"][self.plugin_name] = config
         self.config_path.write_text(yaml.dump(palm_config))
