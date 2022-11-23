@@ -1,7 +1,8 @@
-from abc import ABC, abstractmethod
 import click
-from pathlib import Path
 import yaml
+from typing import Tuple
+from abc import ABC, abstractmethod
+from pathlib import Path
 from pydantic import BaseModel, ValidationError
 
 from palm.palm_exceptions import InvalidConfigError
@@ -26,11 +27,12 @@ class BasePluginConfig(ABC):
         """
         pass
 
-    def update(self) -> bool:
+    def update(self) -> Tuple[bool, dict]:
         """Updates the config file with configuration provided by the set method
 
         Returns:
-            bool: True if the config was updated, False if it was not
+            Tuple[bool, dict]: Returns a tuple of (True, config) if the config was
+            updated successfully, and (False, {}) if it was not.
         """
         try:
             config = self.set()
@@ -38,11 +40,11 @@ class BasePluginConfig(ABC):
             self._write(config)
         except InvalidConfigError as e:
             click.secho(str(e), fg="red")
-            return False
+            raise e
         except Exception as e:
             click.secho(str(e), fg="red")
-            return False
-        return True
+            return (False, {})
+        return (True, config)
 
     def get(self) -> BaseModel:
         if not self.config_path.exists():
@@ -75,10 +77,7 @@ class BasePluginConfig(ABC):
         plugin_config = palm_config.get('plugin_config', {}).get(self.plugin_name, {})
 
         if not plugin_config:
-            plugin_config = self.update()
-
-        if not self.validate(plugin_config):
-            raise InvalidConfigError
+            _, plugin_config = self.update()
 
         return plugin_config
 
