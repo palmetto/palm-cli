@@ -52,25 +52,3 @@ def group(environment, group: str, command: List[str]):
 
     environment.generate(template_path, palm_target_dir, replacements)
     click.secho(f"{group} command group created in {palm_target_dir}", fg="green")
-
-
-@cli.command("config")
-@click.option("-i", "--image-name", multiple=False, help="Name of your docker image")
-@click.option("-p", "--plugins", multiple=True, help="List of plugins you want to use")
-@click.option(
-    "-pb",
-    "--protected-branches",
-    multiple=True,
-    help="List of branches you do not want to run palm on",
-)
-@click.pass_obj
-def config(
-    environment,
-    image_name: Optional[str],
-    plugins: Optional[tuple],
-    protected_branches: Optional[tuple],
-):
-    """Generate a base .palm/config for existing projects"""
-    image_name = image_name or environment.palm.image_name
-    create_config(palm_target_dir, image_name, plugins, protected_branches)
-    click.secho("Palm config created!", fg="green")
