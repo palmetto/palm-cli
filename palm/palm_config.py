@@ -8,6 +8,7 @@ from click import secho, echo
 from deepmerge import always_merger
 from pygit2 import Repository
 
+from .docker_details import DockerDetails
 from .palm_exceptions import NoRepositoryError
 
 
@@ -25,6 +26,7 @@ class PalmConfig:
     repo: Optional[Repository] = None
     branch: str = None
     plugins: List[str] = []
+    docker_details: DockerDetails = DockerDetails()
 
     def __init__(self, project_path: Optional["Path"] = Path.cwd()):
         self.project_root = project_path
