@@ -138,7 +138,13 @@ class PalmConfig:
         plugins_from_config = self.config.get('plugins') or []
         # The order here defines the order in which commands will be overridden
         # Plugins on the right will override plugins on the left!
-        self.plugins = core_plugins + plugins_from_config + ['repo']
+        self.plugins = core_plugins + plugins_from_config
+
+        if self.is_multi_service:
+            self.plugins.append('multi_service')
+
+        self.plugins.append('repo')
+
 
     def _use_global_plugins(self):
         """Use the setup plugins - when palm is used outside of a git repo"""
@@ -191,4 +197,4 @@ class PalmConfig:
         Returns:
             Boolean: True if the project is a multi-service project
         """
-        return 'multi_service' in self.plugins
+        return self.docker_details.is_multi_service
