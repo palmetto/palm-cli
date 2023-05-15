@@ -13,9 +13,9 @@ def cli(environment, command: str, container: Optional[str], no_bin_bash: bool):
     cmd = ['docker exec -it']
 
     if not container:
-        services = environment.palm.docker_details.service_names
+        services = environment.palm.docker_details.running_service_names
         container = environment.choice_prompt(
-            "Which container would you like to exec into?",
+            "Which container would you like to run this command in?",
             services
         )
 
