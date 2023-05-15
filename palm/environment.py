@@ -32,7 +32,7 @@ class Environment:
         """
         click.secho(f"Executing command `{cmd}` in compose...", fg="yellow")
 
-        docker_cmd = ["docker-compose run --service-ports --rm"]
+        docker_cmd = ["docker compose run --service-ports --rm"]
         docker_cmd.extend(self._build_env_vars(env_vars))
         docker_cmd.append(self.palm.image_name)
         if no_bin_bash:

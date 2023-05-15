@@ -133,10 +133,6 @@ def required_dependencies_ready():
             "Docker is not installed, please install it first",
         ),
         (
-            "which docker-compose || where docker-compose",
-            "Docker Compose is not installed, please install it first",
-        ),
-        (
             "docker ps",
             "Docker is not running, please start it first",
         ),

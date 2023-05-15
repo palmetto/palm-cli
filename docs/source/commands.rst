@@ -146,14 +146,14 @@ That could look something like this:
   @click.pass_obj
   def cli(environment):
       """Starts the container as daemon, watches the logs, then exits"""
-      environment.run_on_host("docker-compose run -d super_slow_starting_django_app",
+      environment.run_on_host("docker compose run -d super_slow_starting_django_app",
                            check=True)
 
       ## this is where we watch, pseudo-blocking
       building_logs = str()
       while "Starting local webserver via runserver on port 8080..." \
         not in building_logs:
-          logs, _, _ = environment.run_on_host("docker-compose logs static_app")
+          logs, _, _ = environment.run_on_host("docker compose logs static_app")
             if logs != building_logs:
                 building_logs = logs
                 click.echo(logs)
