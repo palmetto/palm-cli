@@ -170,7 +170,7 @@ class PalmConfig:
         return self.project_root.name.replace("-", "_")
 
     @property
-    def image_name(self) -> str:
+    def image_name(self) -> Union[str, List[str]]:
         """Docker image name for the current project
         Attempts to load the image_name from .palm/config.yaml, falling back to
         the snake_cased project root dir name
@@ -179,3 +179,14 @@ class PalmConfig:
             str: Name of docker image to use
         """
         return self.config.get('image_name') or self.project_root_snake_case
+
+    @property
+    def is_multi_service(self) -> Boolean:
+        """Is the current project a multi-service project
+
+        Note that this config will change the behaviour of some commands.
+
+        Returns:
+            Boolean: True if the project is a multi-service project
+        """
+        return 'multi_service' in self.plugins
