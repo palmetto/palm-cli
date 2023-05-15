@@ -8,7 +8,7 @@ import click
 def cli(environment, detach: bool, build: bool):
     """Bring up all services"""
 
-    command = 'docker-compose up'
+    command = 'docker compose up'
     if detach:
       command += ' -d'
     if build:
