@@ -1,6 +1,7 @@
 import shlex
 import yaml
 import subprocess
+from typing import List
 from pathlib import Path
 
 from .palm_exceptions import NoRunningServicesError
@@ -20,7 +21,7 @@ class DockerDetails:
         return yaml.safe_load(self.path.read_text())
 
     @property
-    def service_names(self) -> list[str]:
+    def service_names(self) -> List[str]:
         """Gets the names of currently running services for the current project.
 
         Returns:
