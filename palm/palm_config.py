@@ -26,6 +26,7 @@ class PalmConfig:
     repo: Optional[Repository] = None
     branch: str = None
     plugins: List[str] = []
+    docker_details: DockerDetails = DockerDetails()
 
     def __init__(self, project_path: Optional["Path"] = Path.cwd()):
         self.project_root = project_path
@@ -196,6 +197,4 @@ class PalmConfig:
         Returns:
             Boolean: True if the project is a multi-service project
         """
-        # Todo: move to self?
-        docker_details = DockerDetails()
-        return docker_details.is_multi_service
+        return self.docker_details.is_multi_service
