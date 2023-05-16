@@ -18,26 +18,21 @@ class DockerDetails:
         return yaml.safe_load(self.path.read_text())
 
     @property
-    def running_service_names(self) -> list[str]:
+    def service_names(self) -> list[str]:
         """Gets the names of currently running services for the current project.
 
         Returns:
             list[str]: The names of the running services
         """
         services = list(self.config.get('services', {}).keys())
-        service_names = []
-        for service in services:
-            name = self.get_running_service_name(service)
-            # Only append names of running services
-            if name:
-                service_names.append(name)
-        if not service_names:
-            raise NoRunningServicesError()
-        return service_names
+        running_services = [s for s in services if self.check_service_is_running(s)]
 
-    def get_running_service_name(self, service: str) -> str:
-        """Gets the name of a running service based on the service name
-        defined in the docker-compose.yml file.
+        if not running_services:
+            raise NoRunningServicesError()
+        return services
+
+    def check_service_is_running(self, service: str) -> bool:
+        """Check if a service is running in Docker
 
         Args:
             service (str): The service name defined in the docker-compose.yml
@@ -52,8 +47,9 @@ class DockerDetails:
           capture_output=True
         )
         if result.returncode != 0:
-            raise Exception(result.stderr)
-        return result.stdout.decode('utf-8').strip()
+            return False
+
+        return True
 
     @property
     def is_multi_service(self) -> bool:
