@@ -27,7 +27,7 @@ class DockerDetails:
         services = list(self.config.get('services', {}).keys())
         service_names = []
         for service in services:
-            name = self._get_running_service_name(service)
+            name = self.get_running_service_name(service)
             # Only append names of running services
             if name:
                 service_names.append(name)
@@ -35,7 +35,7 @@ class DockerDetails:
             raise NoRunningServicesError()
         return service_names
 
-    def _get_running_service_name(self, service: str) -> str:
+    def get_running_service_name(self, service: str) -> str:
         """Gets the name of a running service based on the service name
         defined in the docker-compose.yml file.
 
