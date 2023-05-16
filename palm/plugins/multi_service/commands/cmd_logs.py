@@ -19,11 +19,8 @@ def cli(environment, container: Optional[str], follow: bool, tail: int):
         cmd.append('-f')
 
     if not container:
-        services = environment.palm.docker_details.running_service_names
-        container = environment.choice_prompt(
-            "Which container would you like to get logs from?",
-            services
-        )
+        plugin = environment.get_plugin('multi_service')
+        container = plugin.pick_service()
 
     cmd.append(container)
 

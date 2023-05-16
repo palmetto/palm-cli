@@ -13,11 +13,8 @@ def cli(environment, command: str, container: Optional[str], no_bin_bash: bool):
     cmd = ['docker exec -it']
 
     if not container:
-        services = environment.palm.docker_details.running_service_names
-        container = environment.choice_prompt(
-            "Which container would you like to run this command in?",
-            services
-        )
+        plugin = environment.get_plugin('multi_service')
+        container = plugin.pick_service()
 
     cmd.append(container)
 
@@ -25,5 +22,6 @@ def cli(environment, command: str, container: Optional[str], no_bin_bash: bool):
         cmd.append('/bin/bash -c')
 
     cmd.append(command)
+    click.secho(f'Running {command} in {container}...', fg='yellow')
 
     environment.run_on_host(' '.join(cmd), check=True)

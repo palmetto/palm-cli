@@ -5,6 +5,7 @@ from random import choice
 from typing import List, Optional, Tuple
 
 import click
+from palm.plugins.base import BasePlugin
 from pydantic import BaseModel
 
 from palm.plugin_manager import PluginManager
@@ -12,6 +13,7 @@ from palm.utils import run_on_host, run_in_docker
 
 from .code_generator import CodeGenerator
 from .palm_config import PalmConfig
+from .prompts.choice import choice_prompt as choice_prompt_func
 
 
 class Environment:
@@ -102,40 +104,28 @@ class Environment:
             Optional[BaseModel]: The config for the plugin, or None if the plugin
             is not found or does not have a config
         """
-        plugin = self.plugin_manager.plugins.get(plugin_name)
+        plugin = self.get_plugin(plugin_name)
         if plugin and plugin.config:
             return plugin.config.get()
         return None
 
-    def choice_prompt(self, prompt: str, options: List[str]) -> str:
-        """Prompt the user to select from a list of options
+    def get_plugin(self, plugin_name: str) -> BasePlugin:
+        """Returns a plugin by name
 
         Args:
-            prompt (str): The prompt text to display to the user before the options
-            options (List[str]): The list of options to choose from
+            plugin_name (str): The name of the plugin
 
         Returns:
-            str: The option the user selected
+            BasePlugin: The plugin
         """
-        if len(options) == 1:
-            return options[0]
+        try:
+            plugin = self.plugin_manager.plugins.get(plugin_name)
+        except KeyError:
+            click.secho(f"Plugin {plugin_name} not found", fg="red")
+            return None
 
-        choice_map = OrderedDict((f'{i}', option) for i, option in enumerate(options, 1))
-        choices = choice_map.keys()
-        choice_lines = [f'{k}: {v}' for k, v in choice_map.items()]
-        default = 1
+        return plugin
 
-        prompt = '\n'.join([
-            prompt,
-            '\n'.join(choice_lines),
-            f'Select from {len(choices)} options above',
-        ])
 
-        selection = click.prompt(
-            prompt,
-            type=click.Choice(choices),
-            show_choices=False,
-            default=default
-        )
-
-        return choice_map[selection]
+    def choice_prompt(self, prompt: str, options: List[str]) -> str:
+        return choice_prompt_func(prompt, options)

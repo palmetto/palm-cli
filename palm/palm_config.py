@@ -8,8 +8,8 @@ from click import secho, echo
 from deepmerge import always_merger
 from pygit2 import Repository
 
-from .docker_details import DockerDetails
 from .palm_exceptions import NoRepositoryError
+from palm.docker_details import DockerDetails
 
 
 class PalmConfig:
@@ -26,7 +26,6 @@ class PalmConfig:
     repo: Optional[Repository] = None
     branch: str = None
     plugins: List[str] = []
-    docker_details: DockerDetails = DockerDetails()
 
     def __init__(self, project_path: Optional["Path"] = Path.cwd()):
         self.project_root = project_path
@@ -197,4 +196,6 @@ class PalmConfig:
         Returns:
             Boolean: True if the project is a multi-service project
         """
-        return self.docker_details.is_multi_service
+        # Todo: move to self?
+        docker_details = DockerDetails()
+        return docker_details.is_multi_service
