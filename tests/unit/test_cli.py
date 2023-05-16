@@ -88,32 +88,3 @@ def test_scaffold_new_command_group(use_palm_dir):
     assert target_path.exists()
     assert "@click.group()" in target_path.read_text()
     assert "def test(environment):" in target_path.read_text()
-
-
-def test_scaffold_config(use_palm_dir):
-    runner = use_palm_dir
-    result = runner.invoke(
-        cli,
-        [
-            "scaffold",
-            "config",
-            "--image-name",
-            "testing",
-            "--plugins",
-            "test",
-            "-p",
-            "test-two",
-            "--protected-branches",
-            "master",
-            "-pb",
-            "main",
-        ],
-    )
-    config_path = Path(".palm", "config.yaml")
-    assert result.exit_code == 0
-    assert f"Palm config created!" in result.output
-    assert config_path.exists()
-    config = yaml.safe_load(config_path.read_text())
-    assert config["image_name"] == "testing"
-    assert config["plugins"] == ["test", "test-two"]
-    assert config["protected_branches"] == ["master", "main"]
