@@ -5,11 +5,13 @@ from pathlib import Path
 
 from .palm_exceptions import NoRunningServicesError
 
+
 class DockerDetails:
     """Provides details about the docker environment to the palm config
     which can be used by commands and plugins that need to interact with
     docker services or containers.
     """
+
     def __init__(self):
         self.path = Path.cwd() / "docker-compose.yml"
         self.config = self.read()
@@ -40,12 +42,10 @@ class DockerDetails:
         Returns:
             str: The name of the running service
         """
-        cmd = 'docker ps -a --filter name={service} --format {{{{.Names}}}}'.format(service=service)
-        result = subprocess.run(
-          shlex.split(cmd),
-          check=True,
-          capture_output=True
+        cmd = 'docker ps -a --filter name={service} --format {{{{.Names}}}}'.format(
+            service=service
         )
+        result = subprocess.run(shlex.split(cmd), check=True, capture_output=True)
         if result.returncode != 0:
             return False
 

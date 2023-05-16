@@ -15,9 +15,7 @@ from palm.containerizer import PythonContainerizer
 @click.pass_context
 def cli(ctx, version: str):
     if ctx.obj.palm.is_multi_service:
-        click.secho(
-            "Multi-service projects are not supported yet", fg="red", err=True
-        )
+        click.secho("Multi-service projects are not supported yet", fg="red", err=True)
         return
 
     all_templates_dir = Path(Path(__file__).parents[1], "templates")

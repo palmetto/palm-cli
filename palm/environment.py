@@ -124,6 +124,5 @@ class Environment:
 
         return plugin
 
-
     def choice_prompt(self, prompt: str, options: List[str]) -> str:
         return choice_prompt_func(prompt, options)
