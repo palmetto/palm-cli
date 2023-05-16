@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.5.3] - 2023-03-16
+
+### Fixed
+
+- **Modern Docker compose** Switch all docker-compose commands to use the modern
+  `docker compose` syntax and remove dependency check for docker-compose. This
+  change was made to support the new docker-compose v2.0.0 syntax, which is
+  widely used in the community. docker-compose is reaching end of support next
+  month.
+
 ## [2.5.2] - 2023-03-16
 
 ### Fixed
