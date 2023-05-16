@@ -14,4 +14,5 @@ def cli(environment, detach: bool, build: bool):
     if build:
       command += ' --build'
 
+    click.secho(f'Bringing up all services...', fg='yellow')
     environment.run_on_host(command, check=True)

@@ -24,4 +24,5 @@ def cli(environment, container: Optional[str], follow: bool, tail: int):
 
     cmd.append(container)
 
+    click.secho(f'Viewing logs from {container}...', fg='yellow')
     environment.run_on_host(' '.join(cmd), check=True)

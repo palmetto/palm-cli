@@ -10,4 +10,5 @@ def cli(environment, flags: tuple):
     flags = [f"-{flag}" if len(flag) == 1 else f"--{flag}" for flag in flags]
     command = f'docker compose down {" ".join(flags)}'
 
+    click.secho(f'Tearing down all services...', fg='yellow')
     environment.run_on_host(command, check=True)
