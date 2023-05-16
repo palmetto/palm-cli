@@ -10,18 +10,4 @@ import click
 def cli(environment, command: str, container: Optional[str], no_bin_bash: bool):
     """Exec a command within a running container"""
 
-    cmd = ['docker exec -it']
-
-    if not container:
-        plugin = environment.get_plugin('multi_service')
-        container = plugin.pick_service()
-
-    cmd.append(container)
-
-    if not no_bin_bash:
-        cmd.append('/bin/bash -c')
-
-    cmd.append(command)
-    click.secho(f'Running {command} in {container}...', fg='yellow')
-
-    environment.run_on_host(' '.join(cmd), check=True)
+    environment.exec_in_docker(command, container=container, no_bin_bash=no_bin_bash)
