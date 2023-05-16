@@ -50,8 +50,3 @@ class DockerDetails:
             return False
 
         return True
-
-    @property
-    def is_multi_service(self) -> bool:
-        """Checks if the docker-compose.yml has more than one service defined"""
-        return len(self.config.get('services', {})) > 1
