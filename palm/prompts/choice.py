@@ -23,7 +23,7 @@ def choice_prompt(prompt: str, options: List[str]) -> str:
     prompt = '\n'.join([
         prompt,
         '\n'.join(choice_lines),
-        f'Select from {len(choices)} options above',
+        f'Select from {len(choices)} options above using the number keys, or press enter to select the default option',
     ])
 
     selection = click.prompt(
