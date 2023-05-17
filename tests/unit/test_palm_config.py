@@ -25,6 +25,7 @@ def test_image_name_config(palm_config):
 def test_plugins_installed(palm_config):
     assert palm_config.plugins == ["core", "mock", "repo"]
 
+
 def test_multi_service_plugins_installed(multi_service_environment):
     palm_config = multi_service_environment.palm
     assert palm_config.plugins == ["core", "multi_service", "repo"]

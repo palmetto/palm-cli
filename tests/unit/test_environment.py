@@ -22,11 +22,13 @@ def test_run_in_docker(environment, monkeypatch):
     assert success is True
     assert msg == "Success! Palm completed with exit code 0"
 
+
 def test_exec_in_docker_raises_exception_without_plugin(environment, monkeypatch):
     """
-        Environment fixture does not have the multi-service plugin.
-        This should raise an exception.
+    Environment fixture does not have the multi-service plugin.
+    This should raise an exception.
     """
+
     class MockCompletedProcess:
         returncode = 0
         stdout = b"tested"
@@ -39,8 +41,10 @@ def test_exec_in_docker_raises_exception_without_plugin(environment, monkeypatch
     with pytest.raises(Exception):
         success, msg = environment.exec_in_docker("test")
 
+
 def test_exec_in_docker(multi_service_environment, monkeypatch):
     environment = multi_service_environment
+
     class MockCompletedProcess:
         returncode = 0
         stdout = b"tested"
@@ -56,8 +60,10 @@ def test_exec_in_docker(multi_service_environment, monkeypatch):
     assert success is True
     assert msg == "Success! Palm completed with exit code 0"
 
+
 def test_run_in_docker_calls_exec_in_docker(multi_service_environment, monkeypatch):
     environment = multi_service_environment
+
     class MockCompletedProcess:
         returncode = 0
         stdout = b"tested"
@@ -70,6 +76,7 @@ def test_run_in_docker_calls_exec_in_docker(multi_service_environment, monkeypat
     monkeypatch.setattr(environment, "exec_in_docker", m1)
     environment.run_in_docker("test")
     m1.assert_called_once_with("test", env_vars={}, no_bin_bash=False)
+
 
 def test_import_module(environment):
     module_name = "mock_import"
@@ -106,10 +113,12 @@ def test_get_plugin_config_no_config(environment):
     result = environment.plugin_config("mock")
     assert result == None
 
+
 def test_get_plugin(environment):
     result = environment.get_plugin("mock")
     assert isinstance(result, BasePlugin)
     assert result.name == "mock"
+
 
 def test_get_plugin_returns_none_if_not_found(environment):
     result = environment.get_plugin("not_a_plugin")

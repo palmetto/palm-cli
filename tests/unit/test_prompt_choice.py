@@ -4,10 +4,12 @@ from unittest import mock
 
 from palm.prompts.choice import choice_prompt
 
+
 def test_single_choice_is_returned_automatically():
     choices = ['choice1']
     choice = choice_prompt('prompt', choices)
     assert choice == 'choice1'
+
 
 def test_prompt_contains_choices(monkeypatch):
     choices = ['choice1', 'choice2']
