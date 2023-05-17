@@ -1,4 +1,4 @@
-from os import environ
+from palm.plugins.base import BasePlugin
 import pytest
 from unittest import mock
 import subprocess
@@ -105,3 +105,12 @@ def test_build_env_vars(environment):
 def test_get_plugin_config_no_config(environment):
     result = environment.plugin_config("mock")
     assert result == None
+
+def test_get_plugin(environment):
+    result = environment.get_plugin("mock")
+    assert isinstance(result, BasePlugin)
+    assert result.name == "mock"
+
+def test_get_plugin_returns_none_if_not_found(environment):
+    result = environment.get_plugin("not_a_plugin")
+    assert result is None
