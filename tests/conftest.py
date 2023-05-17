@@ -58,18 +58,6 @@ def mock_plugin_manager(tmp_path):
 
     return pm
 
-def mock_plugin_manager_multi_service(tmp_path):
-    pm = PluginManager()
-    pm.plugins = {
-        "mock": mock_plugin("mock", tmp_path),
-        "multi_service": MultiServicePlugin()
-    }
-    pm.extend_plugin_command_mapping("mock")
-    pm.extend_plugin_command_mapping("multi_service")
-
-    return pm
-
-
 @pytest.fixture
 def plugin_manager(tmp_path):
     return mock_plugin_manager(tmp_path)
@@ -181,8 +169,15 @@ def environment(tmp_path, monkeypatch):
 
 @pytest.fixture
 def multi_service_environment(tmp_path, monkeypatch):
+    pm = PluginManager()
+    pm.plugins = {
+        "mock": mock_plugin("mock", tmp_path),
+        "multi_service": MultiServicePlugin()
+    }
+    pm.extend_plugin_command_mapping("mock")
+    pm.extend_plugin_command_mapping("multi_service")
+
     monkeypatch.setattr(PalmConfig, "_get_repo", lambda self: mock_repository(tmp_path))
     monkeypatch.setattr(PalmConfig, "_get_config", lambda self: {'plugins': ['multi_service']})
-    pm = mock_plugin_manager_multi_service(tmp_path)
     config = PalmConfig(Path(tmp_path))
     return Environment(pm, config)
