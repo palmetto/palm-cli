@@ -1,3 +1,5 @@
+from re import M
+import pytest
 from unittest import mock
 import subprocess
 from pathlib import Path
@@ -20,6 +22,39 @@ def test_run_in_docker(environment, monkeypatch):
     assert success is True
     assert msg == "Success! Palm completed with exit code 0"
 
+def test_exec_in_docker_raises_exception_without_plugin(environment, monkeypatch):
+    """
+        Environment fixture does not have the multi-service plugin.
+        This should raise an exception.
+    """
+    class MockCompletedProcess:
+        returncode = 0
+        stdout = b"tested"
+        stderr = b""
+
+    monkeypatch.setattr(
+        subprocess, "run", lambda *args, **kwargs: MockCompletedProcess()
+    )
+
+    with pytest.raises(Exception):
+        success, msg = environment.exec_in_docker("test")
+
+def test_exec_in_docker(multi_service_environment, monkeypatch):
+    environment = multi_service_environment
+    class MockCompletedProcess:
+        returncode = 0
+        stdout = b"tested"
+        stderr = b""
+
+    monkeypatch.setattr(
+        subprocess, "run", lambda *args, **kwargs: MockCompletedProcess()
+    )
+    # Note that service is specified here to prevent the choice prompt
+    # from being called.
+    success, msg = environment.exec_in_docker("test", service='palm')
+
+    assert success is True
+    assert msg == "Success! Palm completed with exit code 0"
 
 def test_import_module(environment):
     module_name = "mock_import"
