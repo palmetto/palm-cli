@@ -1,4 +1,4 @@
-from re import M
+from os import environ
 import pytest
 from unittest import mock
 import subprocess
@@ -55,6 +55,21 @@ def test_exec_in_docker(multi_service_environment, monkeypatch):
 
     assert success is True
     assert msg == "Success! Palm completed with exit code 0"
+
+def test_run_in_docker_calls_exec_in_docker(multi_service_environment, monkeypatch):
+    environment = multi_service_environment
+    class MockCompletedProcess:
+        returncode = 0
+        stdout = b"tested"
+        stderr = b""
+
+    monkeypatch.setattr(
+        subprocess, "run", lambda *args, **kwargs: MockCompletedProcess()
+    )
+    m1 = mock.Mock()
+    monkeypatch.setattr(environment, "exec_in_docker", m1)
+    environment.run_in_docker("test")
+    m1.assert_called_once_with("test", env_vars={}, no_bin_bash=False)
 
 def test_import_module(environment):
     module_name = "mock_import"
