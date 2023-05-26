@@ -29,7 +29,9 @@ class DockerDetails:
             path = Path.cwd() / f"docker-compose.{ext}"
             if path.exists():
                 return path
-        raise FileNotFoundError("No docker-compose.yml or docker-compose.yaml file found")
+        raise FileNotFoundError(
+            "No docker-compose.yml or docker-compose.yaml file found"
+        )
 
     def read(self):
         return yaml.safe_load(self.path.read_text())
