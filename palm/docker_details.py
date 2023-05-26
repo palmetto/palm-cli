@@ -14,8 +14,22 @@ class DockerDetails:
     """
 
     def __init__(self):
-        self.path = Path.cwd() / "docker-compose.yml"
+        self.path = self.find_docker_compose_file()
         self.config = self.read()
+
+    def find_docker_compose_file(self) -> Path:
+        """Finds the docker-compose.yml file in the current working directory
+        or raises an exception if it does not exist.
+
+        Returns:
+            Path: The path to the docker-compose.yml file
+        """
+        extensions = ["yml", "yaml"]
+        for ext in extensions:
+            path = Path.cwd() / f"docker-compose.{ext}"
+            if path.exists():
+                return path
+        raise FileNotFoundError("No docker-compose.yml or docker-compose.yaml file found")
 
     def read(self):
         return yaml.safe_load(self.path.read_text())
