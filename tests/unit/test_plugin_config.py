@@ -1,8 +1,8 @@
 import pytest
 import yaml
 from unittest import mock
-
 from pathlib import Path
+
 from palm.palm_exceptions import InvalidConfigError
 
 
@@ -41,8 +41,9 @@ def test_get_config(mock_plugin_config, tmp_path, monkeypatch):
     config_path = tmp_path / "config.yaml"
     config_path.write_text(yaml.dump({'plugin_config': {'test': {'value': 'foo'}}}))
     monkeypatch.setattr(config, "config_path", config_path)
+    result = config.get()
 
-    assert config.get() == {"value": "foo"}
+    assert result.value == "foo"
 
 
 @pytest.mark.parametrize("config", [{"value": "foo"}])
