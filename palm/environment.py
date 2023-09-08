@@ -27,11 +27,7 @@ class Environment:
     ) -> Tuple[bool, str]:
         env_vars_list = self._build_env_vars(env_vars)
         return run_in_docker(
-            cmd,
-            self.palm.image_name,
-            env_vars_list,
-            no_bin_bash,
-            silent
+            cmd, self.palm.image_name, env_vars_list, no_bin_bash, silent
         )
 
     def run_in_shell(self, cmd: str, env_vars: Optional[dict] = {}):
