@@ -62,6 +62,7 @@ def run_in_docker(
     image_name: str,
     env_vars: Optional[List[str]] = [],
     no_bin_bash: Optional[bool] = False,
+    capture_output: Optional[bool] = False,
 ) -> Tuple[bool, str]:
     """Shells out and runs the cmd in docker
 
@@ -79,7 +80,12 @@ def run_in_docker(
     else:
         docker_cmd.append(f'/bin/bash -c "{cmd}" ')
 
-    ex_code, _, _ = run_on_host(" ".join(docker_cmd))
+    ex_code, std_out, std_err = run_on_host(" ".join(docker_cmd), False, capture_output)
+    if capture_output:
+        if ex_code == 0:
+            return (True, std_out)
+        return (False, std_err)
+
     if ex_code == 0:
         return (True, "Success! Palm completed with exit code 0")
     return (False, f"Fail! Palm exited with code {ex_code}")
