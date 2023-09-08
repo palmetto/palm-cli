@@ -19,8 +19,7 @@ class BasePluginConfig(ABC):
         """Setter for plugin config
 
         This method should be implemented by the plugin to set the config
-        for the plugin. It should return True if the config was set successfully,
-        and False if it was not.
+        for the plugin. It should return a dict of the config that was set.
 
         Returns:
             dict: The config that was set
