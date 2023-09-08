@@ -23,9 +23,16 @@ class Environment:
         cmd: str,
         env_vars: Optional[dict] = {},
         no_bin_bash: Optional[bool] = False,
+        silent: Optional[bool] = False,
     ) -> Tuple[bool, str]:
         env_vars_list = self._build_env_vars(env_vars)
-        return run_in_docker(cmd, self.palm.image_name, env_vars_list, no_bin_bash)
+        return run_in_docker(
+            cmd,
+            self.palm.image_name,
+            env_vars_list,
+            no_bin_bash,
+            silent
+        )
 
     def run_in_shell(self, cmd: str, env_vars: Optional[dict] = {}):
         """deprecated - use run_in_docker"""

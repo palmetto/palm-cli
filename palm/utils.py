@@ -63,6 +63,7 @@ def run_in_docker(
     env_vars: Optional[List[str]] = [],
     no_bin_bash: Optional[bool] = False,
     capture_output: Optional[bool] = False,
+    silent: Optional[bool] = False,
 ) -> Tuple[bool, str]:
     """Shells out and runs the cmd in docker
 
@@ -70,7 +71,8 @@ def run_in_docker(
         cmd (str): The command you want to run
         env_vars (Optional[dict], optional): Dict of env vars to pass to the docker container.
     """
-    click.secho(f"Executing command `{cmd}` in compose...", fg="yellow")
+    if not silent:
+        click.secho(f"Executing command `{cmd}` in compose...", fg="yellow")
 
     docker_cmd = ["docker compose run --service-ports --rm"]
     docker_cmd.extend(env_vars)
