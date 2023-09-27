@@ -59,11 +59,11 @@ To verify that the installation was successful, run ``palm --version``.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 
 you will need to add ``'/Users/yourname/Library/Python/3.x/bin'`` to your path for
-``palm`` to work. 
+``palm`` to work.
 
 This command will work for bash, zsh and fsh shells:
 
-``export PALM_INSTALL_LIB_AT=$(python3 --version | sed -e "s/\(Python 3\.\)\([0-9]\)\.\([0-9]\)/3.\2/") && echo "\nexport PATH=$PATH:$HOME/Library/Python/${PALM_INSTALL_LIB_AT}/bin\n" | tee -a ~/.zprofile ~/.bashrc ~/.fshrc``
+``export PALM_INSTALL_LIB_AT=$(python3 --version | sed -e "s/\(Python 3\.\)\([0-9]*\)\.\([0-9]*\)/3.\2/") && echo "\nexport PATH=$PATH:$HOME/Library/Python/${PALM_INSTALL_LIB_AT}/bin\n" | tee -a ~/.zprofile ~/.bashrc ~/.fshrc``
 
 
 Configuration
