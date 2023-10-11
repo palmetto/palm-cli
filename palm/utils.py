@@ -1,6 +1,8 @@
 import subprocess
 from sys import version_info
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
+
+import click
 
 
 class UnsupportedVersion(Exception):
@@ -53,3 +55,39 @@ def run_on_host(
         completed.stdout.decode("utf-8") if completed.stdout else "",
         completed.stderr.decode("utf-8") if completed.stderr else "",
     )
+
+
+def run_in_docker(
+    cmd: str,
+    image_name: str,
+    env_vars: Optional[List[str]] = [],
+    no_bin_bash: Optional[bool] = False,
+    capture_output: Optional[bool] = False,
+    silent: Optional[bool] = False,
+) -> Tuple[bool, str]:
+    """Shells out and runs the cmd in docker
+
+    Args:
+        cmd (str): The command you want to run
+        env_vars (Optional[dict], optional): Dict of env vars to pass to the docker container.
+    """
+    if not silent:
+        click.secho(f"Executing command `{cmd}` in compose...", fg="yellow")
+
+    docker_cmd = ["docker compose run --service-ports --rm"]
+    docker_cmd.extend(env_vars)
+    docker_cmd.append(image_name)
+    if no_bin_bash:
+        docker_cmd.append(cmd)
+    else:
+        docker_cmd.append(f'/bin/bash -c "{cmd}" ')
+
+    ex_code, std_out, std_err = run_on_host(" ".join(docker_cmd), False, capture_output)
+    if capture_output:
+        if ex_code == 0:
+            return (True, std_out)
+        return (False, std_err)
+
+    if ex_code == 0:
+        return (True, "Success! Palm completed with exit code 0")
+    return (False, f"Fail! Palm exited with code {ex_code}")
