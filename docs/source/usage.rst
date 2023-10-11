@@ -55,16 +55,16 @@ To verify that the installation was successful, run ``palm --version``.
 
 **note for mac users**: if you get this warning::
 
-  WARNING: The script palm is installed in '/Users/yourname/Library/Python/3.8/bin' which is not on PATH.
+  WARNING: The script palm is installed in '~/Library/Python/3.x/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 
-you will need to add ``'/Users/yourname/Library/Python/3.8/bin'`` to your path for
-``palm`` to work. You can do that with one of these commands (depending on your
-shell of choice):
+you will need to add ``'/Users/yourname/Library/Python/3.x/bin'`` to your path for
+``palm`` to work.
 
-- zsh: ``echo "\nexport PATH=$PATH:/Users/yourname/Library/Python/3.8/bin\n" >> ~/.zprofile``
-- bash: ``echo "export PATH=$PATH:/Users/yourname/Library/Python/3.8/bin" >> ~/.bashrc``
-- fsh: ``echo "setenv PATH $PATH:/Users/yourname/Library/Python/3.8/bin" >> ~/.fshrc``
+This command will work for bash, zsh and fsh shells:
+
+``export PALM_INSTALL_LIB_AT=$(python3 --version | sed -e "s/\(Python 3\.\)\([0-9]*\)\.\([0-9]*\)/3.\2/") && echo "\nexport PATH=$PATH:$HOME/Library/Python/${PALM_INSTALL_LIB_AT}/bin\n" | tee -a ~/.zprofile ~/.bashrc ~/.fshrc``
+
 
 Configuration
 =============

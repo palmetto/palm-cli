@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.6.0] - 2023-10-11
+
+### Changed
+
+- `run_in_docker` is abstracted to a utility function, allowing plugins to
+  execute commands in the docker container without needing to import the
+  environment object.
+
+### Removed
+
+- `run_in_shell` is removed in favor of `run_in_docker`. This has been
+  deprecated since v2.0.0
+
 ## [2.5.3] - 2023-03-16
 
 ### Fixed
