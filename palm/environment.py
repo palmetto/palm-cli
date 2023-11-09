@@ -34,11 +34,7 @@ class Environment:
             return
 
         return run_in_docker(
-            cmd,
-            self.palm.image_name,
-            env_vars_list,
-            no_bin_bash,
-            silent
+            cmd, self.palm.image_name, env_vars_list, no_bin_bash, silent
         )
 
     def exec_in_docker(
