@@ -60,7 +60,6 @@ def run_on_host(
 def run_in_docker(
     cmd: str,
     image_name: str,
-    is_multi_service: bool,
     env_vars: Optional[List[str]] = [],
     no_bin_bash: Optional[bool] = False,
     capture_output: Optional[bool] = False,
