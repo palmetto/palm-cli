@@ -77,15 +77,6 @@ def run_in_docker(
 
     docker_cmd = ["docker compose run --service-ports --rm"]
     docker_cmd.extend(env_vars)
-
-    if is_multi_service and type(image_name) == list:
-        target_image = click.prompt(
-            "Which image would you like to run this command in?",
-            type=click.Choice(image_name),
-        )
-    else:
-        target_image = image_name
-
     docker_cmd.append(image_name)
     if no_bin_bash:
         docker_cmd.append(cmd)

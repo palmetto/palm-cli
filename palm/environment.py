@@ -28,14 +28,50 @@ class Environment:
         silent: Optional[bool] = False,
     ) -> Tuple[bool, str]:
         env_vars_list = self._build_env_vars(env_vars)
+
+        if self.palm.is_multi_service:
+            self.exec_in_docker(cmd, env_vars=env_vars, no_bin_bash=no_bin_bash)
+            return
+
         return run_in_docker(
             cmd,
             self.palm.image_name,
-            self.palm.is_multi_service,
             env_vars_list,
             no_bin_bash,
             silent
         )
+
+    def exec_in_docker(
+        self,
+        cmd: str,
+        env_vars: Optional[dict] = {},
+        no_bin_bash: Optional[bool] = False,
+        service: Optional[str] = None,
+    ) -> Tuple[bool, str]:
+        if not self.palm.is_multi_service:
+            click.secho(
+                "This command is only available in multi-service repos", fg="red"
+            )
+            raise Exception("exec_in_docker only available in multi-service repos")
+
+        multi_service_plugin = self.get_plugin("multi_service")
+        if not service:
+            service = multi_service_plugin.pick_service()
+
+        click.secho(f"Executing command `{cmd}` in {service}...", fg="yellow")
+
+        docker_cmd = ["docker compose exec -it"]
+        docker_cmd.extend(self._build_env_vars(env_vars))
+        docker_cmd.append(service)
+        if not no_bin_bash:
+            docker_cmd.append(f'/bin/bash -c')
+        docker_cmd.append(f'"{cmd}"')
+
+        ex_code, _, _ = run_on_host(" ".join(docker_cmd), check=True)
+
+        if ex_code == 0:
+            return (True, "Success! Palm completed with exit code 0")
+        return (False, f"Fail! Palm exited with code {ex_code}")
 
     def run_on_host(
         self,
