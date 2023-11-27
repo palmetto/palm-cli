@@ -3,7 +3,7 @@ import click
 
 @click.command("up")
 @click.option(
-    "--no-detach", "-nd", is_flag=True, help="Run containers in the background."
+    "--no-detach", "-nd", is_flag=True, help="Do not run containers in the background."
 )
 @click.option(
     "--build", "-b", is_flag=True, help="Build images before starting containers."
