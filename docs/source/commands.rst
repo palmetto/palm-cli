@@ -108,6 +108,22 @@ is provided via the palm context. If you want to use ``run_in_docker`` in your
 own command, ensure you use the ``@click.pass_obj`` decorator for your command,
 then use ``environment.run_in_docker(command)``.
 
+Note that in multi-service applications, ``run_in_docker`` will run proxy your command
+through to ``exec_in_docker`` - this allows your command to run regardless of
+how the service is configured. However, if your command is intended to run on a
+specific service, you should use ``exec_in_docker`` directly.
+
+**Execute in docker**:
+
+The ``exec_in_docker`` function is used to execute a command in a running docker
+container. The function only works for repos configured with the ``multi_service``
+plugin, and will raise an exception if used in a repo that is not configured with
+the ``multi_service`` plugin.
+
+The ``exec_in_docker`` function optionally accepts a ``service`` argument, which
+can be used to specify which service your command should be executed on. If no
+service is specified, palm will prompt the user to select a service from a list.
+
 **Run on Host**:
 
 Palm provides a simple interface for running shell commands directly on your machine via
@@ -158,3 +174,26 @@ That could look something like this:
                 building_logs = logs
                 click.echo(logs)
       click.secho("Super-slow app is _finally_ ready!", fg="green")
+
+Prompting the user
+------------------
+
+Palm uses ``click`` for all CLI interaction and rendering. Please see the
+`click documentation on prompting <https://click.palletsprojects.com/en/8.0.x/parameters/#prompting>`_
+for general information on click prompts, which should cover most use cases.
+
+In addition to the standard click prompts, palm provides the following prompt
+helpers:
+
+- **choice**: A prompt that allows the user to select from a list of choices.
+  This is useful for selecting a service from a list, for example.
+
+  Example:
+
+.. code:: python
+
+  @click.pass_obj
+  def cli(environment):
+      service = environment.choice_prompt("Select a service", ["service1", "service2"])
+      click.echo(f"You selected {service}")
+

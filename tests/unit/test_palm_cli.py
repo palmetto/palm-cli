@@ -76,3 +76,24 @@ def test_format_commands_handles_multiple_groups(mock_help_formatter, monkeypatc
     call_args = [str(call) for call in m.call_args_list]
     assert "call('Core')" in call_args
     assert "call('Bar')" in call_args
+
+
+def test_format_commands_header_formatting(mock_help_formatter, monkeypatch):
+    PalmCLIInstance = PalmCLI()
+
+    monkeypatch.setattr(PalmCLIInstance, "list_commands", lambda x: ["test"])
+    monkeypatch.setattr(
+        PalmCLIInstance, "get_command", lambda ctx, cmd_name: MockCommand(cmd_name)
+    )
+    plugin_manager = PalmCLIInstance.plugin_manager
+    mock_plugin_dict = {
+        "test": "mutli_word_plugin_name",
+    }
+    monkeypatch.setattr(plugin_manager, "plugin_command_dict", mock_plugin_dict)
+
+    m = mock.Mock()
+    monkeypatch.setattr(mock_help_formatter, "write_heading", m)
+    ctx = {}
+    PalmCLIInstance.format_commands(ctx, mock_help_formatter)
+
+    m.assert_called_with("Mutli Word Plugin Name")

@@ -9,6 +9,7 @@ from deepmerge import always_merger
 from pygit2 import Repository
 
 from .palm_exceptions import NoRepositoryError
+from palm.docker_details import DockerDetails
 
 
 class PalmConfig:
@@ -25,6 +26,7 @@ class PalmConfig:
     repo: Optional[Repository] = None
     branch: str = None
     plugins: List[str] = []
+    docker_details: DockerDetails = DockerDetails()
 
     def __init__(self, project_path: Optional["Path"] = Path.cwd()):
         self.project_root = project_path
@@ -170,7 +172,7 @@ class PalmConfig:
         return self.project_root.name.replace("-", "_")
 
     @property
-    def image_name(self) -> str:
+    def image_name(self) -> Union[str, List[str]]:
         """Docker image name for the current project
         Attempts to load the image_name from .palm/config.yaml, falling back to
         the snake_cased project root dir name
@@ -179,3 +181,14 @@ class PalmConfig:
             str: Name of docker image to use
         """
         return self.config.get('image_name') or self.project_root_snake_case
+
+    @property
+    def is_multi_service(self) -> Boolean:
+        """Is the current project a multi-service project
+
+        Note that this config will change the behaviour of some commands.
+
+        Returns:
+            Boolean: True if the project is a multi-service project
+        """
+        return 'multi_service' in self.plugins

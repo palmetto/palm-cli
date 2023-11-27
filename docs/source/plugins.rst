@@ -21,6 +21,22 @@ when the CLI runs, these plugins provide the following functionality:
 **Note** that the repo plugin does not provide any commands of its own, instead
 it provides the mechanism to load your own project-specific commands.
 
+The Multi-Service plugin
+------------------------
+
+The Multi Service plugin is a special plugin that is not loaded by default, but
+extends the functionality of the CLI to support multiple Docker compose services.
+This plugin must be explicitly enabled by adding the plugin name to the project's
+``.palm/config.yaml`` file.
+
+Example plugin configuration:
+
+.. code:: yaml
+
+  plugins:
+    - multi-service
+
+
 Installing Plugins
 ==================
 

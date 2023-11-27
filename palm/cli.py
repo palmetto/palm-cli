@@ -90,6 +90,7 @@ class PalmCLI(click.MultiCommand):
                     plugin_name = self.plugin_manager.plugin_command_dict.get(
                         subcommand
                     )
+                plugin_name = plugin_name.replace("_", " ")
 
                 if plugin_name not in subsections:
                     subsections[plugin_name] = []

@@ -26,6 +26,12 @@ def test_plugins_installed(palm_config):
     assert palm_config.plugins == ["core", "mock", "repo"]
 
 
+def test_multi_service_plugins_installed(multi_service_environment):
+    palm_config = multi_service_environment.palm
+    assert palm_config.plugins == ["core", "multi_service", "repo"]
+    assert palm_config.is_multi_service == True
+
+
 def test_reads_protected_branches(palm_config):
     assert palm_config.protected_branches == ["main"]
 
